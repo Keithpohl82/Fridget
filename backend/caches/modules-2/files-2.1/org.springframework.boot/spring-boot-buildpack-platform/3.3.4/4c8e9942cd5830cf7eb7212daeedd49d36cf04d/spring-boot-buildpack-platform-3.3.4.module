@@ -1,0 +1,202 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "org.springframework.boot",
+    "module": "spring-boot-buildpack-platform",
+    "version": "3.3.4",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.6.4"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "com.fasterxml.jackson.core",
+          "module": "jackson-databind",
+          "version": {
+            "requires": "2.14.2"
+          }
+        },
+        {
+          "group": "com.fasterxml.jackson.module",
+          "module": "jackson-module-parameter-names",
+          "version": {
+            "requires": "2.14.2"
+          }
+        },
+        {
+          "group": "net.java.dev.jna",
+          "module": "jna-platform",
+          "version": {
+            "requires": "5.13.0"
+          }
+        },
+        {
+          "group": "org.apache.commons",
+          "module": "commons-compress",
+          "version": {
+            "requires": "1.25.0"
+          }
+        },
+        {
+          "group": "org.apache.httpcomponents.client5",
+          "module": "httpclient5",
+          "version": {
+            "requires": "5.3.1"
+          }
+        },
+        {
+          "group": "org.springframework",
+          "module": "spring-core",
+          "version": {
+            "requires": "6.0.23"
+          }
+        },
+        {
+          "group": "org.tomlj",
+          "module": "tomlj",
+          "version": {
+            "requires": "1.0.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "spring-boot-buildpack-platform-3.3.4.jar",
+          "url": "spring-boot-buildpack-platform-3.3.4.jar",
+          "size": 289039,
+          "sha512": "dd7556ea46b81de95fc7f5e4b77cb57f02db9a0d371bb73a414f9e761c5b77812ab290b30189f4e1d01e448024b59685fe0b5640fe0d7289e136084948e0fac7",
+          "sha256": "13f6af54bc1ea30a9d89efed68e57131bee96d716f93de96561fb41fa364d33d",
+          "sha1": "38dc1b2a6bf12ef008a6cb32e7788be80a953d83",
+          "md5": "1e7eb4337570a918ab1c881b856e28c5"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.fasterxml.jackson.core",
+          "module": "jackson-databind",
+          "version": {
+            "requires": "2.14.2"
+          }
+        },
+        {
+          "group": "com.fasterxml.jackson.module",
+          "module": "jackson-module-parameter-names",
+          "version": {
+            "requires": "2.14.2"
+          }
+        },
+        {
+          "group": "net.java.dev.jna",
+          "module": "jna-platform",
+          "version": {
+            "requires": "5.13.0"
+          }
+        },
+        {
+          "group": "org.apache.commons",
+          "module": "commons-compress",
+          "version": {
+            "requires": "1.25.0"
+          }
+        },
+        {
+          "group": "org.apache.httpcomponents.client5",
+          "module": "httpclient5",
+          "version": {
+            "requires": "5.3.1"
+          }
+        },
+        {
+          "group": "org.springframework",
+          "module": "spring-core",
+          "version": {
+            "requires": "6.0.23"
+          }
+        },
+        {
+          "group": "org.tomlj",
+          "module": "tomlj",
+          "version": {
+            "requires": "1.0.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "spring-boot-buildpack-platform-3.3.4.jar",
+          "url": "spring-boot-buildpack-platform-3.3.4.jar",
+          "size": 289039,
+          "sha512": "dd7556ea46b81de95fc7f5e4b77cb57f02db9a0d371bb73a414f9e761c5b77812ab290b30189f4e1d01e448024b59685fe0b5640fe0d7289e136084948e0fac7",
+          "sha256": "13f6af54bc1ea30a9d89efed68e57131bee96d716f93de96561fb41fa364d33d",
+          "sha1": "38dc1b2a6bf12ef008a6cb32e7788be80a953d83",
+          "md5": "1e7eb4337570a918ab1c881b856e28c5"
+        }
+      ]
+    },
+    {
+      "name": "javadocElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "javadoc",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "spring-boot-buildpack-platform-3.3.4-javadoc.jar",
+          "url": "spring-boot-buildpack-platform-3.3.4-javadoc.jar",
+          "size": 417653,
+          "sha512": "940ab43fef7e3e3ba880f9af4e9462e55a22b8e0fb58a02915f3070bcfbbf53bc2c6eccfe31c726af5fc515447ef84fb857e920de62e2d525a55b4b33ccb5159",
+          "sha256": "1a8f00b8f15ed7986c579fb765a68cfaa2bd8a91ff4c7de622a9cb20aa77e477",
+          "sha1": "bd1705b96f04d2175d62ee88c26e4418df72ae82",
+          "md5": "c75d00a54cd00ef63b2a057bbd3dba11"
+        }
+      ]
+    },
+    {
+      "name": "sourcesElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "spring-boot-buildpack-platform-3.3.4-sources.jar",
+          "url": "spring-boot-buildpack-platform-3.3.4-sources.jar",
+          "size": 177589,
+          "sha512": "66203fce8e728fba1d17f373f921f231967b578037032ffcd6d40133cec3a5191373cc0585396a2ff18f8f007a6287d8dbd4ba49811421590e6f4e68c33f14d3",
+          "sha256": "934e26003bd50c8939f19ee52fc26376811677487601e6fb1f629e60224786cd",
+          "sha1": "c84d60096fc58155d9a01dd6d5b15d5a1f4618c8",
+          "md5": "69a42a236255e0277d7b8772d0b4fb34"
+        }
+      ]
+    }
+  ]
+}
