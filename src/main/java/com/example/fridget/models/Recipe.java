@@ -21,7 +21,7 @@ public class Recipe {
     
     private String name;
     
-    private String discription;
+    private String description;
 
     private int prepTime;
 
@@ -39,10 +39,10 @@ public class Recipe {
     //private String photoUrl;
 
 
-    public Recipe(List<Ingredients> ingredientsList, String name, String discription, int prepTime, int cookTime, int totalTime) {
+    public Recipe(List<Ingredients> ingredientsList, String name, String description, int prepTime, int cookTime, int totalTime) {
         this.ingredientsList = ingredientsList;
         this.name = name;
-        this.discription = discription;
+        this.description = description;
         this.prepTime = prepTime;
         this.cookTime = cookTime;
         this.totalTime = totalTime;
@@ -71,12 +71,12 @@ public class Recipe {
         this.name = name;
     }
 
-    public String getDiscription() {
-        return discription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDiscription(String discription) {
-        this.discription = discription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getPrepTime() {
