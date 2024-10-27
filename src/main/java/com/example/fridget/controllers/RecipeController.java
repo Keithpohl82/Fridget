@@ -22,7 +22,8 @@ public class RecipeController {
     @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("add")
     public ResponseEntity<String> addNewRecipe(@RequestBody Recipe recipe){
-    recipeRepository.save(recipe);
+        recipe.setTotalTime(recipe.getCookTime() + recipe.getPrepTime());
+        recipeRepository.save(recipe);
     return ResponseEntity.ok( recipe.getName() + " added successfully");
     }
 }

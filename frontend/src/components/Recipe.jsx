@@ -6,6 +6,7 @@ const Recipe = () => {
     const [cookTime, setCookTime] = useState('');
     const [prepTime, setPrepTime] = useState('');
     const [description, setDescription] = useState('');
+    
 
 const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,14 +38,14 @@ const handleSubmit = async (e) => {
         required
       />
       <input
-        type="text"
+        type="number"
         placeholder="Cook Time"
         value={cookTime}
         onChange={(e) => setCookTime(e.target.value)}
         required
       />
       <input
-        type="text"
+        type="number"
         placeholder="Prep Time"
         value={prepTime}
         onChange={(e) => setPrepTime(e.target.value)}

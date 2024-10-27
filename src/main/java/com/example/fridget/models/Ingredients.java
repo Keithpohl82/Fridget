@@ -1,9 +1,6 @@
 package com.example.fridget.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +15,9 @@ public class Ingredients {
 
     @ManyToMany(mappedBy = "ingredientsList")
     private List<Recipe> recipeList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userIngredientsList")
+    private List<UserInventory> listOfIngredients = new ArrayList<>();
 
     private String name;
 

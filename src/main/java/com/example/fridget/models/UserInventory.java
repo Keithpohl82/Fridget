@@ -1,10 +1,10 @@
 package com.example.fridget.models;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class UserInventory {
@@ -16,4 +16,6 @@ public class UserInventory {
     @OneToOne
     private User userId;
 
+    @OneToMany()
+    private List<Ingredients> userIngredientsList = new ArrayList<>();
 }
