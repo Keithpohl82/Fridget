@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("ingredients")
 public class IngredientsController {
@@ -22,4 +24,12 @@ public class IngredientsController {
     ingredientService.addIngredient(ingredient);
         return ResponseEntity.ok( ingredient.getName() + " added successfully");
     }
+    @CrossOrigin(origins = "http://localhost:5173")
+    @RequestMapping("list")
+    public Iterable<Ingredients> getAllIngredients() {
+        Iterable<Ingredients> ingredient;
+        ingredient = ingredientsRepository.findAll();
+        return ingredient;
+    }
+
 }

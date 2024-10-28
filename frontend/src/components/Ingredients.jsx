@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 const Ingredients = () => {
   const [name, setName] = useState('');
+ 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,6 +19,7 @@ const Ingredients = () => {
   };
 
   return (
+    <>
     <form onSubmit={handleSubmit}>
       <input
         type="text"
@@ -29,6 +31,9 @@ const Ingredients = () => {
       
       <button type="submit">Add Ingredient</button>
     </form>
+
+    
+    </>
   );
 };
 

@@ -12,7 +12,6 @@ public class Ingredients {
     @GeneratedValue
     private int id;
 
-
     @ManyToMany(mappedBy = "ingredientsList")
     private List<Recipe> recipeList = new ArrayList<>();
 
