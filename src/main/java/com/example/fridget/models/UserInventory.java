@@ -18,4 +18,20 @@ public class UserInventory {
 
     @OneToMany()
     private List<Ingredients> userIngredientsList = new ArrayList<>();
+
+    public User getUserId() {
+        return userId;
+    }
+
+    public void setUserId(User userId) {
+        this.userId = userId;
+    }
+
+    public List<Ingredients> getUserIngredientsList() {
+        return userIngredientsList;
+    }
+
+    public void setUserIngredientsList(List<Ingredients> userIngredientsList) {
+        this.userIngredientsList = userIngredientsList;
+    }
 }

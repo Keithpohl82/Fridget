@@ -30,6 +30,10 @@ public class Ingredients {
         this.name = name;
     }
 
+    public Ingredients(String name) {
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }

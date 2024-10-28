@@ -7,10 +7,7 @@ import com.example.fridget.models.data.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("recipes")
@@ -23,7 +20,10 @@ public class RecipeController {
     @PostMapping("add")
     public ResponseEntity<String> addNewRecipe(@RequestBody Recipe recipe){
         recipe.setTotalTime(recipe.getCookTime() + recipe.getPrepTime());
+
         recipeRepository.save(recipe);
     return ResponseEntity.ok( recipe.getName() + " added successfully");
     }
+
+
 }
