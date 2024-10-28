@@ -6,15 +6,15 @@ const Recipe = () => {
     const [cookTime, setCookTime] = useState('');
     const [prepTime, setPrepTime] = useState('');
     const [description, setDescription] = useState('');
-    const [inputs, setInputs] = useState(['']); // Start with one input field
+    const [ingredientsList, setIngredients] = useState(['']); // Start with one input field
     
 const handleAddInput = () => {
-      setInputs([...inputs, '']); // Add a new empty input field
+  setIngredients([...ingredientsList, '']); // Add a new empty input field
 };
 const handleInputChange = (index, value) => {
-  const newInputs = [...inputs];
-  newInputs[index] = value; // Update the specific input value
-  setInputs(newInputs);
+  const newIngredients = [...ingredientsList];
+  newIngredients[index] = value; // Update the specific input value
+  setIngredients(newIngredients);
 };
 
 const handleSubmit = async (e) => {
@@ -25,14 +25,15 @@ const handleSubmit = async (e) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name, cookTime, prepTime, description }),
+      body: JSON.stringify({ name, cookTime, prepTime, description, ingredientsList }),
     });
     const result = await response.text();
     alert(result);
   };
     return (
       <>
-        <form onSubmit={handleSubmit}>
+      <h2>Recipe Information</h2>
+      <form onSubmit={handleSubmit}>
       <input
         type="text"
         placeholder="Recipe Name"
@@ -61,22 +62,21 @@ const handleSubmit = async (e) => {
         onChange={(e) => setPrepTime(e.target.value)}
         required
       />
-      <button type="submit">Add Recipe</button>
-    </form>
-    <div>
-    <h2>Dynamic Input Fields</h2>
-    {inputs.map((input, index) => (
+    <h2>Ingredients</h2>
+    {ingredientsList.map((Ingredient, index) => (
       <input
         key={index}
         type="text"
-        value={input}
+        value={Ingredient}
         onChange={(e) => handleInputChange(index, e.target.value)}
-        placeholder={`Input ${index + 1}`}
+        placeholder={`Ingredient ${index + 1}`}
       />
     ))}
-    <button onClick={handleAddInput}>Add Input</button>
-  </div>
-  </>
+      <button onClick={handleAddInput}>Add Ingredient</button>
+     <br/> 
+      <button type="submit">Add Recipe</button>
+      </form>
+    </>
   );
 };
 
