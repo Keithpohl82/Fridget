@@ -6,16 +6,16 @@ const Recipe = () => {
     const [cookTime, setCookTime] = useState('');
     const [prepTime, setPrepTime] = useState('');
     const [description, setDescription] = useState('');
-    const [ingredientsList, setIngredients] = useState(['']); // Start with one input field
+    // const [ingredientsList, setIngredients] = useState(['']); // Start with one input field
     
-const handleAddInput = () => {
-  setIngredients([...ingredientsList, '']); // Add a new empty input field
-};
-const handleInputChange = (index, value) => {
-  const newIngredients = [...ingredientsList];
-  newIngredients[index] = value; // Update the specific input value
-  setIngredients(newIngredients);
-};
+// const handleAddInput = () => {
+//   setIngredients([...ingredientsList, '']); // Add a new empty input field
+// };
+// const handleInputChange = (index, value) => {
+//   const newIngredients = [...ingredientsList];
+//   newIngredients[index] = value; // Update the specific input value
+//   setIngredients(newIngredients);
+// };
 
 const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,7 +25,7 @@ const handleSubmit = async (e) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name, cookTime, prepTime, description, ingredientsList }),
+      body: JSON.stringify({ name, cookTime, prepTime, description }),
     });
     const result = await response.text();
     alert(result);
@@ -62,7 +62,7 @@ const handleSubmit = async (e) => {
         onChange={(e) => setPrepTime(e.target.value)}
         required
       />
-    <h2>Ingredients</h2>
+    {/* <h2>Ingredients</h2>
     {ingredientsList.map((Ingredient, index) => (
       <input
         key={index}
@@ -72,7 +72,7 @@ const handleSubmit = async (e) => {
         placeholder={`Ingredient ${index + 1}`}
       />
     ))}
-      <button onClick={handleAddInput}>Add Ingredient</button>
+      <button onClick={handleAddInput}>Add Ingredient</button> */}
      <br/> 
       <button type="submit">Add Recipe</button>
       </form>

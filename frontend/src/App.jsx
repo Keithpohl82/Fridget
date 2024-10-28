@@ -7,7 +7,7 @@ import Recipe from './components/Recipe';
 const App = () => {
   return (
     <div className='container'>
-      <UserContainer />
+      <Recipe />
     </div>
   );
 };
