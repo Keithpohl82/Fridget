@@ -6,7 +6,16 @@ const Recipe = () => {
     const [cookTime, setCookTime] = useState('');
     const [prepTime, setPrepTime] = useState('');
     const [description, setDescription] = useState('');
+    const [inputs, setInputs] = useState(['']); // Start with one input field
     
+const handleAddInput = () => {
+      setInputs([...inputs, '']); // Add a new empty input field
+};
+const handleInputChange = (index, value) => {
+  const newInputs = [...inputs];
+  newInputs[index] = value; // Update the specific input value
+  setInputs(newInputs);
+};
 
 const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,6 +31,7 @@ const handleSubmit = async (e) => {
     alert(result);
   };
     return (
+      <>
         <form onSubmit={handleSubmit}>
       <input
         type="text"
@@ -51,9 +61,22 @@ const handleSubmit = async (e) => {
         onChange={(e) => setPrepTime(e.target.value)}
         required
       />
-      
       <button type="submit">Add Recipe</button>
     </form>
+    <div>
+    <h2>Dynamic Input Fields</h2>
+    {inputs.map((input, index) => (
+      <input
+        key={index}
+        type="text"
+        value={input}
+        onChange={(e) => handleInputChange(index, e.target.value)}
+        placeholder={`Input ${index + 1}`}
+      />
+    ))}
+    <button onClick={handleAddInput}>Add Input</button>
+  </div>
+  </>
   );
 };
 
