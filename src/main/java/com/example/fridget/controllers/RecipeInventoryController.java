@@ -15,11 +15,9 @@ public class RecipeInventoryController {
     @Autowired
     RecipeInventoryRepo recipeInventoryRepo;
 
-    @PostMapping
     public ResponseEntity<RecipeInventory> createRecipeInventory(@RequestBody RecipeInventory recipeInventory) {
         // Log received data
         System.out.println("Received Recipe Inventory: " + recipeInventory);
-
         // Save the recipe inventory to the database
         recipeInventoryRepo.save(recipeInventory);
         return ResponseEntity.ok(recipeInventory);
