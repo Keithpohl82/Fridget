@@ -12,9 +12,6 @@ public class Ingredients {
     @GeneratedValue
     private int id;
 
-    @ManyToMany(mappedBy = "ingredientsList")
-    private List<Recipe> recipeList = new ArrayList<>();
-
     @OneToMany(mappedBy = "userIngredientsList")
     private List<UserInventory> listOfIngredients = new ArrayList<>();
 
@@ -22,11 +19,6 @@ public class Ingredients {
 
     public Ingredients() {
 
-    }
-
-    public Ingredients(List<Recipe> recipeList, String name) {
-        this.recipeList = recipeList;
-        this.name = name;
     }
 
     public Ingredients(String name) {
@@ -45,11 +37,5 @@ public class Ingredients {
         this.name = name;
     }
 
-    public List<Recipe> getRecipeList() {
-        return recipeList;
-    }
 
-    public void setRecipeList(List<Recipe> recipeList) {
-        this.recipeList = recipeList;
-    }
 }

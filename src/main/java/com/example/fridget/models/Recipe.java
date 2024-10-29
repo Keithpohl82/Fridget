@@ -16,9 +16,6 @@ public class Recipe {
     @GeneratedValue
     private int id;
 
-    @ManyToMany()
-    List<Ingredients> ingredientsList = new ArrayList<>();
-    
     private String name;
     
     private String description;
@@ -39,8 +36,7 @@ public class Recipe {
     //private String photoUrl;
 
 
-    public Recipe(List<Ingredients> ingredientsList, String name, String description, int prepTime, int cookTime, int totalTime) {
-        this.ingredientsList = ingredientsList;
+    public Recipe(String name, String description, int prepTime, int cookTime, int totalTime) {
         this.name = name;
         this.description = description;
         this.prepTime = prepTime;
@@ -53,14 +49,6 @@ public class Recipe {
 
     public int getId() {
         return id;
-    }
-
-    public List<Ingredients> getIngredientsList() {
-        return ingredientsList;
-    }
-
-    public void setIngredientsList(List<Ingredients> ingredientsList) {
-        this.ingredientsList = ingredientsList;
     }
 
     public String getName() {
