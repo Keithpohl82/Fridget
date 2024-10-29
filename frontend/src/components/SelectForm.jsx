@@ -1,17 +1,18 @@
-// src/SelectForm.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Recipe from './Recipe';
 
-const SelectForm = () => {
+const SelectForm = ({ addIngredient }) => {
   const [options, setOptions] = useState([]);
   const [selectedOption, setSelectedOption] = useState('');
 
+
   useEffect(() => {
-    // Fetch data from your API
+    
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:8080/ingredients/list');
-        setOptions(response.data); // Adjust according to your data structure
+        setOptions(response.data); 
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -23,15 +24,23 @@ const SelectForm = () => {
   const handleChange = (event) => {
     setSelectedOption(event.target.value);
   };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (selectedOption) {
+        addIngredient(selectedOption); // Call the passed function to add the ingredient
+        setSelectedOption(''); // Clear the selection after adding
+      }
+  }
 
   return (
-    <form>
+    //Need a handleSubmit function that will add selectedOption to a list on recipe to be submitted to backend.
+    <form onSubmit={handleSubmit}>
       <label htmlFor="select">Choose an option:</label>
       <select id="select" value={selectedOption} onChange={handleChange}>
         <option value="">Select an option</option>
         {options.map((option) => (
-          <option key={option.id} value={option.id}>
-            {option.name} {/* Adjust according to your data structure */}
+          <option key={option.id} value={option.name}>
+            {option.name}
           </option>
         ))}
       </select>

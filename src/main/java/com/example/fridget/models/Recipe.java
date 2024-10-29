@@ -16,7 +16,7 @@ public class Recipe {
     @GeneratedValue
     private int id;
 
-    @ManyToMany
+    @ManyToMany()
     List<Ingredients> ingredientsList = new ArrayList<>();
     
     private String name;

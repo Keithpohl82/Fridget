@@ -13,7 +13,7 @@ public class UserInventory {
     @GeneratedValue
     private int id;
 
-    @OneToOne
+    @OneToOne()
     private User userId;
 
     @OneToMany()

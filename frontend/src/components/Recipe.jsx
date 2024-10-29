@@ -7,7 +7,11 @@ const Recipe = () => {
     const [cookTime, setCookTime] = useState('');
     const [prepTime, setPrepTime] = useState('');
     const [description, setDescription] = useState('');
+    const [ingredients, setIngredients] = useState([]);
 
+    const addIngredient = (ingredientId) => {
+      setIngredients((prev) => [...prev, ingredientId]);
+    };
 
 const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,13 +21,15 @@ const handleSubmit = async (e) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name, cookTime, prepTime, description }),
+      body: JSON.stringify({ name, cookTime, prepTime, description, ingredients }),
     });
     const result = await response.text();
     alert(result);
   };
     return (
       <>
+
+
       <h2>Recipe Information</h2>
       <form onSubmit={handleSubmit}>
       <input
@@ -54,9 +60,16 @@ const handleSubmit = async (e) => {
         onChange={(e) => setPrepTime(e.target.value)}
         required
       />
-      <SelectForm/>
+  
       <button type="submit">Add Recipe</button>
       </form>
+      <h2>Recipe Ingredients</h2>
+      <SelectForm addIngredient={addIngredient} />
+      <ul>
+        {ingredients.map((ingredientId) => (
+          <li key={ingredientId}>{ingredientId}</li>
+        ))}
+      </ul>
     </>
   );
 };
