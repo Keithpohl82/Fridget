@@ -1,9 +1,6 @@
 package com.example.fridget.controllers;
 
-
-import com.example.fridget.models.Ingredients;
 import com.example.fridget.models.Recipe;
-import com.example.fridget.models.data.RecipeRepository;
 import com.example.fridget.services.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

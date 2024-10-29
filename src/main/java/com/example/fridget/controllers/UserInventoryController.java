@@ -1,6 +1,5 @@
 package com.example.fridget.controllers;
 
-import com.example.fridget.models.User;
 import com.example.fridget.models.UserInventory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
