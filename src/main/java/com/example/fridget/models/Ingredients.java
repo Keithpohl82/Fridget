@@ -24,6 +24,13 @@ public class Ingredients {
 
     }
 
+    public Ingredients(int id, List<UserInventory> listOfIngredients, List<RecipeInventory> ingredientsList, String name) {
+        this.id = id;
+        this.listOfIngredients = listOfIngredients;
+        this.ingredientsList = ingredientsList;
+        this.name = name;
+    }
+
     public Ingredients(String name) {
         this.name = name;
     }

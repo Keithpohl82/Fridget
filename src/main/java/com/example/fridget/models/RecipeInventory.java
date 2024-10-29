@@ -1,6 +1,7 @@
 package com.example.fridget.models;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -13,13 +14,15 @@ public class RecipeInventory {
     @GeneratedValue
     private int id;
 
-    @OneToOne()
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonProperty("recipeId")
     private Recipe recipeId;
 
-    @OneToMany()
+    @OneToMany(cascade = CascadeType.ALL)
+    @JsonProperty("recipeIngredientsList")
     private List<Ingredients> recipeIngredientsList = new ArrayList<>();
 
-    public RecipeInventory(int id, List<Ingredients> recipeIngredientsList, Recipe recipeId) {
+    public RecipeInventory(@JsonProperty("id") int id, @JsonProperty("recipeIngredientsList") List<Ingredients> recipeIngredientsList, @JsonProperty("recipeId") Recipe recipeId) {
         this.id = id;
         this.recipeIngredientsList = recipeIngredientsList;
         this.recipeId = recipeId;
@@ -43,4 +46,5 @@ public class RecipeInventory {
     public void setRecipeIngredientsList(List<Ingredients> recipeIngredientsList) {
         this.recipeIngredientsList = recipeIngredientsList;
     }
+
 }
