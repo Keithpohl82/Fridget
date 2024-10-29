@@ -15,6 +15,9 @@ public class Ingredients {
     @OneToMany(mappedBy = "userIngredientsList")
     private List<UserInventory> listOfIngredients = new ArrayList<>();
 
+    @OneToMany(mappedBy = "recipeIngredientsList")
+    private List<RecipeInventory> ingredientsList = new ArrayList<>();
+
     private String name;
 
     public Ingredients() {
