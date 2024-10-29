@@ -3,7 +3,6 @@ import { useState } from 'react';
 const Ingredients = () => {
   const [name, setName] = useState('');
  
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     //this connects to the backend to call approprate method passing in the params.
@@ -31,8 +30,6 @@ const Ingredients = () => {
       
       <button type="submit">Add Ingredient</button>
     </form>
-
-    
     </>
   );
 };

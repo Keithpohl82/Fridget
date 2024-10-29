@@ -1,21 +1,13 @@
 import React from 'react'
 import { useState } from 'react';
+import SelectForm from './SelectForm';
 
 const Recipe = () => {
     const [name, setRecipeName] = useState('');
     const [cookTime, setCookTime] = useState('');
     const [prepTime, setPrepTime] = useState('');
     const [description, setDescription] = useState('');
-    // const [ingredientsList, setIngredients] = useState(['']); // Start with one input field
-    
-// const handleAddInput = () => {
-//   setIngredients([...ingredientsList, '']); // Add a new empty input field
-// };
-// const handleInputChange = (index, value) => {
-//   const newIngredients = [...ingredientsList];
-//   newIngredients[index] = value; // Update the specific input value
-//   setIngredients(newIngredients);
-// };
+
 
 const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,18 +54,7 @@ const handleSubmit = async (e) => {
         onChange={(e) => setPrepTime(e.target.value)}
         required
       />
-    {/* <h2>Ingredients</h2>
-    {ingredientsList.map((Ingredient, index) => (
-      <input
-        key={index}
-        type="text"
-        value={Ingredient}
-        onChange={(e) => handleInputChange(index, e.target.value)}
-        placeholder={`Ingredient ${index + 1}`}
-      />
-    ))}
-      <button onClick={handleAddInput}>Add Ingredient</button> */}
-     <br/> 
+      <SelectForm/>
       <button type="submit">Add Recipe</button>
       </form>
     </>
