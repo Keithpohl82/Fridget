@@ -1,8 +1,8 @@
 package com.example.fridget.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Recipe {
@@ -21,7 +21,17 @@ public class Recipe {
 
     private int totalTime;
 
-    //Need a list of steps for preping and cooking
+    @ElementCollection
+    private List<RecipeInventory> ingredients;
+
+    public List<RecipeInventory> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<RecipeInventory> ingredients) {
+        this.ingredients = ingredients;
+    }
+//Need a list of steps for preping and cooking
     //Not sure how to handle this
 
     //This should be a list/table
@@ -30,8 +40,8 @@ public class Recipe {
     //Add later
     //private String photoUrl;
 
-
-    public Recipe(String name, String description, int prepTime, int cookTime, int totalTime) {
+    public Recipe(List<RecipeInventory> ingredients, String name, String description, int prepTime, int cookTime, int totalTime) {
+        this.ingredients = ingredients;
         this.name = name;
         this.description = description;
         this.prepTime = prepTime;
@@ -86,4 +96,16 @@ public class Recipe {
         this.totalTime = totalTime;
     }
 
+    @Override
+    public String toString() {
+        return "Recipe{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", prepTime=" + prepTime +
+                ", cookTime=" + cookTime +
+                ", totalTime=" + totalTime +
+                ", ingredients=" + ingredients +
+                '}';
+    }
 }

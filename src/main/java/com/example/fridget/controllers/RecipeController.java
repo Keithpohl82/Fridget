@@ -18,8 +18,8 @@ public class RecipeController {
     @PostMapping("add")
     public ResponseEntity<String> addNewRecipe(@RequestBody Recipe recipe){
         recipe.setTotalTime(recipe.getCookTime() + recipe.getPrepTime());
-        System.out.printf("this is from the recipecontroller");
         recipeService.addNewRecipe(recipe);
+        System.out.printf("This recipe " + recipe.toString() + " this is from the recipe controller");
     return ResponseEntity.ok( recipe.getName() + " added successfully");
     }
 

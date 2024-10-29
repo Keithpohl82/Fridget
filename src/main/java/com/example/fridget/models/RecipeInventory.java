@@ -19,6 +19,15 @@ public class RecipeInventory {
     @OneToMany()
     private List<Ingredients> recipeIngredientsList = new ArrayList<>();
 
+    public RecipeInventory(int id, List<Ingredients> recipeIngredientsList, Recipe recipeId) {
+        this.id = id;
+        this.recipeIngredientsList = recipeIngredientsList;
+        this.recipeId = recipeId;
+    }
+
+    public RecipeInventory() {
+    }
+
     public Recipe getRecipeId() {
         return recipeId;
     }
