@@ -17,7 +17,7 @@ public class RecipeInventoryController {
 
     public ResponseEntity<RecipeInventory> createRecipeInventory(@RequestBody RecipeInventory recipeInventory) {
         // Log received data
-        System.out.println("Received Recipe Inventory: " + recipeInventory);
+        System.out.println("Received Recipe Inventory: " + recipeInventory.toString());
         // Save the recipe inventory to the database
         recipeInventoryRepo.save(recipeInventory);
         return ResponseEntity.ok(recipeInventory);

@@ -90,8 +90,14 @@ const Recipe = () => {
         setIngredients((prev) => [...prev, { name: ingredient }]);
     };
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (ingredients.length === 0) {
+          alert('Please add at least one ingredient.');
+          return;
+        }
 
         const response = await fetch(`http://localhost:8080/recipes/add`, {
             method: 'POST',
@@ -104,8 +110,7 @@ const Recipe = () => {
                     cookTime,
                     prepTime,
                     description,
-                
-                recipeIngredientsList: ingredients,
+                    recipeIngredientsList: ingredients,
             }),
         });
         const result = await response.text();
@@ -144,7 +149,7 @@ const Recipe = () => {
                     onChange={(e) => setPrepTime(e.target.value)}
                     required
                 />
-                <button type="submit">Add Recipe</button>
+                <button type="submit" disabled={ingredients.length === 0}>Add Recipe</button>
             </form>
             <h2>Recipe Ingredients</h2>
             <SelectForm addIngredient={addIngredient} />

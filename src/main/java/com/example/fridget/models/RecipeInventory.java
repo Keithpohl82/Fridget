@@ -47,4 +47,12 @@ public class RecipeInventory {
         this.recipeIngredientsList = recipeIngredientsList;
     }
 
+    @Override
+    public String toString() {
+        return "RecipeInventory{" +
+                "id=" + id +
+                ", recipeId=" + recipeId +
+                ", recipeIngredientsList=" + recipeIngredientsList +
+                '}';
+    }
 }
