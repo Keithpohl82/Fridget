@@ -27,13 +27,13 @@ const SelectForm = ({ addIngredient }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (selectedOption) {
-        addIngredient(selectedOption); // Call the passed function to add the ingredient
-        setSelectedOption(''); // Clear the selection after adding
+        addIngredient(selectedOption); 
+        setSelectedOption(''); 
       }
   }
 
   return (
-    //Need a handleSubmit function that will add selectedOption to a list on recipe to be submitted to backend.
+    
     <form onSubmit={handleSubmit}>
       <label htmlFor="select">Choose an option:</label>
       <select id="select" value={selectedOption} onChange={handleChange}>

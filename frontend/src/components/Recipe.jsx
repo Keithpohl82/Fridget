@@ -87,7 +87,7 @@ const Recipe = () => {
 
     const addIngredient = (ingredient) => {
         // Assuming ingredient is an object with a name property
-        setIngredients((prev) => [...prev, { name: ingredient }]);
+        setIngredients(() => [{ name: ingredient }]);
     };
 
 
@@ -127,6 +127,7 @@ const Recipe = () => {
                     value={name}
                     onChange={(e) => setRecipeName(e.target.value)}
                     required
+                    name='Recipe Name'
                 />
                 <input
                     type="text"
@@ -134,6 +135,7 @@ const Recipe = () => {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     required
+                    name='Description'
                 />
                 <input
                     type="number"
@@ -141,6 +143,7 @@ const Recipe = () => {
                     value={cookTime}
                     onChange={(e) => setCookTime(e.target.value)}
                     required
+                    name='Cook Time'
                 />
                 <input
                     type="number"
@@ -148,6 +151,7 @@ const Recipe = () => {
                     value={prepTime}
                     onChange={(e) => setPrepTime(e.target.value)}
                     required
+                    name='Prep Time'
                 />
                 <button type="submit" disabled={ingredients.length === 0}>Add Recipe</button>
             </form>
