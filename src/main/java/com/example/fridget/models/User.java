@@ -17,11 +17,17 @@ public class User {
     @Column(nullable = false, unique = false)
     private String pwHash;
 
+    @Column(nullable = false, unique = false)
+    private boolean isAdmin = false;
+
+
+
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public User(String username, String pwHash) {
+    public User(String username, String pwHash, boolean isAdmin) {
         this.username = username;
         this.pwHash = encoder.encode(pwHash);
+        this.isAdmin = isAdmin;
     }
 
     public User() {
@@ -45,5 +51,13 @@ public class User {
 
     public int getId() {
         return id;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }
