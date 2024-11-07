@@ -11,6 +11,11 @@ const Login = () => {
       method: 'POST',
     });
     const result = await response.text();
+    console.log(result);
+    if(result === "Invalid credentials"){
+      setUsername('');
+      setPassword('');
+    }
     alert(result);
   };
 
