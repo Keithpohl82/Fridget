@@ -1,3 +1,5 @@
+--Feel free to add more. The more the better.
+
 Insert into ingredients (id, name) VALUE (1, "Milk");
 Insert into ingredients (id, name) VALUE (2, "Flour");
 Insert into ingredients (id, name) VALUE (3, "Salt");
