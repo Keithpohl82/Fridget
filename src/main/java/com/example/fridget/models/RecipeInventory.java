@@ -11,7 +11,7 @@ import java.util.List;
 public class RecipeInventory {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -20,9 +20,9 @@ public class RecipeInventory {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JsonProperty("recipeIngredientsList")
-    private List<Ingredients> recipeIngredientsList = new ArrayList<>();
+    private ArrayList<Ingredients> recipeIngredientsList = new ArrayList<>();
 
-    public RecipeInventory(@JsonProperty("id") int id, @JsonProperty("recipeIngredientsList") List<Ingredients> recipeIngredientsList, @JsonProperty("recipeId") Recipe recipeId) {
+    public RecipeInventory(@JsonProperty("id") int id, @JsonProperty("recipeIngredientsList") ArrayList<Ingredients> recipeIngredientsList, @JsonProperty("recipeId") Recipe recipeId) {
         this.id = id;
         this.recipeIngredientsList = recipeIngredientsList;
         this.recipeId = recipeId;
@@ -43,7 +43,7 @@ public class RecipeInventory {
         return recipeIngredientsList;
     }
 
-    public void setRecipeIngredientsList(List<Ingredients> recipeIngredientsList) {
+    public void setRecipeIngredientsList(ArrayList<Ingredients> recipeIngredientsList) {
         this.recipeIngredientsList = recipeIngredientsList;
     }
 

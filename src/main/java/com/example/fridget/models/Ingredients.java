@@ -9,7 +9,7 @@ import java.util.List;
 public class Ingredients {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @OneToMany(mappedBy = "userIngredientsList")
