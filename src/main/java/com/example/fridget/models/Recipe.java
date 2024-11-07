@@ -2,7 +2,10 @@ package com.example.fridget.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Recipe {
@@ -10,6 +13,9 @@ public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @ManyToMany(mappedBy = "recipe")
+    private List<Ingredients> ingredients;
 
     private String name;
     
@@ -21,15 +27,14 @@ public class Recipe {
 
     private int totalTime;
 
-    @ElementCollection
-    private List<RecipeInventory> ingredients;
-
-    public List<RecipeInventory> getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(List<RecipeInventory> ingredients) {
+    public Recipe(int id, List<Ingredients> ingredients, String name, String description, int prepTime, int cookTime, int totalTime) {
+        this.id = id;
         this.ingredients = ingredients;
+        this.name = name;
+        this.description = description;
+        this.prepTime = prepTime;
+        this.cookTime = cookTime;
+        this.totalTime = totalTime;
     }
 //Need a list of steps for preping and cooking
     //Not sure how to handle this
@@ -40,16 +45,17 @@ public class Recipe {
     //Add later
     //private String photoUrl;
 
-    public Recipe(List<RecipeInventory> ingredients, String name, String description, int prepTime, int cookTime, int totalTime) {
+
+    public List<Ingredients> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredients> ingredients) {
         this.ingredients = ingredients;
-        this.name = name;
-        this.description = description;
-        this.prepTime = prepTime;
-        this.cookTime = cookTime;
-        this.totalTime = totalTime;
     }
 
     public Recipe() {
+
     }
 
     public int getId() {

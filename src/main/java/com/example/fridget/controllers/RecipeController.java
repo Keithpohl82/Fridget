@@ -1,11 +1,14 @@
 package com.example.fridget.controllers;
 
+import com.example.fridget.models.Ingredients;
 import com.example.fridget.models.Recipe;
 import com.example.fridget.services.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("recipes")
@@ -22,6 +25,5 @@ public class RecipeController {
         System.out.printf("This recipe " + recipe.toString() + " this is from the recipe controller");
     return ResponseEntity.ok( recipe.getName() + " added successfully");
     }
-
 
 }

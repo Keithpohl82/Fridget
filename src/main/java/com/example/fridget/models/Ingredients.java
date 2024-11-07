@@ -12,11 +12,13 @@ public class Ingredients {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @ManyToMany
+    private List<Recipe> recipe = new ArrayList<>();
+
     @OneToMany(mappedBy = "userIngredientsList")
     private List<UserInventory> listOfIngredients = new ArrayList<>();
 
-    @OneToMany(mappedBy = "recipeIngredientsList")
-    private List<RecipeInventory> ingredientsList = new ArrayList<>();
+
 
     private String name;
 
@@ -24,11 +26,12 @@ public class Ingredients {
 
     }
 
-    public Ingredients(int id, List<UserInventory> listOfIngredients, List<RecipeInventory> ingredientsList, String name) {
+    public Ingredients(int id, List<Recipe> recipe, List<UserInventory> listOfIngredients, String name) {
         this.id = id;
         this.listOfIngredients = listOfIngredients;
-        this.ingredientsList = ingredientsList;
+
         this.name = name;
+        this.recipe = recipe;
     }
 
     public Ingredients(String name) {
