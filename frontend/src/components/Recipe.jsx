@@ -87,7 +87,7 @@ const Recipe = () => {
 
     const addIngredient = (ingredient) => {
         // Assuming ingredient is an object with a name property
-        setIngredients(() => [{ name: ingredient }]);
+        setIngredients((prev) => [...prev, { name: ingredient }]);
     };
 
 
@@ -104,13 +104,14 @@ const Recipe = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
+            
             body: JSON.stringify({
                 
                     name,
                     cookTime,
                     prepTime,
                     description,
-                    recipeIngredientsList: ingredients,
+                    ingredients: ingredients,
             }),
         });
         const result = await response.text();
@@ -159,7 +160,7 @@ const Recipe = () => {
             <SelectForm addIngredient={addIngredient} />
             <ul>
                 {ingredients.map((ingredient, index) => (
-                    <li key={index}>{ingredient.name}</li>
+                    <li key={index}>{ ingredient.id}{ ingredient.name}</li>
                 ))}
             </ul>
         </>

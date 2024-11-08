@@ -1,7 +1,5 @@
 package com.example.fridget.models;
-
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,13 +10,8 @@ public class Ingredients {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "ingredients")
     private List<Recipe> recipe = new ArrayList<>();
-
-    @OneToMany(mappedBy = "userIngredientsList")
-    private List<UserInventory> listOfIngredients = new ArrayList<>();
-
-
 
     private String name;
 
@@ -26,10 +19,8 @@ public class Ingredients {
 
     }
 
-    public Ingredients(int id, List<Recipe> recipe, List<UserInventory> listOfIngredients, String name) {
+    public Ingredients(int id, List<Recipe> recipe, String name) {
         this.id = id;
-        this.listOfIngredients = listOfIngredients;
-
         this.name = name;
         this.recipe = recipe;
     }
@@ -50,5 +41,9 @@ public class Ingredients {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return "Ingredient{id=" + id + ", name='" + name + "'}";
+    }
 
 }

@@ -2,10 +2,7 @@ package com.example.fridget.models;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 public class Recipe {
@@ -14,7 +11,7 @@ public class Recipe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToMany(mappedBy = "recipe")
+    @ManyToMany
     private List<Ingredients> ingredients;
 
     private String name;

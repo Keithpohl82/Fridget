@@ -1,5 +1,4 @@
 package com.example.fridget.models;
-
 import jakarta.persistence.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -19,8 +18,6 @@ public class User {
 
     @Column(nullable = false, unique = false)
     private boolean isAdmin = false;
-
-
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
