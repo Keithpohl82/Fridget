@@ -21,3 +21,5 @@ Insert into ingredients (id, name) VALUE (18, "Diced Onions");
 Insert into ingredients (id, name) VALUE (19, "Spinach");
 Insert into ingredients (id, name) VALUE (20, "Parsley");
 Insert into ingredients (id, name) VALUE (141, "Cream");
+Insert into ingredients (id, name) VALUE (77, "Sauce");
+Insert into ingredients (id, name) VALUE (41, "Cheese");

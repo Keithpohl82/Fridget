@@ -35,7 +35,7 @@ const SelectForm = ({ addIngredient }) => {
   return (
     
     <form onSubmit={handleSubmit}>
-      <label htmlFor="select">Choose an option:</label>
+      <label htmlFor="select">Choose an option: </label>
       <select id="select" value={selectedOption} onChange={handleChange}>
         <option value="">Select an option</option>
         {options.map((option) => (
