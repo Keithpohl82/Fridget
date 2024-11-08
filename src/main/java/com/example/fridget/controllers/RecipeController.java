@@ -22,7 +22,6 @@ public class RecipeController {
     public ResponseEntity<String> addNewRecipe(@RequestBody Recipe recipe){
         recipe.setTotalTime(recipe.getCookTime() + recipe.getPrepTime());
         recipeService.addNewRecipe(recipe);
-        System.out.printf("This recipe " + recipe.toString() + " this is from the recipe controller");
     return ResponseEntity.ok( recipe.getName() + " added successfully");
     }
 

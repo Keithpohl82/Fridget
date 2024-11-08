@@ -13,6 +13,9 @@ public class RecipeService {
     RecipeRepository recipeRepository;
 
     public void addNewRecipe(Recipe recipe){
+        for(Ingredients ingredient : recipe.getIngredients()){
+            System.out.println("Ingredient name: " + ingredient.getName());
+        }
         recipeRepository.save(recipe);
     }
 }

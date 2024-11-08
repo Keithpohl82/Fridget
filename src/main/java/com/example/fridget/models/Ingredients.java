@@ -10,7 +10,7 @@ public class Ingredients {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToMany(mappedBy = "ingredients")
+    @OneToMany()
     private List<Recipe> recipe = new ArrayList<>();
 
     private String name;
@@ -39,6 +39,14 @@ public class Ingredients {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Recipe> getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(List<Recipe> recipe) {
+        this.recipe = recipe;
     }
 
     @Override

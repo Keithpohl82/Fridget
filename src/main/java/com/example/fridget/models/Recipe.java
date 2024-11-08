@@ -11,7 +11,7 @@ public class Recipe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private List<Ingredients> ingredients;
 
     private String name;

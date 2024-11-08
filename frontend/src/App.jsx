@@ -9,7 +9,7 @@ import SelectForm from './components/SelectForm';
 const App = () => {
   return (
     <div className='container'>
-      <IngredientsList />
+      <Recipe />
     </div>
   );
 };
