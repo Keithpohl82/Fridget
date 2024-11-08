@@ -10,7 +10,7 @@ public class Ingredients {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToMany()
+    @OneToMany(mappedBy = "ingredients")
     private List<Recipe> recipe = new ArrayList<>();
 
     private String name;

@@ -159,8 +159,8 @@ const Recipe = () => {
             <h2>Recipe Ingredients</h2>
             <SelectForm addIngredient={addIngredient} />
             <ul>
-                {ingredients.map((ingredient, index) => (
-                    <li key={index}>{ ingredient.id}{ ingredient.name}</li>
+                {ingredients.map((ingredient, id) => ( // changed index to id for testing
+                    <li key={id}>{ingredient.name}</li>
                 ))}
             </ul>
         </>

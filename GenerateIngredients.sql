@@ -1,4 +1,4 @@
---Feel free to add more. The more the better.
+-- Feel free to add more. The more the better.
 
 Insert into ingredients (id, name) VALUE (1, "Milk");
 Insert into ingredients (id, name) VALUE (2, "Flour");
@@ -20,3 +20,4 @@ Insert into ingredients (id, name) VALUE (17, "Sugar");
 Insert into ingredients (id, name) VALUE (18, "Diced Onions");
 Insert into ingredients (id, name) VALUE (19, "Spinach");
 Insert into ingredients (id, name) VALUE (20, "Parsley");
+Insert into ingredients (id, name) VALUE (141, "Cream");
