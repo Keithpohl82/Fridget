@@ -24,7 +24,9 @@ public class Recipe {
 
     private int totalTime;
 
-    public Recipe(int id, List<Ingredients> ingredients, String name, String description, int prepTime, int cookTime, int totalTime) {
+    private String photoURL;
+
+    public Recipe(int id, List<Ingredients> ingredients, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL) {
         this.id = id;
         this.ingredients = ingredients;
         this.name = name;
@@ -32,15 +34,13 @@ public class Recipe {
         this.prepTime = prepTime;
         this.cookTime = cookTime;
         this.totalTime = totalTime;
+        this.photoURL = photoURL;
     }
 //Need a list of steps for preping and cooking
     //Not sure how to handle this
 
     //This should be a list/table
     //private String cuisine;
-
-    //Add later
-    //private String photoUrl;
 
 
     public List<Ingredients> getIngredients() {
@@ -97,6 +97,14 @@ public class Recipe {
 
     public void setTotalTime(int totalTime) {
         this.totalTime = totalTime;
+    }
+
+    public String getPhotoURL() {
+        return photoURL;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
     }
 
     @Override
