@@ -6,7 +6,6 @@ const SelectForm = ({ addIngredient }) => {
   const [options, setOptions] = useState([]);
   const [selectedOption, setSelectedOption] = useState('');
 
-
   useEffect(() => {
     
     const fetchData = async () => {

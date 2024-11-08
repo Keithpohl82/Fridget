@@ -9,9 +9,7 @@ const Recipe = () => {
     const [ingredients, setIngredients] = useState([]);
 
     const addIngredient = (ingredient) => {
-        // Assuming ingredient is an object with a name property
-        setIngredients((prev) => [...prev, { name: ingredient }]);
-        //setIngredients((prev) => [...prev, { id: ingredient }]);
+        setIngredients((prev) => [...prev, { id: ingredient }]);
     };
 
     const handleSubmit = async (e) => {
@@ -40,6 +38,11 @@ const Recipe = () => {
         <>
             <h2>Recipe Information</h2>
             <form onSubmit={handleSubmit}>
+            <input
+                    type="file"
+                    placeholder='photo'
+                />
+                <br/>
                 <input
                     type="text"
                     placeholder="Recipe Name"
@@ -72,6 +75,7 @@ const Recipe = () => {
                     required
                     name='Prep Time'
                 />
+                <br/>
                 <button type="submit" disabled={ingredients.length === 0}>Add Recipe</button>
             </form>
             <h2>Recipe Ingredients</h2>
