@@ -12,7 +12,6 @@ const SelectForm = ({ addIngredient }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:8080/ingredients/list');
-        console.log(response.data);
         setOptions(response.data); 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -40,7 +39,7 @@ const SelectForm = ({ addIngredient }) => {
       <select id="select" value={selectedOption} onChange={handleChange}>
         <option value="">Select an option</option>
         {options.map((option) => (
-          <option key={option.id} value={option.id}>
+          <option key={option.name} value={option.id}>
             {option.name}
           </option>
         ))}
