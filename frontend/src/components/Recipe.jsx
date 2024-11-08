@@ -91,14 +91,8 @@ const Recipe = () => {
         setIngredients((prev) => [...prev, { id: ingredient }]);
     };
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        if (ingredients.length === 0) {
-          alert('Please add at least one ingredient.');
-          return;
-        }
 
         const response = await fetch(`http://localhost:8080/recipes/add`, {
             method: 'POST',
@@ -161,7 +155,9 @@ const Recipe = () => {
             <SelectForm addIngredient={addIngredient} />
             <ul>
                 {ingredients.map((ingredient, index) => ( 
+                    
                     <li key={index}>{ingredient.id}</li>
+                    
                 ))}
             </ul>
         </>
