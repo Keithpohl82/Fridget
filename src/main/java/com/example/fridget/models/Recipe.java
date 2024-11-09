@@ -14,7 +14,7 @@ public class Recipe {
     @OneToMany
     private List<Ingredients> ingredients;
 
-    private List<String> directions;
+    private List<String> steps;
 
     private String name;
     
@@ -28,7 +28,7 @@ public class Recipe {
 
     private String photoURL;
 
-    public Recipe(int id, List<Ingredients> ingredients, List<String> directions, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL) {
+    public Recipe(int id, List<Ingredients> ingredients, List<String> steps, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL) {
         this.id = id;
         this.ingredients = ingredients;
         this.name = name;
@@ -37,7 +37,7 @@ public class Recipe {
         this.cookTime = cookTime;
         this.totalTime = totalTime;
         this.photoURL = photoURL;
-        this.directions = directions;
+        this.steps = steps;
     }
 
     public Recipe() {
@@ -104,12 +104,12 @@ public class Recipe {
         this.photoURL = photoURL;
     }
 
-    public List<String> getDirections() {
-        return directions;
+    public List<String> getSteps() {
+        return steps;
     }
 
-    public void setDirections(List<String> directions) {
-        this.directions = directions;
+    public void setSteps(List<String> steps) {
+        this.steps = steps;
     }
 
     @Override
@@ -122,6 +122,7 @@ public class Recipe {
                 ", cookTime=" + cookTime +
                 ", totalTime=" + totalTime +
                 ", ingredients=" + ingredients +
+                ", directions=" + steps +
                 '}';
     }
 }

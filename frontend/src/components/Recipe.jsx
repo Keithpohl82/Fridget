@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import SelectForm from './SelectForm';
 import AddStep from './Directions';
+import PhotoUpload from './Photoupload';
 
 const Recipe = () => {
     const [name, setRecipeName] = useState('');
     const [cookTime, setCookTime] = useState('');
     const [prepTime, setPrepTime] = useState('');
     const [description, setDescription] = useState('');
-    const [steps, setDirections] = useState(['']);
+    const [photoURL, setPhotoUrl] = useState('');
+    const [steps, setDirections] = useState([]);
     const [ingredients, setIngredients] = useState([]);
 
     const addIngredient = (ingredient) => {
@@ -15,7 +17,7 @@ const Recipe = () => {
     };
 
     const handleAddStep = (newStep) => {
-        setDirections([... steps,newStep]);
+        setDirections([...steps,newStep]);
     };
 
     const handleSubmit = async (e) => {
@@ -34,6 +36,7 @@ const Recipe = () => {
                     prepTime,
                     description,
                     steps,
+                    photoURL,
                     ingredients: ingredients
             }),
         });
@@ -43,12 +46,10 @@ const Recipe = () => {
 
     return (
         <>
+
             <h2>Recipe Information</h2>
             <form onSubmit={handleSubmit}>
-            <input
-                    type="file"
-                    placeholder='photo'
-                />
+                <PhotoUpload PhotoUpload={PhotoUpload} />
                 <br/>
                 <input
                     type="text"
@@ -99,6 +100,7 @@ const Recipe = () => {
                     <li key={index}>{step}</li>
                     ))}
                 </ol>
+                
         </>
     );
 };

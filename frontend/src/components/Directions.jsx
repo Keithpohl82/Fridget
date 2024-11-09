@@ -14,11 +14,11 @@ const AddStep = ({ onAddStep }) => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <input
+        <textarea
           type="text"
           value={step}
           onChange={(e) => setStep(e.target.value)}
-          placeholder="Enter a step"
+          placeholder="Add a step"
         />
         <button type="submit">Add Step</button>
       </form>
