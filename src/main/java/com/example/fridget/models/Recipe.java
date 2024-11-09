@@ -14,8 +14,8 @@ public class Recipe {
     @OneToMany
     private List<Ingredients> ingredients;
 
-
-    private List<String> steps;
+    @OneToMany
+    private List<RecipeDirections> steps;
 
     private String name;
     
@@ -29,7 +29,7 @@ public class Recipe {
 
     private String photoURL;
 
-    public Recipe(int id, List<Ingredients> ingredients, List<String> steps, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL) {
+    public Recipe(int id, List<Ingredients> ingredients, List<RecipeDirections> steps, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL) {
         this.id = id;
         this.ingredients = ingredients;
         this.name = name;
@@ -105,11 +105,11 @@ public class Recipe {
         this.photoURL = photoURL;
     }
 
-    public List<String> getSteps() {
+    public List<RecipeDirections> getSteps() {
         return steps;
     }
 
-    public void setSteps(List<String> steps) {
+    public void setSteps(List<RecipeDirections> steps) {
         this.steps = steps;
     }
 
