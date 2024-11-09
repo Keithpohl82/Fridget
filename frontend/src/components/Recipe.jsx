@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 import SelectForm from './SelectForm';
+import AddStep from './Directions';
 
 const Recipe = () => {
     const [name, setRecipeName] = useState('');
     const [cookTime, setCookTime] = useState('');
     const [prepTime, setPrepTime] = useState('');
     const [description, setDescription] = useState('');
+    const [steps, setDirections] = useState(['']);
     const [ingredients, setIngredients] = useState([]);
 
     const addIngredient = (ingredient) => {
-        setIngredients((prev) => [...prev, { id: ingredient }]);
+        setIngredients((prevIngredient) => [...prevIngredient, { id: ingredient }]);
+    };
+
+    const handleAddStep = (newStep) => {
+        setDirections([... steps,newStep]);
     };
 
     const handleSubmit = async (e) => {
@@ -27,6 +33,7 @@ const Recipe = () => {
                     cookTime,
                     prepTime,
                     description,
+                    steps,
                     ingredients: ingredients
             }),
         });
@@ -80,13 +87,18 @@ const Recipe = () => {
             </form>
             <h2>Recipe Ingredients</h2>
             <SelectForm addIngredient={addIngredient} />
-            <ul>
-                {ingredients.map((ingredient, index) => ( 
-                    
-                    <li key={index}>{ingredient.id}</li>
-                    
-                ))}
-            </ul>
+                <ul>
+                    {ingredients.map((ingredient, index) => ( 
+                        <li key={index}>{ingredient.id}</li>
+                    ))}
+                </ul>
+            <h2>Directions</h2>
+            <AddStep onAddStep={handleAddStep} />
+                <ol>
+                    {steps.map((step, index) => (
+                    <li key={index}>{step}</li>
+                    ))}
+                </ol>
         </>
     );
 };

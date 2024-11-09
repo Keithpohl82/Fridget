@@ -14,6 +14,8 @@ public class Recipe {
     @OneToMany
     private List<Ingredients> ingredients;
 
+    private List<String> directions;
+
     private String name;
     
     private String description;
@@ -26,7 +28,7 @@ public class Recipe {
 
     private String photoURL;
 
-    public Recipe(int id, List<Ingredients> ingredients, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL) {
+    public Recipe(int id, List<Ingredients> ingredients, List<String> directions, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL) {
         this.id = id;
         this.ingredients = ingredients;
         this.name = name;
@@ -35,13 +37,12 @@ public class Recipe {
         this.cookTime = cookTime;
         this.totalTime = totalTime;
         this.photoURL = photoURL;
+        this.directions = directions;
     }
-//Need a list of steps for preping and cooking
-    //Not sure how to handle this
 
-    //This should be a list/table
-    //private String cuisine;
+    public Recipe() {
 
+    }
 
     public List<Ingredients> getIngredients() {
         return ingredients;
@@ -49,10 +50,6 @@ public class Recipe {
 
     public void setIngredients(List<Ingredients> ingredients) {
         this.ingredients = ingredients;
-    }
-
-    public Recipe() {
-
     }
 
     public int getId() {
@@ -105,6 +102,14 @@ public class Recipe {
 
     public void setPhotoURL(String photoURL) {
         this.photoURL = photoURL;
+    }
+
+    public List<String> getDirections() {
+        return directions;
+    }
+
+    public void setDirections(List<String> directions) {
+        this.directions = directions;
     }
 
     @Override

@@ -5,6 +5,7 @@ import Ingredients from './components/ingredients';
 import Recipe from './components/Recipe';
 import IngredientsList from './components/IngredientsList';
 import SelectForm from './components/SelectForm';
+import Directions from './components/Directions';
 
 const App = () => {
   return (
