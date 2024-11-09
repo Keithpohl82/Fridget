@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("recipes")
@@ -21,7 +22,8 @@ public class RecipeController {
     @PostMapping("add")
     public ResponseEntity<String> addNewRecipe(@RequestBody Recipe recipe){
         recipe.setTotalTime(recipe.getCookTime() + recipe.getPrepTime());
-        System.out.println(recipe.toString());
+        //System.out.println(recipe.toString());
+
         recipeService.addNewRecipe(recipe);
     return ResponseEntity.ok( recipe.getName() + " added successfully");
     }
