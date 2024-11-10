@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const Ingredients = () => {
+const AddIngredients = () => {
   const [name, setName] = useState('');
   
   const handleSubmit = async (e) => {
@@ -33,4 +33,4 @@ const Ingredients = () => {
     </>
   );
 };
-export default Ingredients;
+export default AddIngredients;

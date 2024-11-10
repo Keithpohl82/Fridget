@@ -3,7 +3,7 @@ import SelectForm from './SelectForm';
 import AddStep from './Directions';
 import PhotoUpload from './Photoupload';
 
-const Recipe = () => {
+const AddRecipe = () => {
     const [name, setRecipeName] = useState('');
     const [cookTime, setCookTime] = useState('');
     const [prepTime, setPrepTime] = useState('');
@@ -105,4 +105,4 @@ const Recipe = () => {
     );
 };
 
-export default Recipe;
+export default AddRecipe;

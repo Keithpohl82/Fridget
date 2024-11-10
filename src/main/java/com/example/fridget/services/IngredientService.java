@@ -5,6 +5,8 @@ import com.example.fridget.models.data.IngredientsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Locale;
+
 
 @Service
 public class IngredientService {
@@ -15,5 +17,9 @@ public class IngredientService {
     public void addIngredient(Ingredients ingredient){
 
         ingredientsRepository.save(ingredient);
+    }
+
+    public boolean ingredientExistsByName(String name) {
+        return ingredientsRepository.existsByName(name.toLowerCase());
     }
 }
