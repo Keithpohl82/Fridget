@@ -13,15 +13,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @CrossOrigin(origins = "http://localhost:5173") // this is to connect to the react app and port may need to be changed
+    @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         userService.registerUser(user);
         return ResponseEntity.ok( user.getUsername() + " User registered successfully");
     }
 
-    //This method will need a redirect to a different page
-    @CrossOrigin(origins = "http://localhost:5173") // this is to connect to the react app and port may need to be changed
+    @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/login")
     public ResponseEntity<String> loginUser(@RequestParam String username, @RequestParam String password) {
         return userService.loginUser(username, password)
