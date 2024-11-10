@@ -5,15 +5,12 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-public class Recipe {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "recipe", discriminatorType = DiscriminatorType.STRING)
+public class Recipe extends AbstractClass{
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
     @OneToMany
     private List<Ingredients> ingredients;
-
     @OneToMany
     private List<RecipeDirections> steps;
 
@@ -29,8 +26,8 @@ public class Recipe {
 
     private String photoURL;
 
-    public Recipe(int id, List<Ingredients> ingredients, List<RecipeDirections> steps, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL) {
-        this.id = id;
+    public Recipe( List<Ingredients> ingredients, List<RecipeDirections> steps, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL) {
+        super();
         this.ingredients = ingredients;
         this.name = name;
         this.description = description;
@@ -45,16 +42,16 @@ public class Recipe {
 
     }
 
+    public Long getId() {
+        return super.getId();
+    }
+
     public List<Ingredients> getIngredients() {
         return ingredients;
     }
 
     public void setIngredients(List<Ingredients> ingredients) {
         this.ingredients = ingredients;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getName() {
@@ -116,14 +113,15 @@ public class Recipe {
     @Override
     public String toString() {
         return "Recipe{" +
-                "id=" + id +
+                "ID=" + getId() +
+                "ingredients=" + ingredients +
+                ", steps=" + steps +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", prepTime=" + prepTime +
                 ", cookTime=" + cookTime +
                 ", totalTime=" + totalTime +
-                ", ingredients=" + ingredients +
-                ", directions=" + steps +
+                ", photoURL='" + photoURL + '\'' +
                 '}';
     }
 }

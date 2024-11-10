@@ -9,7 +9,7 @@ const Recipe = () => {
     const [prepTime, setPrepTime] = useState('');
     const [description, setDescription] = useState('');
     const [photoURL, setPhotoUrl] = useState('');
-    const [steps, setDirections] = useState([]);
+    const [recipeSteps, setDirections] = useState([]);
     const [ingredients, setIngredients] = useState([]);
 
     const addIngredient = (ingredient) => {
@@ -17,7 +17,7 @@ const Recipe = () => {
     };
 
     const handleAddStep = (newStep) => {
-        setDirections([...steps,newStep]);
+        setDirections([...recipeSteps,newStep]);
     };
 
     const handleSubmit = async (e) => {
@@ -35,7 +35,7 @@ const Recipe = () => {
                     cookTime,
                     prepTime,
                     description,
-                    steps,
+                    recipeSteps,
                     photoURL,
                     ingredients: ingredients
             }),
@@ -96,7 +96,7 @@ const Recipe = () => {
             <h2>Directions</h2>
             <AddStep onAddStep={handleAddStep} />
                 <ol>
-                    {steps.map((step, index) => (
+                    {recipeSteps.map((step, index) => (
                     <li key={index}>{step}</li>
                     ))}
                 </ol>

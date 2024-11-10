@@ -1,7 +1,10 @@
 package com.example.fridget.models.data;
 
 import com.example.fridget.models.Recipe;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface RecipeRepository extends CrudRepository<Recipe, Integer> {
+@Repository
+public interface RecipeRepository extends JpaRepository<Recipe, Long> {
+
 }

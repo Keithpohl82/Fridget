@@ -4,9 +4,27 @@ Create a new user on mysqlworkbench with the username = roomsix and password = r
 In application.properties make sure to update spring.datasource.url=jdbc:mysql://localhost:3308/fridget to match the port your sql server is running (most likely 3306)
 Starting the Java application should populate your sql server with appropriate tables. 
 
-To test that everything is working as it should 
-Start your react app and open a web browser and go to localhost:5173 
-At this point you should see a form to add an ingredient. Enter text into the form and click submit. You should be able to check your database and see the new ingredient with an id.
-In your App.jsx swap out the <Ingredients /> componant for <userContainer /> and refresh your web page. You should see 2 forms, 1 to log in and 1 to register a new user. 
-Add a new user and check that the information was added to your database. 
-Use the same username and password you registered with to test the login. 
+------Seed the database------
+Open MySQL Workbench and select the fridget schema.
+File > Open SQL Script > Select GenerateIngredients.sql from the project folder. 
+Click the lightning bolt to add ingredients to the database to use. 
+
+(NOTE) - Right now there is a bug that will not allow adding recipies due to duplicates in the join table recipe_ingredients.
+To get around this, Right click recipe_ingredients table and select alter table. Look for the foreign keys tab. Select the foreign key, you should see foreign key options on the right. Default is set to RESTRICTED and needs to be set to No Action. Do this for both foreign keys. Click the apply button. Next click the columns tab and look for the check box under the UN and make sure both boxes are UNCHECKED. click apply. 
+
+
+------Testing Ingredients List-------
+Open App.jsx and replace current component with <IngredientsList /> 
+Open the app in the web browser and you should see a list of all ingredients  and thier IDs from the database.
+
+
+------Testing Adding ingredients to the database------
+Open App.jsx and replace current component with <Ingredients />
+Add text to the box and click "Add Ingredient". You should get an alert to let you know it was added to the database.
+Verify it was added by checking MySQL workbench.
+
+
+Test Recipe.....
+In App.jsx use the <Recipe /> recipe component.
+
+

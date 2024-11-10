@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Ingredients {
+public class Ingredients extends AbstractClass {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
 
     @OneToMany(mappedBy = "ingredients")
     private List<Recipe> recipe = new ArrayList<>();
@@ -19,18 +16,13 @@ public class Ingredients {
 
     }
 
-    public Ingredients(int id, List<Recipe> recipe, String name) {
-        this.id = id;
+    public Ingredients(List<Recipe> recipe, String name) {
         this.name = name;
         this.recipe = recipe;
     }
 
-    public Ingredients(String name) {
-        this.name = name;
-    }
-
-    public int getId() {
-        return id;
+    public Long getId() {
+        return super.getId();
     }
 
     public String getName() {
@@ -47,11 +39,6 @@ public class Ingredients {
 
     public void setRecipe(List<Recipe> recipe) {
         this.recipe = recipe;
-    }
-
-    @Override
-    public String toString() {
-        return "Ingredient{id=" + id + ", name='" + name + "'}";
     }
 
 }

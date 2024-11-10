@@ -1,38 +1,34 @@
 package com.example.fridget.models;
-
-
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class RecipeDirections {
+@DiscriminatorValue("RecipeDirections")
+public class RecipeDirections extends Recipe {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @OneToMany(mappedBy = "steps")
-    private List<Recipe> recipeSteps = new ArrayList<>();
-
-    public RecipeDirections(int id, List<Recipe> recipeSteps) {
-        this.id = id;
-        this.recipeSteps = recipeSteps;
-    }
+    @ElementCollection()
+    @CollectionTable(name = "recipe_directions", joinColumns = @JoinColumn(name = "recipe_id"))
+    @Column(name = "recipeSteps")
+    private List<String> recipeSteps;
 
     public RecipeDirections() {
     }
 
-    public List<Recipe> getRecipeSteps() {
-        return recipeSteps;
-    }
-
-    public void setRecipeSteps(List<Recipe> recipeSteps) {
+    public RecipeDirections(List<String> recipeSteps) {
         this.recipeSteps = recipeSteps;
     }
 
-    public int getId() {
-        return id;
+    public List<String> getRecipeSteps() {
+        return recipeSteps;
     }
+
+    public void setRecipeSteps(List<String> recipeSteps) {
+        this.recipeSteps = recipeSteps;
+    }
+
+    public Long getId() {
+        return super.getId();
+    }
+
 }
