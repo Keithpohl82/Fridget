@@ -3,6 +3,8 @@ import SelectForm from './SelectForm';
 import AddStep from './Directions';
 import PhotoUpload from './Photoupload';
 
+//Added text to test pushing to new
+
 const AddRecipe = () => {
     const [name, setRecipeName] = useState('');
     const [cookTime, setCookTime] = useState('');
