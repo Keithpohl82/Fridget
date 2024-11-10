@@ -1,6 +1,6 @@
 package com.example.fridget.controllers;
 
-import com.example.fridget.models.Ingredients;
+
 import com.example.fridget.models.Recipe;
 import com.example.fridget.models.data.RecipeDirectionsRepo;
 import com.example.fridget.services.RecipeService;
@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
