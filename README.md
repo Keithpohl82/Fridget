@@ -19,12 +19,12 @@ Open the app in the web browser and you should see a list of all ingredients  an
 
 
 ------Testing Adding ingredients to the database------
-Open App.jsx and replace current component with <Ingredients />
+Open App.jsx and replace current component with <AddIngredients />
 Add text to the box and click "Add Ingredient". You should get an alert to let you know it was added to the database.
 Verify it was added by checking MySQL workbench.
 
 
 ------Test Recipe-----
-In App.jsx use the <Recipe /> recipe component.
+In App.jsx use the <AddRecipe /> recipe component.
 
 
