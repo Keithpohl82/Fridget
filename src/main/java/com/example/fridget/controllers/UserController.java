@@ -13,19 +13,40 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @CrossOrigin(origins = "http://localhost:5173") // this is to connect to the react app and port may need to be changed
+    @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         userService.registerUser(user);
-        return ResponseEntity.ok( user.getUsername() + " User registered successfully");
+        return ResponseEntity.ok(user.getUsername() + " User registered successfully");
     }
 
-    //This method will need a redirect to a different page
-    @CrossOrigin(origins = "http://localhost:5173") // this is to connect to the react app and port may need to be changed
+    @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/login")
     public ResponseEntity<String> loginUser(@RequestParam String username, @RequestParam String password) {
         return userService.loginUser(username, password)
                 .map(user -> ResponseEntity.ok("Login successful"))
                 .orElse(ResponseEntity.status(401).body("Invalid credentials"));
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173")
+    @PostMapping("/request-password-reset")
+    public ResponseEntity<String> requestPasswordReset(@RequestParam String username) {
+        String token = userService.initiatePasswordReset(username);
+        if (token != null) {
+            return ResponseEntity.ok("Password reset token: " + token);
+        } else {
+            return ResponseEntity.status(404).body("User not found");
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173")
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestParam String token, @RequestParam String newPassword) {
+        boolean result = userService.resetPassword(token, newPassword);
+        if (result) {
+            return ResponseEntity.ok("Password reset successfully");
+        } else {
+            return ResponseEntity.status(400).body("Invalid or expired token");
+        }
     }
 }
