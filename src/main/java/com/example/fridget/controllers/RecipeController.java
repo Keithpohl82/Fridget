@@ -28,6 +28,12 @@ public class RecipeController {
         return ResponseEntity.ok(recipes);
     }
 
+    @GetMapping("/{id}")
+    @ResponseBody
+    public Recipe getRecipe(@PathVariable Long id) {
+        return recipeService.getRecipeById(id);
+    }
+
     @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("add")
     public ResponseEntity<String> addNewRecipe(@RequestBody Recipe recipe){

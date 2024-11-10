@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RecipeService {
@@ -30,5 +31,9 @@ public class RecipeService {
     }
     public List<Recipe> getRecipes() {
         return recipeRepository.findAll();
+    }
+    public Recipe getRecipeById(Long id) {
+        Optional<Recipe> recipe = recipeRepository.findById(id);
+        return recipe.orElseThrow(() -> new RuntimeException("Recipe not found"));
     }
 }
