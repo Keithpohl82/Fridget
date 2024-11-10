@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 function PhotoUpload() {
-    const [photoUrl, setPhotoUrl] = useState(null);
+    const [photoUrl, setPhotoUrl] = useState('');
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -11,6 +11,7 @@ function PhotoUpload() {
                 setPhotoUrl(event.target.result); // Set the base64 string as the image source
             };
             reader.readAsDataURL(file);
+            
         }
     };
 

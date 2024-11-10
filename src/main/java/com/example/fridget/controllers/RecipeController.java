@@ -22,6 +22,13 @@ public class RecipeController {
     RecipeDirectionsRepo recipeDirectionsRepo;
 
     @CrossOrigin(origins = "http://localhost:5173")
+    @GetMapping("/")
+    public ResponseEntity<List<Recipe>> index() {
+        List<Recipe> recipes = recipeService.getRecipes();
+        return ResponseEntity.ok(recipes);
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("add")
     public ResponseEntity<String> addNewRecipe(@RequestBody Recipe recipe){
         recipe.setTotalTime(recipe.getCookTime() + recipe.getPrepTime());
@@ -31,5 +38,4 @@ public class RecipeController {
         recipeService.addNewRecipe(recipe);
     return ResponseEntity.ok( recipe.getName() + " added successfully");
     }
-
 }

@@ -24,7 +24,7 @@ Add text to the box and click "Add Ingredient". You should get an alert to let y
 Verify it was added by checking MySQL workbench.
 
 
-Test Recipe.....
+------Test Recipe-----
 In App.jsx use the <Recipe /> recipe component.
 
 

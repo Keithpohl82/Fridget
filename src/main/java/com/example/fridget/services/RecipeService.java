@@ -1,8 +1,7 @@
 package com.example.fridget.services;
 
-import com.example.fridget.models.Ingredients;
+
 import com.example.fridget.models.Recipe;
-import com.example.fridget.models.RecipeDirections;
 import com.example.fridget.models.data.IngredientsRepository;
 import com.example.fridget.models.data.MeasurementsRepository;
 import com.example.fridget.models.data.RecipeDirectionsRepo;
@@ -27,7 +26,9 @@ public class RecipeService {
 
     public void addNewRecipe(Recipe recipe){
             System.out.println("step: " + recipe.getSteps());
-
         recipeRepository.save(recipe);
+    }
+    public List<Recipe> getRecipes() {
+        return recipeRepository.findAll();
     }
 }

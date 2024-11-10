@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Recipe from './Recipe';
+import Recipe from './AddRecipe';
 
 const SelectForm = ({ addIngredient }) => {
   const [options, setOptions] = useState([]);
