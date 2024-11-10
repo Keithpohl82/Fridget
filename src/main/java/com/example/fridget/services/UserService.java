@@ -32,4 +32,9 @@ public class UserService {
         }
         return Optional.empty();
     }
+
+    public User getUserById(int id){
+        Optional<User> user = userRepository.findById(id);
+        return user.orElseThrow(() -> new RuntimeException("user not found"));
+    }
 }

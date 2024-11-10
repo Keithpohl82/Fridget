@@ -28,4 +28,10 @@ public class UserController {
                 .map(user -> ResponseEntity.ok("Login successful"))
                 .orElse(ResponseEntity.status(401).body("Invalid credentials"));
     }
+
+    @GetMapping("/{id}")
+    @ResponseBody
+    public User getUser(@PathVariable int id){
+        return userService.getUserById(id);
+    }
 }
