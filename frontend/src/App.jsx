@@ -10,7 +10,7 @@ import Directions from './components/Directions';
 const App = () => {
   return (
     <div className='container'>
-      <AddIngredients />
+      <UserContainer />
     </div>
   );
 };

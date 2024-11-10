@@ -14,6 +14,15 @@ public class User {
     private String username;
 
     @Column(nullable = false, unique = false)
+    private String firstName;
+
+    @Column(nullable = false, unique = false)
+    private String lastName;
+
+    @Column(nullable = false, unique = true)
+    private String emailAddress;
+
+    @Column(nullable = false, unique = false)
     private String pwHash;
 
     @Column(nullable = false, unique = false)
@@ -21,10 +30,13 @@ public class User {
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public User(String username, String pwHash, boolean isAdmin) {
+    public User(String username, String pwHash, boolean isAdmin, String firstName, String lastName, String emailAddress) {
         this.username = username;
         this.pwHash = encoder.encode(pwHash);
         this.isAdmin = isAdmin;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.emailAddress = emailAddress;
     }
 
     public User() {
@@ -56,5 +68,29 @@ public class User {
 
     public void setAdmin(boolean admin) {
         isAdmin = admin;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 }

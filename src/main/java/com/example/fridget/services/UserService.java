@@ -21,6 +21,7 @@ public class UserService {
         userRepository.save(user);
         //DiscordBot.postMessage(user.getFirstname() + " " + user.getLastname() + " Was added to the database");
     }
+
     public Optional<User> loginUser(String username, String password) {
         Optional<User> userOpt = userRepository.findByUsername(username);
         if (userOpt.isPresent()) {

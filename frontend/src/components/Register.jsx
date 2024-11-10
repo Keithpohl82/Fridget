@@ -4,6 +4,9 @@ const Register = () => {
  
   const [username, setUsername] = useState('');
   const [pwHash, setPassword] = useState('');
+  const [firstName, SetFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [emailAddress, setEmailAddress] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,7 +16,7 @@ const Register = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ username, pwHash }),
+      body: JSON.stringify({ username, pwHash, firstName, lastName, emailAddress }),
     });
     const result = await response.text();
     alert(result);
@@ -37,6 +40,31 @@ const Register = () => {
         onChange={(e) => setPassword(e.target.value)}
         required
       />
+
+      <input
+        type="text"
+        placeholder="First Name"
+        value={firstName}
+        onChange={(e) => SetFirstName(e.target.value)}
+        required
+      />
+
+      <input
+        type="text"
+        placeholder="Last Name"
+        value={lastName}
+        onChange={(e) => setLastName(e.target.value)}
+        required
+      />
+
+      <input
+        type="email"
+        placeholder="Email Address"
+        value={emailAddress}
+        onChange={(e) => setEmailAddress(e.target.value)}
+        required
+      />
+
       <button type="submit">Register</button>
     </form>
   );
