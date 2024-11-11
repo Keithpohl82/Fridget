@@ -2,6 +2,8 @@ package com.example.fridget.models;
 import jakarta.persistence.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -20,7 +22,7 @@ public class User {
     private String lastName;
 
     @Column(nullable = false, unique = true)
-    private String emailAddress;
+    private String userEmail;
 
     @Column(nullable = false, unique = false)
     private String pwHash;
@@ -28,15 +30,18 @@ public class User {
     @Column(nullable = false, unique = false)
     private boolean isAdmin = false;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RecipeReview> userReviews;
+
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public User(String username, String pwHash, boolean isAdmin, String firstName, String lastName, String emailAddress) {
+    public User(String username, String pwHash, boolean isAdmin, String firstName, String lastName, String userEmail) {
         this.username = username;
         this.pwHash = encoder.encode(pwHash);
         this.isAdmin = isAdmin;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.emailAddress = emailAddress;
+        this.userEmail = userEmail;
     }
 
     public User() {
@@ -87,10 +92,10 @@ public class User {
     }
 
     public String getEmailAddress() {
-        return emailAddress;
+        return userEmail;
     }
 
     public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
+        this.userEmail = userEmail;
     }
 }

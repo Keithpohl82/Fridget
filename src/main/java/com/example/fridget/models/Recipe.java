@@ -14,6 +14,9 @@ public class Recipe extends AbstractClass{
     @OneToMany
     private List<RecipeDirections> steps;
 
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RecipeReview> reviews;
+
     private String name;
     
     private String description;
