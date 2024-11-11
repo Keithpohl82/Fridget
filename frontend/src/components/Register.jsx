@@ -6,7 +6,7 @@ const Register = () => {
   const [pwHash, setPassword] = useState('');
   const [firstName, SetFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [emailAddress, setEmailAddress] = useState('');
+  const [userEmail, setEmailAddress] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,7 +16,7 @@ const Register = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ username, pwHash, firstName, lastName, emailAddress }),
+      body: JSON.stringify({ username, pwHash, firstName, lastName, userEmail }),
     });
     const result = await response.text();
     alert(result);
@@ -60,7 +60,7 @@ const Register = () => {
       <input
         type="email"
         placeholder="Email Address"
-        value={emailAddress}
+        value={userEmail}
         onChange={(e) => setEmailAddress(e.target.value)}
         required
       />
