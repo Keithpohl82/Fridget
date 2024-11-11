@@ -6,11 +6,12 @@ import AddRecipe from './components/AddRecipe';
 import IngredientsList from './components/IngredientsList';
 import SelectForm from './components/SelectForm';
 import Directions from './components/Directions';
+import Login from './components/Login';
 
 const App = () => {
   return (
     <div className='container'>
-      <UserContainer />
+      <Login />
     </div>
   );
 };
