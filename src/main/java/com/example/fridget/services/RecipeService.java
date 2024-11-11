@@ -15,15 +15,14 @@ public class RecipeService {
 
     @Autowired
     RecipeRepository recipeRepository;
-    @Autowired
-    RecipeDirectionsRepo recipeDirectionsRepo;
+
     @Autowired
     IngredientsRepository ingredientsRepository;
     @Autowired
     MeasurementsRepository measurementsRepository;
 
     public void addNewRecipe(Recipe recipe){
-            System.out.println("step: " + recipe.getSteps());
+
         recipeRepository.save(recipe);
     }
     public List<Recipe> getRecipes() {

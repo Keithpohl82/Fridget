@@ -12,6 +12,7 @@ public class Recipe extends AbstractClass{
     @OneToMany
     private List<Ingredients> ingredients;
 
+    @Column(length = 2000)
     private String recipeDirections;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)

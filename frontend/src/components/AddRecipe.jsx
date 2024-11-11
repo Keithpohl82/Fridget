@@ -14,13 +14,15 @@ const AddRecipe = () => {
     const [recipeDirections, setDirections] = useState('');
     const [ingredients, setIngredients] = useState([]);
 
+    const maxLength = 2000;
+
     const addIngredient = (ingredient) => {
         setIngredients((prevIngredient) => [...prevIngredient, { id: ingredient }]);
     };
 
-    const handleAddStep = (newStep) => {
-        setDirections([...recipeSteps,newStep]);
-    };
+    // const handleAddStep = (newStep) => {
+    //     setDirections([...recipeSteps,newStep]);
+    // };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -37,7 +39,7 @@ const AddRecipe = () => {
                     cookTime,
                     prepTime,
                     description,
-                    recipeSteps,
+                    recipeDirections,
                     photoURL,
                     ingredients: ingredients
             }),
@@ -85,13 +87,17 @@ const AddRecipe = () => {
                     required
                     name='Prep Time'
                 />
-                <input
-                    type='textarea'
+                <div >
+                    {recipeDirections.length} / {maxLength}
+                <textarea rows={4} cols={40}
                     placeholder='Recipe Directions'
                     onChange={(e) => setDirections(e.target.value)}
                     required
                     name='Directions'
+                    maxLength={maxLength}
+                    
                 />
+                </div>
                 <br/>
                 <button type="submit" disabled={ingredients.length === 0}>Add Recipe</button>
             </form>
