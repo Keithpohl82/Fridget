@@ -15,9 +15,7 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Here, 'request' is provided by the servlet container.
-
-        // You can now use 'request' to get session information, parameters, etc.
+        
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
