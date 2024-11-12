@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import SelectForm from "./SelectForm";
-import AddStep from "./Directions";
 import PhotoUpload from "./Photoupload";
 
 //Added text to test pushing to new
@@ -19,6 +18,7 @@ const AddRecipe = () => {
   const addIngredient = (ingredient) => {
     setIngredients((prevIngredient) => [...prevIngredient, { id: ingredient }]);
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();

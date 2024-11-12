@@ -2,16 +2,17 @@ import { useState } from 'react';
 
 function PhotoUpload() {
     const [photoUrl, setPhotoUrl] = useState('');
+    const [photoPerview, setPhotoPreview] = useState('')
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onload = (event) => {
-                setPhotoUrl(event.target.result); // Set the base64 string as the image source
+                setPhotoPreview(event.target.result);
+                setPhotoUrl("frontend/public/photos/" + file.name) // Set the base64 string as the image source
             };
             reader.readAsDataURL(file);
-            
         }
     };
 
@@ -20,12 +21,12 @@ function PhotoUpload() {
             <input
                 type="file"
                 onChange={handleFileChange}
-                name="photoURL"
+                name="photoPerview"
             />
-            {photoUrl && (
+            {photoPerview && (
                 <div>
                     <img
-                        src={photoUrl}
+                        src={photoPerview}
                         alt="Preview"
                         style={{ width: '300px', height: 'auto', marginTop: '10px' }}
                     />
