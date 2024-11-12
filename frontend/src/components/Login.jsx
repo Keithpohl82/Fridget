@@ -21,8 +21,9 @@ const Login = () => {
     if (result === "Invalid credentials") {
       setUsername("");
       setPassword("");
+      alert(result);
     }
-    alert(result);
+    window.location.href = result;
   };
 
   const handlePasswordResetRequest = async () => {
