@@ -21,7 +21,7 @@ public class User {
     @Column(nullable = false, unique = false)
     private String lastName;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = true, unique = true)
     private String userEmail;
 
     @Column(nullable = false, unique = false)
@@ -35,13 +35,15 @@ public class User {
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public User(String username, String pwHash, boolean isAdmin, String firstName, String lastName, String userEmail) {
+    public User(int id, String username, String firstName, String lastName, String userEmail, String pwHash, boolean isAdmin, List<RecipeReview> userReviews) {
+        this.id = id;
         this.username = username;
-        this.pwHash = encoder.encode(pwHash);
-        this.isAdmin = isAdmin;
         this.firstName = firstName;
         this.lastName = lastName;
         this.userEmail = userEmail;
+        this.pwHash = encoder.encode(pwHash);
+        this.isAdmin = isAdmin;
+        this.userReviews = userReviews;
     }
 
     public User() {
@@ -91,11 +93,19 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getEmailAddress() {
+    public String getUserEmail() {
         return userEmail;
     }
 
-    public void setEmailAddress(String emailAddress) {
+    public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
+    }
+
+    public List<RecipeReview> getUserReviews() {
+        return userReviews;
+    }
+
+    public void setUserReviews(List<RecipeReview> userReviews) {
+        this.userReviews = userReviews;
     }
 }
