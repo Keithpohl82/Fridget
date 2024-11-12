@@ -4,8 +4,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AddIngredients from './components/AddIngredients';
 import AddRecipe from './components/AddRecipe';
 import IngredientsList from './components/IngredientsList';
-import SelectForm from './components/SelectForm';
-import Directions from './components/Directions';
 import Login from './components/Login';
 import Register from './components/Register';
 
@@ -17,6 +15,8 @@ const App = () => {
         <Route path="Login" element={<Login/>} />
         <Route path="Register" element={<Register/>} />
         <Route path='Addrecipe' element={<AddRecipe />} />
+        <Route path='Addingredients' element={<AddIngredients />} />
+        <Route path='Ingredients' element={<IngredientsList />} />
       </Routes>
     </BrowserRouter>
   );
