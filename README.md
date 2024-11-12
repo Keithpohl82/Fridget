@@ -13,18 +13,13 @@ Click the lightning bolt to add ingredients to the database to use.
 To get around this, Right click recipe_ingredients table and select alter table. Look for the foreign keys tab. Select the foreign key, you should see foreign key options on the right. Default is set to RESTRICTED and needs to be set to No Action. Do this for both foreign keys. Click the apply button. Next click the columns tab and look for the check box under the UN and make sure both boxes are UNCHECKED. click apply. 
 
 
-------Testing Ingredients List-------
-Open App.jsx and replace current component with <IngredientsList /> 
-Open the app in the web browser and you should see a list of all ingredients  and thier IDs from the database.
-
-
-------Testing Adding ingredients to the database------
-Open App.jsx and replace current component with <AddIngredients />
-Add text to the box and click "Add Ingredient". You should get an alert to let you know it was added to the database.
-Verify it was added by checking MySQL workbench.
-
-
-------Test Recipe-----
-In App.jsx use the <AddRecipe /> recipe component.
-
+------------Testing----------
+Routes have been added for easier testing. 
+Once backend is set up you can open the web browser and you should see the login right away
+Use the following to go to and test different parts of the app.
+http://localhost:5173/addingredients
+http://localhost:5173/ingredients
+http://localhost:5173/addrecipe
+http://localhost:5173/register
+http://localhost:5173/login
 
