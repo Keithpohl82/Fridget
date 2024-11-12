@@ -20,10 +20,6 @@ const AddRecipe = () => {
         setIngredients((prevIngredient) => [...prevIngredient, { id: ingredient }]);
     };
 
-    // const handleAddStep = (newStep) => {
-    //     setDirections([...recipeSteps,newStep]);
-    // };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         
@@ -88,7 +84,8 @@ const AddRecipe = () => {
                     name='Prep Time'
                 />
                 <div >
-                    {recipeDirections.length} / {maxLength}
+                    <h3>Directions </h3>
+                    
                 <textarea rows={4} cols={40}
                     placeholder='Recipe Directions'
                     onChange={(e) => setDirections(e.target.value)}
@@ -96,7 +93,7 @@ const AddRecipe = () => {
                     name='Directions'
                     maxLength={maxLength}
                     
-                />
+                /><p>{recipeDirections.length} / {maxLength}</p>
                 </div>
                 <br/>
                 <button type="submit" disabled={ingredients.length === 0}>Add Recipe</button>
@@ -107,15 +104,7 @@ const AddRecipe = () => {
                     {ingredients.map((ingredient, index) => ( 
                         <li key={index}>{ingredient.id}</li>
                     ))}
-                </ul>
-            {/* <h2>Directions</h2>
-            <AddStep onAddStep={handleAddStep} />
-                <ol>
-                    {recipeSteps.map((step, index) => (
-                    <li key={index}>{step}</li>
-                    ))}
-                </ol> */}
-                
+                </ul>     
         </>
     );
 };
