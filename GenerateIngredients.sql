@@ -35,3 +35,4 @@ Insert into ingredients (id, name) VALUE (28, "Sour Cream");
 Insert into ingredients (id, name) VALUE (29, "Potatoes");
 Insert into ingredients (id, name) VALUE (30, "Celery");
 Insert into ingredients (id, name) VALUE (31, "Lemon Juice");
+Insert into ingredients (id, name) VALUE (32, "Mushrooms");

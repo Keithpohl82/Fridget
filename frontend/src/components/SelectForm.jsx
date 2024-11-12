@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import Recipe from './AddRecipe';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import Recipe from "./AddRecipe";
 
 const SelectForm = ({ addIngredient }) => {
   const [options, setOptions] = useState([]);
-  const [selectedOption, setSelectedOption] = useState('');
+  const [selectedOption, setSelectedOption] = useState("");
 
   useEffect(() => {
-    
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/ingredients/list');
-        setOptions(response.data); 
+        const response = await axios.get(
+          "http://localhost:8080/ingredients/list"
+        );
+        setOptions(response.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -26,13 +27,12 @@ const SelectForm = ({ addIngredient }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (selectedOption) {
-        addIngredient(selectedOption); 
-        setSelectedOption(''); 
-      }
-  }
+      addIngredient(selectedOption);
+      setSelectedOption("");
+    }
+  };
 
   return (
-    
     <form onSubmit={handleSubmit}>
       <label htmlFor="select">Choose an option: </label>
       <select id="select" value={selectedOption} onChange={handleChange}>
