@@ -25,7 +25,7 @@ public class UserService {
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public void registerUser(User user) {
-
+        System.out.println(user.getUserEmail());
         user.setPwHash(encoder.encode(user.getPwHash()));
         userRepository.save(user);
         // DiscordBot.postMessage(user.getFirstname() + " " + user.getLastname() + " Was added to the database");
