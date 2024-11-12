@@ -8,6 +8,7 @@ public class Ingredients extends AbstractClass {
 
 
     @OneToMany(mappedBy = "ingredients")
+    @Column(unique = false)
     private List<Recipe> recipe = new ArrayList<>();
 
     private String name;

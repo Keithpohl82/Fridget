@@ -10,6 +10,7 @@ import java.util.List;
 public class Recipe extends AbstractClass{
     
     @OneToMany
+    @Column(unique = false)
     private List<Ingredients> ingredients;
 
     @Column(length = 2000)
@@ -19,22 +20,6 @@ public class Recipe extends AbstractClass{
     private List<RecipeReview> reviews;
 
     private String name;
-
-    public String getRecipeDirections() {
-        return recipeDirections;
-    }
-
-    public void setRecipeDirections(String recipeDirections) {
-        this.recipeDirections = recipeDirections;
-    }
-
-    public List<RecipeReview> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<RecipeReview> reviews) {
-        this.reviews = reviews;
-    }
 
     private String description;
 
@@ -67,6 +52,21 @@ public class Recipe extends AbstractClass{
         return super.getId();
     }
 
+    public String getRecipeDirections() {
+        return recipeDirections;
+    }
+
+    public void setRecipeDirections(String recipeDirections) {
+        this.recipeDirections = recipeDirections;
+    }
+
+    public List<RecipeReview> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<RecipeReview> reviews) {
+        this.reviews = reviews;
+    }
     public List<Ingredients> getIngredients() {
         return ingredients;
     }
