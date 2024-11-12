@@ -10,15 +10,17 @@ import java.util.List;
 public class Recipe extends AbstractClass{
     
     @OneToMany
+    @Column(unique = false)
     private List<Ingredients> ingredients;
-    @OneToMany
-    private List<RecipeDirections> steps;
+
+    @Column(length = 2000)
+    private String recipeDirections;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeReview> reviews;
 
     private String name;
-    
+
     private String description;
 
     private int prepTime;
@@ -29,7 +31,7 @@ public class Recipe extends AbstractClass{
 
     private String photoURL;
 
-    public Recipe( List<Ingredients> ingredients, List<RecipeDirections> steps, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL) {
+    public Recipe(List<RecipeReview> reviews, List<Ingredients> ingredients, String recipeDirections, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL) {
         super();
         this.ingredients = ingredients;
         this.name = name;
@@ -38,7 +40,8 @@ public class Recipe extends AbstractClass{
         this.cookTime = cookTime;
         this.totalTime = totalTime;
         this.photoURL = photoURL;
-        this.steps = steps;
+        this.recipeDirections = recipeDirections;
+        this.reviews = reviews;
     }
 
     public Recipe() {
@@ -49,6 +52,21 @@ public class Recipe extends AbstractClass{
         return super.getId();
     }
 
+    public String getRecipeDirections() {
+        return recipeDirections;
+    }
+
+    public void setRecipeDirections(String recipeDirections) {
+        this.recipeDirections = recipeDirections;
+    }
+
+    public List<RecipeReview> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<RecipeReview> reviews) {
+        this.reviews = reviews;
+    }
     public List<Ingredients> getIngredients() {
         return ingredients;
     }
@@ -105,20 +123,14 @@ public class Recipe extends AbstractClass{
         this.photoURL = photoURL;
     }
 
-    public List<RecipeDirections> getSteps() {
-        return steps;
-    }
 
-    public void setSteps(List<RecipeDirections> steps) {
-        this.steps = steps;
-    }
 
     @Override
     public String toString() {
         return "Recipe{" +
                 "ID=" + getId() +
                 "ingredients=" + ingredients +
-                ", steps=" + steps +
+                ", recipeDirections=" + recipeDirections +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", prepTime=" + prepTime +

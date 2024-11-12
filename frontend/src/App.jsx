@@ -11,9 +11,6 @@ import Register from './components/Register';
 
 const App = () => {
   return (
-    // <div className='container'>
-    //   <Login />
-    // </div>
     <BrowserRouter>
       <Routes>
       <Route path="/" element={<Login/>} />
