@@ -31,9 +31,9 @@ public class Recipe extends AbstractClass{
 
     private String photoURL;
 
-    private User creator;
+    private String creator;
 
-    public Recipe(User creator ,List<RecipeReview> reviews, List<Ingredients> ingredients, String recipeDirections, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL) {
+    public Recipe(String creator ,List<RecipeReview> reviews, List<Ingredients> ingredients, String recipeDirections, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL) {
         super();
         this.creator = creator;
         this.ingredients = ingredients;
@@ -126,11 +126,11 @@ public class Recipe extends AbstractClass{
         this.photoURL = photoURL;
     }
 
-    public User getCreator() {
+    public String getCreator() {
         return creator;
     }
 
-    public void setCreator(User creator) {
+    public void setCreator(String creator) {
         this.creator = creator;
     }
 

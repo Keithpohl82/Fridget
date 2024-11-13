@@ -19,7 +19,7 @@ const Register = () => {
       body: JSON.stringify({ username, pwHash, firstName, lastName, userEmail }),
     });
     const result = await response.text();
-    alert(result);
+    window.location.href = result;
   };
 
   return (
