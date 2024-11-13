@@ -22,8 +22,9 @@ const Login = () => {
       setUsername("");
       setPassword("");
       alert(result);
-    }
+    } else {
     window.location.href = result;
+    }
   };
 
   const handlePasswordResetRequest = async () => {
@@ -86,6 +87,7 @@ const Login = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
+              name="username"
             />
           </div>
 
@@ -97,6 +99,7 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              name="password"
             />
           </div>
           <div>
