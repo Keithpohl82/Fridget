@@ -3,8 +3,6 @@ package com.example.fridget.controllers;
 
 import com.example.fridget.models.Recipe;
 import com.example.fridget.services.RecipeService;
-import com.example.fridget.services.UserServlet;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,7 +17,7 @@ public class RecipeController {
 
     @Autowired
     RecipeService recipeService;
-    
+
     @GetMapping("/")
     public ResponseEntity<List<Recipe>> index() {
         List<Recipe> recipes = recipeService.getRecipes();
