@@ -45,6 +45,14 @@ button:focus-visible {
     color: black;
 }
 
+.recipe-container{
+  background-color: rgba(155, 142, 98, 0.75);
+  border: 3px, solid, rgb(24, 23, 23);
+  border-radius: 5px;
+  padding: 5px;
+  margin: 2px;
+}
+
 form {
   border: 3px solid #c4cb08;
   border-radius: 5px;
