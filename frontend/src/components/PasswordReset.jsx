@@ -103,7 +103,7 @@ const PasswordReset = () => {
           </div>
         )}
         <div className={styles.signup}>
-          <Link to="/" style={{ cursor: "pointer", color: "blue" }}>
+          <Link to="/login" style={{ cursor: "pointer", color: "blue" }}>
             Back to Login
           </Link>
         </div>
