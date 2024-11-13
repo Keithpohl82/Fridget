@@ -24,11 +24,6 @@ const Navbar = () => {
           </Link>
         </li>
         <li className={styles.navbarItem}>
-          <Link to="/user-container" className={styles.navbarLink}>
-            User Container
-          </Link>
-        </li>
-        <li className={styles.navbarItem}>
           <Link to="/ingredients" className={styles.navbarLink}>
             Ingredients
           </Link>
@@ -36,16 +31,6 @@ const Navbar = () => {
         <li className={styles.navbarItem}>
           <Link to="/recipe" className={styles.navbarLink}>
             Recipe
-          </Link>
-        </li>
-        <li className={styles.navbarItem}>
-          <Link to="/ingredients-list" className={styles.navbarLink}>
-            Ingredients List
-          </Link>
-        </li>
-        <li className={styles.navbarItem}>
-          <Link to="/select-form" className={styles.navbarLink}>
-            Select Form
           </Link>
         </li>
         <li className={styles.navbarItem}>
