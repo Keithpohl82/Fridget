@@ -31,8 +31,11 @@ public class Recipe extends AbstractClass{
 
     private String photoURL;
 
-    public Recipe(List<RecipeReview> reviews, List<Ingredients> ingredients, String recipeDirections, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL) {
+    private User creator;
+
+    public Recipe(User creator ,List<RecipeReview> reviews, List<Ingredients> ingredients, String recipeDirections, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL) {
         super();
+        this.creator = creator;
         this.ingredients = ingredients;
         this.name = name;
         this.description = description;
@@ -123,7 +126,13 @@ public class Recipe extends AbstractClass{
         this.photoURL = photoURL;
     }
 
+    public User getCreator() {
+        return creator;
+    }
 
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
 
     @Override
     public String toString() {
