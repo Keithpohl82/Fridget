@@ -30,7 +30,7 @@ public class UserController {
                     // Store user information in session
                     session.setAttribute("username", user.getUsername());
                     System.out.println(session.getAttribute("username") + " session attributenames");
-                    return ResponseEntity.ok("http://localhost:5173/addrecipe");
+                    return ResponseEntity.ok("http://localhost:5173/recipes/");
                 })
                 .orElse(ResponseEntity.status(401).body("Invalid credentials"));
 

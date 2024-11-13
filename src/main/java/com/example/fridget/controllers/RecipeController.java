@@ -14,12 +14,12 @@ import java.util.List;
 
 @Controller
 @RequestMapping("recipes")
+@CrossOrigin(origins = "http://localhost:5173")
 public class RecipeController {
 
     @Autowired
     RecipeService recipeService;
-
-    @CrossOrigin(origins = "http://localhost:5173")
+    
     @GetMapping("/")
     public ResponseEntity<List<Recipe>> index() {
         List<Recipe> recipes = recipeService.getRecipes();
@@ -32,7 +32,7 @@ public class RecipeController {
         return recipeService.getRecipeById(id);
     }
 
-    @CrossOrigin(origins = "http://localhost:5173")
+
     @PostMapping("add")
     public ResponseEntity<String> addNewRecipe(@RequestBody Recipe recipe){
         recipe.setTotalTime(recipe.getCookTime() + recipe.getPrepTime());
