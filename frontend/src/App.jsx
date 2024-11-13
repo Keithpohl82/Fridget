@@ -13,7 +13,7 @@ import PasswordReset from "./components/PasswordReset";
 import Home from "./components/Home";
 import Navbar from "./components/Navbar"; // Import the Navbar component
 import GroceryList from "./components/GroceryList";
-import Fridge from './components/Fridge'
+
 
 const App = () => {
   return (
@@ -28,7 +28,7 @@ const App = () => {
           <Route path="/recipe" element={<Recipe />} />
           <Route path="/password-reset" element={<PasswordReset />} />
           <Route path="/grocery-list" element={<GroceryList />} />
-          <Route path="/fridge" element={<Fridge />} />
+         
         </Routes>
       </div>
     </Router>
