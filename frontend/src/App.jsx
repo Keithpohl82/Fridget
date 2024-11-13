@@ -2,12 +2,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-//This is for the webhook test. 
-
 import Ingredients from "./components/AddIngredients";
 import Recipe from "./components/AddRecipe";
-import IngredientsList from "./components/IngredientsList";
-import SelectForm from "./components/SelectForm";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import PasswordReset from "./components/PasswordReset";
