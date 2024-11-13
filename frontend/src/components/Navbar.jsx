@@ -43,6 +43,11 @@ const Navbar = () => {
             Grocery List
           </Link>
         </li>
+        <li className={styles.navbarItem}>
+          <Link to="/fridge" className={styles.navbarLink}>
+            Fridge
+          </Link>
+        </li>
       </ul>
     </nav>
   );
