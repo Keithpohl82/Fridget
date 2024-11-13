@@ -2,7 +2,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import { UserContainer } from "./components/UserContainer";
+
 import Ingredients from "./components/AddIngredients";
 import Recipe from "./components/AddRecipe";
 import IngredientsList from "./components/IngredientsList";
@@ -22,12 +22,9 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/user-container" element={<UserContainer />} />
+          <Route path="/register" element={<Register />} /> 
           <Route path="/ingredients" element={<Ingredients />} />
           <Route path="/recipe" element={<Recipe />} />
-          <Route path="/ingredients-list" element={<IngredientsList />} />
-          <Route path="/select-form" element={<SelectForm />} />
           <Route path="/password-reset" element={<PasswordReset />} />
           <Route path="/grocery-list" element={<GroceryList />} />
         </Routes>
