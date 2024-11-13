@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 const AddStep = ({ onAddStep }) => {
-  const [step, setStep] = useState("");
+  const [step, setStep] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (step.trim()) {
       onAddStep(step.trim());
-      setStep("");
+      setStep('');
     }
   };
 

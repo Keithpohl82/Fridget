@@ -1,154 +1,76 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import styles from '../styles/Login.module.css'
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [isResettingPassword, setIsResettingPassword] = useState(false);
-  const [resetToken, setResetToken] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [resetUsername, setResetUsername] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch(
-      `http://localhost:8080/api/users/login?username=${username}&password=${password}`,
-      {
-        method: "POST",
-      }
-    );
+    const response = await fetch(`http://localhost:8080/api/users/login?username=${username}&password=${password}`, {
+      method: "POST",
+    });
     const result = await response.text();
     console.log(result);
     if (result === "Invalid credentials") {
       setUsername("");
       setPassword("");
-      alert(result);
-    } else {
-    window.location.href = result;
     }
-  };
-
-  const handlePasswordResetRequest = async () => {
-    if (!resetUsername) {
-      alert("Please enter your username to request a password reset.");
-      return;
-    }
-    const response = await fetch(
-      `http://localhost:8080/api/users/request-password-reset?username=${resetUsername}`,
-      {
-        method: "POST",
-      }
-    );
-    const result = await response.text();
-    setResetToken(
-      result.includes("Password reset token: ") ? result.split(": ")[1] : ""
-    );
     alert(result);
-  };
-
-  const handlePasswordReset = async () => {
-    if (!resetToken || !newPassword) {
-      alert("Please enter the token and your new password.");
-      return;
-    }
-    const response = await fetch(
-      `http://localhost:8080/api/users/reset-password?token=${resetToken}&newPassword=${newPassword}`,
-      {
-        method: "POST",
-      }
-    );
-    const result = await response.text();
-    alert(result);
-    if (result === "Password reset successfully") {
-      setResetToken("");
-      setNewPassword("");
-      setResetUsername("");
-      setIsResettingPassword(false);
-    }
   };
 
   return (
-    <div className="login" id="rcorners2">
+    <div className={styles.login} id={styles.rcorners2}>
       <form onSubmit={handleSubmit}>
         <h1>Login</h1>
-        <div className="imgcontainer">
+        
+        <div className={styles.imgcontainer}>
           <img
-            src="https://img.freepik.com/free-vector/happy-cute-girl-chef-holding-bowl-with-whisk-banner-logo-cartoon-art-illustration_56104-786.jpg?semt=ais_hybrid"
+            src="https://img.freepik.com/free-vector/happy-cute-girl-chef-holding-bowl-with-whisk-banner-logo-cartoon-art-illustration_56104-786.jpg"
             alt="Avatar"
-            className="avatar"
+            className={styles.avatar}
           />
         </div>
 
-        <div className="container">
-          <div className="username">
+        <div className={styles.container}>
+          <div>
             <input
-              className="username"
+              className={styles.username}
               type="text"
               placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              name="username"
             />
           </div>
-
-          <div className="password">
+          
+          <div>
             <input
-              className="password"
+              className={styles.password}
               type="password"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              name="password"
             />
           </div>
-          <div>
-            <p
-              onClick={() => setIsResettingPassword(true)}
-              style={{ cursor: "pointer", color: "blue" }}
-            >
+         
+
+          <div class="signup">
+            <Link to="/password-reset" style={{ cursor: "pointer", color: "blue" }} className={styles.signup}>
               Forgot Password?
-            </p>
+            </Link>
           </div>
 
-          <button type="submit">Login</button>
-        </div>
+           <button type="submit">Login</button>
 
-        <div>
           <p>Don't have an account?</p>
-          <p className="sign">Sign Up!</p>
+          <Link to="/register" style={{ cursor: "pointer", color: "blue" }} className={styles.signup}>
+              Sign Up!
+            </Link>
         </div>
       </form>
-
-      {isResettingPassword && (
-        <div className="reset-password-section">
-          <h2>Reset Password</h2>
-          <div>
-            <input
-              type="text"
-              placeholder="Enter your username"
-              value={resetUsername}
-              onChange={(e) => setResetUsername(e.target.value)}
-            />
-            <button onClick={handlePasswordResetRequest}>
-              Request Reset Token
-            </button>
-          </div>
-          {resetToken && (
-            <div>
-              <h3>Your Reset Token: {resetToken}</h3>
-              <input
-                type="password"
-                placeholder="Enter new password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-              />
-              <button onClick={handlePasswordReset}>Reset Password</button>
-            </div>
-          )}
-          <button onClick={() => setIsResettingPassword(false)}>Cancel</button>
-        </div>
-      )}
     </div>
   );
 };

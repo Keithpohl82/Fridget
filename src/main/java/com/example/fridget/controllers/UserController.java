@@ -15,30 +15,29 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
+        if (userService.userExistsByEmail(user.getUserEmail())) {
+            return ResponseEntity.status(400).body("A user with this email already exists.");
+        }
+
         userService.registerUser(user);
-        return ResponseEntity.ok("http://localhost:5173/login");
+        return ResponseEntity.ok("User registered successfully");
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestParam String username, @RequestParam String password, HttpSession session) {
-
         return userService.loginUser(username, password)
                 .map(user -> {
-                    // Store user information in session
                     session.setAttribute("username", user.getUsername());
-                    System.out.println(session.getAttribute("username") + " session attributenames");
                     return ResponseEntity.ok("http://localhost:5173/recipes/");
                 })
                 .orElse(ResponseEntity.status(401).body("Invalid credentials"));
-
     }
 
     @PostMapping("/logout")
     public ResponseEntity<String> logoutUser(HttpSession session) {
-        session.invalidate(); // Ends the session and clears the attributes
+        session.invalidate();
         return ResponseEntity.ok("Logout successful");
     }
 
@@ -46,7 +45,7 @@ public class UserController {
     public ResponseEntity<String> requestPasswordReset(@RequestParam String username) {
         String token = userService.initiatePasswordReset(username);
         if (token != null) {
-            return ResponseEntity.ok("Password reset token: " + token);
+            return ResponseEntity.ok("Password reset link sent to your email.");
         } else {
             return ResponseEntity.status(404).body("User not found");
         }
@@ -59,6 +58,14 @@ public class UserController {
             return ResponseEntity.ok("Password reset successfully");
         } else {
             return ResponseEntity.status(400).body("Invalid or expired token");
+        }
+    }
+    @GetMapping("/check-username")
+    public ResponseEntity<String> checkUsernameAvailability(@RequestParam String username) {
+        if (userService.userExistsByUsername(username)) {
+            return ResponseEntity.ok("Username is already taken");
+        } else {
+            return ResponseEntity.ok("Username is available");
         }
     }
 }
