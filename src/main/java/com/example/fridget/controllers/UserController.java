@@ -19,7 +19,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         userService.registerUser(user);
-        return ResponseEntity.ok(user.getUsername() + " registered successfully");
+        return ResponseEntity.ok("http://localhost:5173/login");
     }
 
     @PostMapping("/login")
