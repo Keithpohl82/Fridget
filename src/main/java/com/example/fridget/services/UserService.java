@@ -4,6 +4,7 @@ import com.example.fridget.models.PasswordResetToken;
 import com.example.fridget.models.User;
 import com.example.fridget.models.data.PasswordResetTokenRepository;
 import com.example.fridget.models.data.UserRepository;
+import com.example.fridget.services.EmailService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,17 +23,27 @@ public class UserService {
     @Autowired
     private PasswordResetTokenRepository tokenRepository;
 
+    @Autowired
+    private EmailService emailService; // New dependency for email service
+
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public void registerUser(User user) {
-        System.out.println(user.getUserEmail());
         user.setPwHash(encoder.encode(user.getPwHash()));
         userRepository.save(user);
-        // DiscordBot.postMessage(user.getFirstname() + " " + user.getLastname() + " Was added to the database");
     }
 
-    public Optional<User> loginUser(String username, String password) {
-        Optional<User> userOpt = userRepository.findByUsername(username);
+    public Optional<User> loginUser(String identifier, String password) {
+        Optional<User> userOpt;
+
+        if (identifier.contains("@")) {
+            // Assume identifier is an email
+            userOpt = userRepository.findByUserEmail(identifier);
+        } else {
+            // Assume identifier is a username
+            userOpt = userRepository.findByUsername(identifier);
+        }
+
         if (userOpt.isPresent()) {
             User user = userOpt.get();
             if (encoder.matches(password, user.getPwHash())) {
@@ -55,8 +66,13 @@ public class UserService {
 
             tokenRepository.save(resetToken);
 
-            // Return the token for testing (secure handling needed for production)
-            return token;
+            String resetLink = "http://localhost:5173/password-reset?token=" + token; // Update to use frontend URL
+            String emailBody = "Click the following link to reset your password: " + resetLink;
+
+            // Send the email with the reset link
+            emailService.sendEmail(userOpt.get().getUserEmail(), "Password Reset Request", emailBody);
+
+            return token; // Return token for testing (optional)
         }
         return null;
     }
@@ -78,5 +94,12 @@ public class UserService {
             }
         }
         return false;
+    }
+
+    public boolean userExistsByEmail(String email) {
+        return userRepository.findByUserEmail(email).isPresent();
+    }
+    public boolean userExistsByUsername(String username) {
+        return userRepository.findByUsername(username).isPresent();
     }
 }
