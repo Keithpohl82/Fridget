@@ -1,20 +1,20 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import styles from '../styles/Login.module.css'
+import styles from "../styles/Login.module.css";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [identifier, setIdentifier] = useState(""); // Changed from username to identifier
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch(`http://localhost:8080/api/users/login?username=${username}&password=${password}`, {
+    const response = await fetch(`http://localhost:8080/api/users/login?identifier=${identifier}&password=${password}`, {
       method: "POST",
     });
     const result = await response.text();
     console.log(result);
     if (result === "Invalid credentials") {
-      setUsername("");
+      setIdentifier(""); // Clear only the identifier field if login fails
       setPassword("");
     }
     alert(result);
@@ -24,13 +24,9 @@ const Login = () => {
     <div className={styles.login} id={styles.rcorners2}>
       <form onSubmit={handleSubmit}>
         <h1>Login</h1>
-        
+
         <div className={styles.imgcontainer}>
-          <img
-            src="https://img.freepik.com/free-vector/happy-cute-girl-chef-holding-bowl-with-whisk-banner-logo-cartoon-art-illustration_56104-786.jpg"
-            alt="Avatar"
-            className={styles.avatar}
-          />
+          <img src="https://img.freepik.com/free-vector/happy-cute-girl-chef-holding-bowl-with-whisk-banner-logo-cartoon-art-illustration_56104-786.jpg" alt="Avatar" className={styles.avatar} />
         </div>
 
         <div className={styles.container}>
@@ -38,37 +34,29 @@ const Login = () => {
             <input
               className={styles.username}
               type="text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Username or Email" // Updated placeholder
+              value={identifier}
+              onChange={(e) => setIdentifier(e.target.value)}
               required
             />
           </div>
-          
-          <div>
-            <input
-              className={styles.password}
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-         
 
-          <div class="signup">
+          <div>
+            <input className={styles.password} type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          </div>
+
+          <div className="signup">
             <Link to="/password-reset" style={{ cursor: "pointer", color: "blue" }} className={styles.signup}>
               Forgot Password?
             </Link>
           </div>
 
-           <button type="submit">Login</button>
+          <button type="submit">Login</button>
 
           <p>Don't have an account?</p>
           <Link to="/register" style={{ cursor: "pointer", color: "blue" }} className={styles.signup}>
-              Sign Up!
-            </Link>
+            Sign Up!
+          </Link>
         </div>
       </form>
     </div>

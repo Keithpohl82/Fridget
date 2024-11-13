@@ -33,8 +33,17 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Optional<User> loginUser(String username, String password) {
-        Optional<User> userOpt = userRepository.findByUsername(username);
+    public Optional<User> loginUser(String identifier, String password) {
+        Optional<User> userOpt;
+
+        if (identifier.contains("@")) {
+            // Assume identifier is an email
+            userOpt = userRepository.findByUserEmail(identifier);
+        } else {
+            // Assume identifier is a username
+            userOpt = userRepository.findByUsername(identifier);
+        }
+
         if (userOpt.isPresent()) {
             User user = userOpt.get();
             if (encoder.matches(password, user.getPwHash())) {

@@ -26,11 +26,12 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestParam String username, @RequestParam String password, HttpSession session) {
-        return userService.loginUser(username, password)
+    public ResponseEntity<String> loginUser(@RequestParam String identifier, @RequestParam String password, HttpSession session) {
+        return userService.loginUser(identifier, password)
                 .map(user -> {
+                    // Store user information in session
                     session.setAttribute("username", user.getUsername());
-                    return ResponseEntity.ok("http://localhost:5173/recipes/");
+                    return ResponseEntity.ok("Login successful");
                 })
                 .orElse(ResponseEntity.status(401).body("Invalid credentials"));
     }
