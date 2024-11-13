@@ -1,5 +1,3 @@
-
-// components/Navbar.js
 import React from "react";
 import { Link } from "react-router-dom";
 import styles from "../styles/Navbar.module.css"; // Import the CSS module
@@ -10,19 +8,10 @@ const Navbar = () => {
       <ul className={styles.navbarLinks}>
         <li className={styles.navbarItem}>
           <Link to="/" className={styles.navbarLink}>
-            Home
+            Fridget Home
           </Link>
         </li>
-        <li className={styles.navbarItem}>
-          <Link to="/login" className={styles.navbarLink}>
-            Login
-          </Link>
-        </li>
-        <li className={styles.navbarItem}>
-          <Link to="/register" className={styles.navbarLink}>
-            Register
-          </Link>
-        </li>
+        
         <li className={styles.navbarItem}>
           <Link to="/ingredients" className={styles.navbarLink}>
             Ingredients
@@ -43,7 +32,18 @@ const Navbar = () => {
             Grocery List
           </Link>
         </li>
+        <li className={styles.navbarItem}>
+          <Link to="/fridge" className={styles.navbarLink}>
+            Fridge
+          </Link>
+        </li>
       </ul>
+
+      <div className={styles.navbarRight}>
+        <Link to="/login" className={styles.navbarLink}>
+          Login
+        </Link>
+      </div>
     </nav>
   );
 };
