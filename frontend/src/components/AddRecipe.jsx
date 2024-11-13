@@ -10,15 +10,11 @@ const AddRecipe = () => {
     const [prepTime, setPrepTime] = useState('');
     const [description, setDescription] = useState('');
     const [photoURL, setPhotoUrl] = useState('');
-    const [recipeSteps, setDirections] = useState([]);
+    const [recipeSteps, setDirections] = useState('');
     const [ingredients, setIngredients] = useState([]);
 
     const addIngredient = (ingredient) => {
         setIngredients((prevIngredient) => [...prevIngredient, { id: ingredient }]);
-    };
-
-    const handleAddStep = (newStep) => {
-        setDirections([...recipeSteps,newStep]);
     };
 
     const handleSubmit = async (e) => {
@@ -84,6 +80,11 @@ const AddRecipe = () => {
                     required
                     name='Prep Time'
                 />
+                <textarea
+                    value={recipeSteps}
+                    onChange={(e) => setDirections(e.target.value)}
+                    style={{ whiteSpace: 'pre-wrap' }}
+                    />
                 <br/>
                 <button type="submit" disabled={ingredients.length === 0}>Add Recipe</button>
             </form>
@@ -94,13 +95,7 @@ const AddRecipe = () => {
                         <li key={index}>{ingredient.id}</li>
                     ))}
                 </ul>
-            <h2>Directions</h2>
-            <AddStep onAddStep={handleAddStep} />
-                <ol>
-                    {recipeSteps.map((step, index) => (
-                    <li key={index}>{step}</li>
-                    ))}
-                </ol>
+
                 
         </>
     );
