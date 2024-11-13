@@ -4,7 +4,7 @@ import axios from "axios";
 const Recipes = () => {
 
     const [recipeList, setRecipes] = useState([]);
-    const [ingredients, setIngredients] = useState([]);
+    const [ingredientsList, setIngredients] = useState([]);
 
 
     useEffect(() => {
@@ -31,7 +31,7 @@ const Recipes = () => {
               <h2>Name:{recipe.name}</h2>
               <h4>Description:{recipe.description}</h4>
               <p>Prep Time: {recipe.prepTime}<br/> Cook Time: {recipe.cookTime}<br/> Total time: {recipe.totalTime}</p>
-              {recipeList.map(ingredient => (<div key={ingredient.id}>{ingredient.name}</div>))}
+              {ingredientsList.map(ingredient => (<div key={ingredient.id}>{ingredient.name}</div>))}
               <p>Directions: {recipe.recipeDirections}</p>
             </div>
           ))}
