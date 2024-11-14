@@ -12,10 +12,11 @@ public class UserProfileService {
     UserProfileRepository userProfileRepository;
 
     public void createProfile(User user){
-        UserProfile userProfile = new UserProfile();
 
-        userProfileRepository.save(user.getUserProfile());
-        user.setUserProfile(userProfile);
+        UserProfile profileBeingCreated = new UserProfile();
+        profileBeingCreated.setUser(user);
+        userProfileRepository.save(profileBeingCreated);
+
     }
 
 }
