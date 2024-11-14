@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div class="home">
       <div class="header">
-        <h2>Fridgit</h2>
+        <h2>Fridget</h2>
       </div>
     </div>
   );

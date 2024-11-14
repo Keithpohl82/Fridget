@@ -38,8 +38,14 @@ const Navbar = () => {
           </Link>
         </li>
       </ul>
+      
 
       <div className={styles.navbarRight}>
+      <li className={styles.navbarItem}>
+        <Link to="/profile" className={styles.navbarLink}>
+          Profile
+        </Link>
+      </li>
         <Link to="/login" className={styles.navbarLink}>
           Login
         </Link>
