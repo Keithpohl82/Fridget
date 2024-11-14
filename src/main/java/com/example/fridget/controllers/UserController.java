@@ -1,6 +1,7 @@
 package com.example.fridget.controllers;
 
 import com.example.fridget.models.User;
+import com.example.fridget.models.UserProfile;
 import com.example.fridget.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;

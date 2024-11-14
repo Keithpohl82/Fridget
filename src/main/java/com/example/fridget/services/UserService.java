@@ -2,7 +2,9 @@ package com.example.fridget.services;
 
 import com.example.fridget.models.PasswordResetToken;
 import com.example.fridget.models.User;
+import com.example.fridget.models.UserProfile;
 import com.example.fridget.models.data.PasswordResetTokenRepository;
+import com.example.fridget.models.data.UserProfileRepository;
 import com.example.fridget.models.data.UserRepository;
 import com.example.fridget.services.EmailService;
 import jakarta.transaction.Transactional;
@@ -21,16 +23,27 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
+    private UserProfileRepository userProfileRepository;
+
+    @Autowired
     private PasswordResetTokenRepository tokenRepository;
 
     @Autowired
     private EmailService emailService; // New dependency for email service
 
+    @Autowired
+    private UserProfileService userProfileService;
+
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public void registerUser(User user) {
         user.setPwHash(encoder.encode(user.getPwHash()));
+
+        userProfileService.createProfile(user);
+
         userRepository.save(user);
+
+
     }
 
     public Optional<User> loginUser(String identifier, String password) {
