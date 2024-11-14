@@ -35,6 +35,7 @@ export default function GroceryList() {
   };
 
   return (
+    <div className={styles.groceryBackground}>
     <div className={styles.body} id={styles.rcorners2}>
       <div id="myDIV" className={styles.header}>
         {/* Editable Heading with Pencil Icon */}
@@ -84,6 +85,7 @@ export default function GroceryList() {
           </li>
         ))}
       </ul>
+    </div>
     </div>
   );
 }

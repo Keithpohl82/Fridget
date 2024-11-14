@@ -1,37 +1,43 @@
-/* styles/Navbar.module.css */
-
 .navbar {
-    background-color: #333;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: center;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-  
-  .navbarLinks {
-    list-style: none;
-    display: flex;
-    gap: 15px;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .navbarItem {
-    display: flex;
-  }
-  
-  .navbarLink {
-    color: #fff;
-    text-decoration: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    font-weight: 500;
-    transition: background-color 0.3s ease;
-  }
-  
-  .navbarLink:hover {
-    background-color: #555;
-  }
+  background-color: #333;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between; /* Ensures the space between items is distributed */
+  align-items: center; /* Centers the items vertically */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.navbarLinks {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+  flex-grow: 1; /* This ensures that the navbar items expand to fill the available space */
+}
+
+.navbarItem {
+  display: flex;
+}
+
+.navbarLink {
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.navbarLink:hover {
+  background-color: #555;
+}
+
+/* Specifically for aligning "Login" to the right */
+.navbarRight {
+  display: flex;
+  justify-content: flex-end; /* Aligns "Login" to the far right */
+}
