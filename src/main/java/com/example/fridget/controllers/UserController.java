@@ -49,6 +49,12 @@ public class UserController {
         return ResponseEntity.ok("Logout successful");
     }
 
+    @GetMapping("/{id}")
+    @ResponseBody
+    public User getUser(@PathVariable Long id){
+        return userService.getUserById(id);
+    }
+
     @PostMapping("/request-password-reset")
     public ResponseEntity<String> requestPasswordReset(@RequestParam String username) {
         String token = userService.initiatePasswordReset(username);

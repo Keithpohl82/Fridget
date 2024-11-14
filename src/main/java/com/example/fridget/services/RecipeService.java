@@ -28,6 +28,7 @@ public class RecipeService {
     public List<Recipe> getRecipes() {
         return recipeRepository.findAll();
     }
+
     public Recipe getRecipeById(Long id) {
         Optional<Recipe> recipe = recipeRepository.findById(id);
         return recipe.orElseThrow(() -> new RuntimeException("Recipe not found"));
