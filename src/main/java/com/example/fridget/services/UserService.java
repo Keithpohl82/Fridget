@@ -1,6 +1,7 @@
 package com.example.fridget.services;
 
 import com.example.fridget.models.PasswordResetToken;
+import com.example.fridget.models.Recipe;
 import com.example.fridget.models.User;
 import com.example.fridget.models.UserProfile;
 import com.example.fridget.models.data.PasswordResetTokenRepository;
@@ -40,7 +41,11 @@ public class UserService {
 
         userRepository.save(user);
 
-//        userProfileService.createProfile(user);
+    }
+
+    public User getUserById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        return user.orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     public Optional<User> loginUser(String identifier, String password) {
