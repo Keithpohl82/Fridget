@@ -31,19 +31,16 @@ public class UserService {
     @Autowired
     private EmailService emailService; // New dependency for email service
 
-    @Autowired
-    private UserProfileService userProfileService;
+
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public void registerUser(User user) {
         user.setPwHash(encoder.encode(user.getPwHash()));
 
-        userProfileService.createProfile(user);
-
         userRepository.save(user);
 
-
+//        userProfileService.createProfile(user);
     }
 
     public Optional<User> loginUser(String identifier, String password) {

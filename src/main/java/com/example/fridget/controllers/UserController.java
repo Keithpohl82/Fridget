@@ -2,6 +2,7 @@ package com.example.fridget.controllers;
 
 import com.example.fridget.models.User;
 import com.example.fridget.models.UserProfile;
+import com.example.fridget.services.UserProfileService;
 import com.example.fridget.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserProfileService userProfileService;
+
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         if (userService.userExistsByEmail(user.getUserEmail())) {
@@ -23,6 +27,8 @@ public class UserController {
         }
 
         userService.registerUser(user);
+        System.out.println("This users id is currently:" + user.getId());
+        userProfileService.createProfile(user);
         return ResponseEntity.ok("User registered successfully");
     }
 
