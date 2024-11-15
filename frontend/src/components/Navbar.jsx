@@ -1,78 +1,94 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import styles from "../styles/Navbar.module.css";
 
-const Navbar = () => {
-  // Toggle mobile menu
-  useEffect(() => {
-    const navbarBurger = document.querySelector(".navbar-burger");
-    const navbarMenu = document.querySelector(".navbar-menu");
+const Navbar = ({ user, refreshUser }) => {
+  const navigate = useNavigate();
 
-    navbarBurger.addEventListener("click", () => {
-      navbarBurger.classList.toggle("is-active");
-      navbarMenu.classList.toggle("is-active");
-    });
-  }, []);
+  const logoutUser = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/userservice/logout", {
+        method: "POST",
+        credentials: "include", // Ensures session cookies are sent
+      });
+      if (response.ok) {
+        refreshUser(); // Refresh user state
+        navigate("/login"); // Redirect to login page
+      } else {
+        console.error("Failed to log out");
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
 
   return (
-    <nav
-      className="navbar is-primary"
-      role="navigation"
-      aria-label="main navigation"
-    >
-      <div className="container" style={{ paddingLeft: "1rem" }}> {/* Adding padding to container */}
-        <div className="navbar-brand">
-          <Link 
-            to="/" 
-            className="navbar-item"
-            style={{ marginLeft: "0.5rem" }} // Adding a small margin to fix the cut-off
-          >
-            <strong>Fridget Home</strong>
+    <nav className={styles.navbar}>
+      <ul className={styles.navbarLinks}>
+        <li className={styles.navbarItem}>
+          <Link to="/" className={styles.navbarLink}>
+            Fridget Home
           </Link>
-          {/* Burger menu for mobile */}
-          <button
-            className="navbar-burger"
-            aria-label="menu"
-            aria-expanded="false"
-            data-target="navbarMenu"
-          >
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-          </button>
-        </div>
+        </li>
+        <li className={styles.navbarItem}>
+          <Link to="/ingredients" className={styles.navbarLink}>
+            Ingredients
+          </Link>
+        </li>
+        <li className={styles.navbarItem}>
+          <Link to="/recipe" className={styles.navbarLink}>
+            Recipe
+          </Link>
+        </li>
+        <li className={styles.navbarItem}>
+          <Link to="/password-reset" className={styles.navbarLink}>
+            Password Reset
+          </Link>
+        </li>
+        <li className={styles.navbarItem}>
+          <Link to="/grocery-list" className={styles.navbarLink}>
+            Grocery List
+          </Link>
+        </li>
+        <li className={styles.navbarItem}>
+          <Link to="/fridge" className={styles.navbarLink}>
+            Fridge
+          </Link>
+        </li>
+      </ul>
 
-        <div id="navbarMenu" className="navbar-menu">
-          <div className="navbar-start">
-            <Link to="/ingredients" className="navbar-item">
-              Ingredients
-            </Link>
-            <Link to="/recipe" className="navbar-item">
-              Recipe
-            </Link>
-            <Link to="/password-reset" className="navbar-item">
-              Password Reset
-            </Link>
-            <Link to="/grocery-list" className="navbar-item">
-              Grocery List
-            </Link>
-            <Link to="/fridge" className="navbar-item">
-              Fridge
-            </Link>
-          </div>
-
-          <div className="navbar-end">
-            <div className="navbar-item">
-              <div className="buttons">
-                <Link to="/profile" className="button is-light">
-                  Profile
+      <div className={styles.navbarRight}>
+        {user ? (
+          <div className={`dropdown is-right is-hoverable ${styles.userInfo}`}>
+            <div className={`dropdown-trigger ${styles.dropdownTrigger}`}>
+              <button className={`button ${styles.dropdownButton}`}>
+                <span>
+                  <img src={user.avatar || "/default-avatar.png"} alt="Avatar" className={`${styles.avatar} is-rounded`} />
+                </span>
+                <Link to="/profile">
+                  <span>{user.username}</span>
                 </Link>
-                <Link to="/login" className="button is-primary">
-                  Login
+                <span className="icon is-small">
+                  <i className="fas fa-angle-down"></i>
+                </span>
+              </button>
+            </div>
+            <div className={`dropdown-menu ${styles.dropdownMenu}`} role="menu">
+              <div className="dropdown-content">
+                <Link to="/profile" className={`dropdown-item ${styles.dropdownItem}`}>
+                  My Profile
                 </Link>
+                <button className={`dropdown-item ${styles.dropdownItem}`} onClick={logoutUser}>
+                  Logout
+                </button>
               </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <Link to="/login" className={styles.navbarLink}>
+            Login
+          </Link>
+        )}
       </div>
     </nav>
   );
