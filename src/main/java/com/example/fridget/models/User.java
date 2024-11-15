@@ -16,6 +16,12 @@ public class User implements Serializable {
     @OneToOne(mappedBy = "user")
     private UserProfile userProfile;
 
+    @Column(nullable = true, unique = false)
+    private String firstName;
+
+    @Column(nullable = true, unique = false)
+    private String lastName;
+
     @Column(nullable = false, unique = true)
     private String username;
 
@@ -44,6 +50,22 @@ public class User implements Serializable {
     }
 
     public User() {
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getUsername() {
