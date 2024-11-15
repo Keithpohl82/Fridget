@@ -22,7 +22,13 @@ public class UserProfile extends AbstractClass{
     private LocalDate birthday;
 
     @Column(nullable = true, unique = false)
-    public String profileImage;
+    private String profileImage;
+
+    @Column(nullable = true, unique = false, length = 2000)
+    private String userbio;
+
+    @Column(nullable = true, unique = false)
+    private String location;
 
     public LocalDate getBirthday() {
         return birthday;
@@ -30,6 +36,22 @@ public class UserProfile extends AbstractClass{
 
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
+    }
+
+    public String getUserbio() {
+        return userbio;
+    }
+
+    public void setUserbio(String userbio) {
+        this.userbio = userbio;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public UserProfile() {
