@@ -10,7 +10,7 @@ public class UserProfile extends AbstractClass{
     private User user;
 
     public UserProfile() {
-
+        super();
     }
 
     public UserProfile(User user) {

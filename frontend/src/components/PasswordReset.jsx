@@ -26,7 +26,7 @@ const PasswordReset = () => {
       return;
     }
     const response = await fetch(
-      `http://localhost:8080/api/users/request-password-reset?username=${resetUsername}`,
+      `http://localhost:8080/userservice/request-password-reset?username=${resetUsername}`,
       { method: "POST" }
     );
     const result = await response.text();
@@ -45,7 +45,7 @@ const PasswordReset = () => {
       return;
     }
     const response = await fetch(
-      `http://localhost:8080/api/users/reset-password?token=${token}&newPassword=${newPassword}`,
+      `http://localhost:8080/userservice/reset-password?token=${token}&newPassword=${newPassword}`,
       { method: "POST" }
     );
     const result = await response.text();
@@ -66,7 +66,7 @@ const PasswordReset = () => {
         {/* Avatar Display */}
         <div className={styles.imgcontainer}>
           <img
-            src="https://img.freepik.com/free-vector/cute-bear-thinking-confused-cartoon-vector-icon-illustration-animal-nature-icon-isolated-flat_138676-8404.jpg?t=st=1731526640~exp=1731530240~hmac=208a2d29f119e65499f4288ad3c86c96e9b2731b783fd22fbe53e8973dfdad7d&w=826"
+            src="https://img.freepik.com/free-vector/cute-bear-confused-cartoon-vector-icon-illustration-animal-nature-icon-concept-isolated-flat-vector_138676-9369.jpg?t=st=1731613878~exp=1731617478~hmac=5e7adc1d6e77f3063bba77245974852c529b0bd26109e756a8afa807c3d72924&w=826"
             alt="Avatar"
             className={styles.avatar} // Circular styling from Login component
           />
