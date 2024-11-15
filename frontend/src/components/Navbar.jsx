@@ -1,55 +1,78 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import styles from "../styles/Navbar.module.css"; // Import the CSS module
 
 const Navbar = () => {
-  return (
-    <nav className={styles.navbar}>
-      <ul className={styles.navbarLinks}>
-        <li className={styles.navbarItem}>
-          <Link to="/" className={styles.navbarLink}>
-            Fridget Home
-          </Link>
-        </li>
-        
-        <li className={styles.navbarItem}>
-          <Link to="/ingredients" className={styles.navbarLink}>
-            Ingredients
-          </Link>
-        </li>
-        <li className={styles.navbarItem}>
-          <Link to="/recipe" className={styles.navbarLink}>
-            Recipe
-          </Link>
-        </li>
-        <li className={styles.navbarItem}>
-          <Link to="/password-reset" className={styles.navbarLink}>
-            Password Reset
-          </Link>
-        </li>
-        <li className={styles.navbarItem}>
-          <Link to="/grocery-list" className={styles.navbarLink}>
-            Grocery List
-          </Link>
-        </li>
-        <li className={styles.navbarItem}>
-          <Link to="/fridge" className={styles.navbarLink}>
-            Fridge
-          </Link>
-        </li>
-        
-      </ul>
-      
+  // Toggle mobile menu
+  useEffect(() => {
+    const navbarBurger = document.querySelector(".navbar-burger");
+    const navbarMenu = document.querySelector(".navbar-menu");
 
-      <div className={styles.navbarRight}>
-      <li className={styles.navbarItem}>
-        <Link to="/profile" className={styles.navbarLink}>
-          Profile
-        </Link>
-      </li>
-        <Link to="/login" className={styles.navbarLink}>
-          Login
-        </Link>
+    navbarBurger.addEventListener("click", () => {
+      navbarBurger.classList.toggle("is-active");
+      navbarMenu.classList.toggle("is-active");
+    });
+  }, []);
+
+  return (
+    <nav
+      className="navbar is-primary"
+      role="navigation"
+      aria-label="main navigation"
+    >
+      <div className="container" style={{ paddingLeft: "1rem" }}> {/* Adding padding to container */}
+        <div className="navbar-brand">
+          <Link 
+            to="/" 
+            className="navbar-item"
+            style={{ marginLeft: "0.5rem" }} // Adding a small margin to fix the cut-off
+          >
+            <strong>Fridget Home</strong>
+          </Link>
+          {/* Burger menu for mobile */}
+          <button
+            className="navbar-burger"
+            aria-label="menu"
+            aria-expanded="false"
+            data-target="navbarMenu"
+          >
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <div id="navbarMenu" className="navbar-menu">
+          <div className="navbar-start">
+            <Link to="/ingredients" className="navbar-item">
+              Ingredients
+            </Link>
+            <Link to="/recipe" className="navbar-item">
+              Recipe
+            </Link>
+            <Link to="/password-reset" className="navbar-item">
+              Password Reset
+            </Link>
+            <Link to="/grocery-list" className="navbar-item">
+              Grocery List
+            </Link>
+            <Link to="/fridge" className="navbar-item">
+              Fridge
+            </Link>
+          </div>
+
+          <div className="navbar-end">
+            <div className="navbar-item">
+              <div className="buttons">
+                <Link to="/profile" className="button is-light">
+                  Profile
+                </Link>
+                <Link to="/login" className="button is-primary">
+                  Login
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </nav>
   );
