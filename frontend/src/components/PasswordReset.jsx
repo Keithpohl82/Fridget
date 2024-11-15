@@ -26,7 +26,7 @@ const PasswordReset = () => {
       return;
     }
     const response = await fetch(
-      `http://localhost:8080/api/users/request-password-reset?username=${resetUsername}`,
+      `http://localhost:8080/userservice/request-password-reset?username=${resetUsername}`,
       { method: "POST" }
     );
     const result = await response.text();
@@ -45,7 +45,7 @@ const PasswordReset = () => {
       return;
     }
     const response = await fetch(
-      `http://localhost:8080/api/users/reset-password?token=${token}&newPassword=${newPassword}`,
+      `http://localhost:8080/userservice/reset-password?token=${token}&newPassword=${newPassword}`,
       { method: "POST" }
     );
     const result = await response.text();

@@ -17,7 +17,7 @@ const Register = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/api/users/check-username?username=${username}`);
+      const response = await fetch(`http://localhost:8080/userservice/check-username?username=${username}`);
       const message = await response.text();
       setUsernameMessage(message); // Set message based on response
     } catch (error) {
@@ -39,7 +39,7 @@ const Register = () => {
     e.preventDefault();
     setError("");
 
-    const response = await fetch("http://localhost:8080/api/users/register", {
+    const response = await fetch("http://localhost:8080/userservice/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
