@@ -37,6 +37,7 @@ const Navbar = () => {
             Fridge
           </Link>
         </li>
+        
       </ul>
       
 

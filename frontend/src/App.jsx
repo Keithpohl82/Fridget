@@ -11,6 +11,9 @@ import Home from "./components/Home";
 import Navbar from "./components/Navbar";
 import GroceryList from "./components/GroceryList";
 import UserProfile from "./components/UserProfile"; // Import UserProfile
+import 'bulma/css/bulma.min.css';
+
+
 
 // Sample user data
 const user = {
@@ -37,6 +40,7 @@ const App = () => {
           <Route path="/password-reset" element={<PasswordReset />} />
           <Route path="/grocery-list" element={<GroceryList />} />
           <Route path="/profile" element={<UserProfile user={user} />} />
+
         </Routes>
       </div>
     </Router>

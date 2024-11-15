@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import styles from "../styles/Password.module.css"; // Using Login styles
 
 const PasswordReset = () => {
   const [resetUsername, setResetUsername] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [tokenSent, setTokenSent] = useState(false);
   const [token, setToken] = useState("");
+  const [error, setError] = useState("");
   const location = useLocation();
 
   // Extract the token from the URL when the component mounts
@@ -19,10 +19,9 @@ const PasswordReset = () => {
     }
   }, [location.search]);
 
-  // Request a password reset link via email
   const handlePasswordResetRequest = async () => {
     if (!resetUsername) {
-      alert("Please enter your username to request a password reset.");
+      setError("Please enter your username to request a password reset.");
       return;
     }
     const response = await fetch(
@@ -34,14 +33,13 @@ const PasswordReset = () => {
       alert("Password reset link has been sent to your email.");
       setTokenSent(true);
     } else {
-      alert(result);
+      setError(result);
     }
   };
 
-  // Handle password reset with the new password and token
   const handlePasswordReset = async () => {
     if (!token || !newPassword) {
-      alert("Please enter your new password.");
+      setError("Please enter your new password.");
       return;
     }
     const response = await fetch(
@@ -55,57 +53,115 @@ const PasswordReset = () => {
       setNewPassword("");
       setResetUsername("");
       setTokenSent(false);
+      setError("");
+    } else {
+      setError(result);
     }
   };
 
   return (
-    <div className={styles.login} id={styles.rcorners2}>
-      <form>
-        <h2>Reset Password</h2>
-
-        {/* Avatar Display */}
-        <div className={styles.imgcontainer}>
-          <img
-            src="https://img.freepik.com/free-vector/cute-bear-confused-cartoon-vector-icon-illustration-animal-nature-icon-concept-isolated-flat-vector_138676-9369.jpg?t=st=1731613878~exp=1731617478~hmac=5e7adc1d6e77f3063bba77245974852c529b0bd26109e756a8afa807c3d72924&w=826"
-            alt="Avatar"
-            className={styles.avatar} // Circular styling from Login component
-          />
+    <div className="container">
+      <form className="box">
+        <div className="columns is-centered">
+          <div className="column is-half">
+            <h2 className="title has-text-centered">Reset Password</h2>
+          </div>
         </div>
 
-        {!tokenSent ? (
-          <div className={styles.container}>
-            <input
-              className={styles.username}
-              type="text"
-              placeholder="Enter your username"
-              value={resetUsername}
-              onChange={(e) => setResetUsername(e.target.value)}
-              required
-            />
-            <button type="button" onClick={handlePasswordResetRequest}>
-              Request Reset Link
-            </button>
-          </div>
-        ) : (
-          <div className={styles.container}>
-            <h3>Enter New Password</h3>
-            <input
-              className={styles.password}
-              type="password"
-              placeholder="Enter new password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              required
-            />
-            <button type="button" onClick={handlePasswordReset}>
-              Reset Password
-            </button>
+        {/* Error Message */}
+        {error && (
+          <div className="columns is-centered">
+            <div className="column is-half">
+              <p className="help is-danger has-text-centered">{error}</p>
+            </div>
           </div>
         )}
-        <div className={styles.signup}>
-          <Link to="/login" style={{ cursor: "pointer", color: "blue" }}>
-            Back to Login
-          </Link>
+
+        {/* Avatar Display */}
+        <div className="columns is-centered">
+          <div className="column is-narrow">
+            <figure className="image is-128x128">
+              <img
+                src="https://img.freepik.com/free-vector/cute-bear-confused-cartoon-vector-icon-illustration-animal-nature-icon-concept-isolated-flat-vector_138676-9369.jpg"
+                alt="Avatar"
+                className="is-rounded"
+              />
+            </figure>
+          </div>
+        </div>
+
+        {/* Username Input (Request Reset Link) */}
+        {!tokenSent ? (
+          <div className="columns is-centered">
+            <div className="column is-half">
+              <div className="field">
+                <div className="control has-icons-left">
+                  <input
+                    className="input"
+                    type="text"
+                    placeholder="Enter your username"
+                    value={resetUsername}
+                    onChange={(e) => setResetUsername(e.target.value)}
+                    required
+                  />
+                  <span className="icon is-small is-left">
+                    <i className="fas fa-user"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div className="field">
+                <button
+                  type="button"
+                  className="button is-link is-fullwidth"
+                  onClick={handlePasswordResetRequest}
+                >
+                  Request Reset Link
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          // New Password Input (Reset Password)
+          <div className="columns is-centered">
+            <div className="column is-half">
+              <h3 className="subtitle has-text-centered">Enter New Password</h3>
+              <div className="field">
+                <div className="control has-icons-left">
+                  <input
+                    className="input"
+                    type="password"
+                    placeholder="Enter new password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    required
+                  />
+                  <span className="icon is-small is-left">
+                    <i className="fas fa-lock"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div className="field">
+                <button
+                  type="button"
+                  className="button is-link is-fullwidth"
+                  onClick={handlePasswordReset}
+                >
+                  Reset Password
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Back to Login Link */}
+        <div className="columns is-centered">
+          <div className="column is-half has-text-centered">
+            <Link to="/login" className="button is-text">
+              Back to Login
+            </Link>
+          </div>
         </div>
       </form>
     </div>
