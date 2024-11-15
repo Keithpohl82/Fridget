@@ -1,5 +1,6 @@
 package com.example.fridget.controllers;
 
+import com.example.fridget.dtos.UserDTO;
 import com.example.fridget.models.User;
 import com.example.fridget.models.UserProfile;
 import com.example.fridget.services.UserProfileService;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/userservice")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class UserController {
 
     @Autowired
@@ -36,6 +37,7 @@ public class UserController {
                 .map(user -> {
                     // Store user information in session
                     session.setAttribute("username", user.getUsername());
+                    System.out.println("Session set for username: " + user.getUsername()); // Debugging log
                     return ResponseEntity.ok("Login successful");
                 })
                 .orElse(ResponseEntity.status(401).body("Invalid credentials"));
@@ -80,4 +82,41 @@ public class UserController {
             return ResponseEntity.ok("Username is available");
         }
     }
+    @GetMapping("/current-user")
+    public ResponseEntity<?> getCurrentUser(HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        if (username == null) {
+            return ResponseEntity.status(401).body("No user logged in");
+        }
+
+        User user = userService.findByUsername(username).orElse(null);
+        if (user == null) {
+            return ResponseEntity.status(404).body("User not found");
+        }
+
+        // Temporary default avatar placeholder
+        String avatar = "https://fontawesome.com/icons/paypal?f=brands&s=solid"; // Replace with an actual default avatar URL if desired
+
+        return ResponseEntity.ok(new UserDTO(user.getUsername(), avatar));
+    }
+
+    @PutMapping("/update-email")
+    public ResponseEntity<String> updateEmail(@RequestParam String newEmail, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        if (username == null) {
+            return ResponseEntity.status(401).body("Unauthorized");
+        }
+
+        try {
+            boolean success = userService.updateEmail(username, newEmail);
+            if (success) {
+                return ResponseEntity.ok("Email updated successfully");
+            } else {
+                return ResponseEntity.status(400).body("Failed to update email");
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
+    }
+
 }

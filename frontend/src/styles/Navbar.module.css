@@ -2,8 +2,8 @@
   background-color: #333;
   padding: 10px 20px;
   display: flex;
-  justify-content: space-between; /* Ensures the space between items is distributed */
-  align-items: center; /* Centers the items vertically */
+  justify-content: space-between;
+  align-items: center;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   position: sticky;
   top: 0;
@@ -16,7 +16,7 @@
   gap: 15px;
   margin: 0;
   padding: 0;
-  flex-grow: 1; /* This ensures that the navbar items expand to fill the available space */
+  flex-grow: 1;
 }
 
 .navbarItem {
@@ -36,8 +36,59 @@
   background-color: #555;
 }
 
-/* Specifically for aligning "Login" to the right */
 .navbarRight {
   display: flex;
-  justify-content: flex-end; /* Aligns "Login" to the far right */
+  justify-content: flex-end;
+}
+
+.username {
+  cursor: pointer;
+  margin-left: 10px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.username:hover {
+  text-decoration: underline;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.dropdown-trigger .button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  box-shadow: none;
+}
+
+.dropdown-trigger .button:hover {
+  background-color: #555;
+}
+
+.dropdown-menu {
+  background-color: #333;
+  border: 1px solid #444;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+}
+
+.dropdown-item {
+  padding: 10px 15px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.dropdown-item:hover {
+  background-color: #555;
+}
+
+.dropdown-content {
+  border-radius: 4px;
+  overflow: hidden;
 }

@@ -45,6 +45,9 @@ public class UserService {
         Optional<User> user = userRepository.findById(id);
         return user.orElseThrow(() -> new RuntimeException("User not found"));
     }
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 
     public Optional<User> loginUser(String identifier, String password) {
         Optional<User> userOpt;
@@ -108,6 +111,31 @@ public class UserService {
         }
         return false;
     }
+
+    public boolean updateEmail(String username, String newEmail) {
+        if (!isValidEmail(newEmail)) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
+
+        if (userExistsByEmail(newEmail)) {
+            throw new IllegalArgumentException("Email is already in use");
+        }
+
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setUserEmail(newEmail);
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        return email.matches(emailRegex);
+    }
+
 
     public boolean userExistsByEmail(String email) {
         return userRepository.findByUserEmail(email).isPresent();
