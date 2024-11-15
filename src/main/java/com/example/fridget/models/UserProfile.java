@@ -4,13 +4,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class UserProfile extends AbstractClass{
+public class UserProfile extends User{
 
     @OneToOne
     private User user;
 
     public UserProfile() {
-
+        super();
     }
 
     public UserProfile(User user) {
