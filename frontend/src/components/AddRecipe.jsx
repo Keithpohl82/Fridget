@@ -13,9 +13,11 @@ const AddRecipe = () => {
   const [recipeSteps, setDirections] = useState([]);
   const [ingredients, setIngredients] = useState([]);
 
+
   const addIngredient = (ingredient) => {
     setIngredients((prevIngredient) => [...prevIngredient, { id: ingredient }]);
   };
+
 
   const handleAddStep = (newStep) => {
     setDirections([...recipeSteps, newStep]);
@@ -23,6 +25,7 @@ const AddRecipe = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
 
     const response = await fetch(`http://localhost:8080/recipes/add`, {
       method: "POST",
@@ -42,6 +45,7 @@ const AddRecipe = () => {
     const result = await response.text();
     alert(result);
   };
+
 
   return (
     <div className="container mt-5">
@@ -137,6 +141,7 @@ const AddRecipe = () => {
       </ol>
     </div>
   );
+
 };
 
 export default AddRecipe;

@@ -1,8 +1,11 @@
 package com.example.fridget.services;
 
 import com.example.fridget.models.PasswordResetToken;
+import com.example.fridget.models.Recipe;
 import com.example.fridget.models.User;
+import com.example.fridget.models.UserProfile;
 import com.example.fridget.models.data.PasswordResetTokenRepository;
+import com.example.fridget.models.data.UserProfileRepository;
 import com.example.fridget.models.data.UserRepository;
 import com.example.fridget.services.EmailService;
 import jakarta.transaction.Transactional;
@@ -21,16 +24,28 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
+    private UserProfileRepository userProfileRepository;
+
+    @Autowired
     private PasswordResetTokenRepository tokenRepository;
 
     @Autowired
     private EmailService emailService; // New dependency for email service
 
+
+
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public void registerUser(User user) {
         user.setPwHash(encoder.encode(user.getPwHash()));
+
         userRepository.save(user);
+
+    }
+
+    public User getUserById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        return user.orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     public Optional<User> loginUser(String identifier, String password) {

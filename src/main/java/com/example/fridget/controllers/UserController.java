@@ -1,6 +1,8 @@
 package com.example.fridget.controllers;
 
 import com.example.fridget.models.User;
+import com.example.fridget.models.UserProfile;
+import com.example.fridget.services.UserProfileService;
 import com.example.fridget.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +10,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/userservice")
 @CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserProfileService userProfileService;
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
@@ -22,6 +27,8 @@ public class UserController {
         }
 
         userService.registerUser(user);
+        System.out.println("This users id is currently:" + user.getId());
+        userProfileService.createProfile(user);
         return ResponseEntity.ok("User registered successfully");
     }
 
@@ -40,6 +47,12 @@ public class UserController {
     public ResponseEntity<String> logoutUser(HttpSession session) {
         session.invalidate();
         return ResponseEntity.ok("Logout successful");
+    }
+
+    @GetMapping("/{id}")
+    @ResponseBody
+    public User getUser(@PathVariable Long id){
+        return userService.getUserById(id);
     }
 
     @PostMapping("/request-password-reset")

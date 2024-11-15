@@ -14,7 +14,7 @@ const Login = () => {
     setError("");
 
     const response = await fetch(
-      `http://localhost:8080/api/users/login?identifier=${identifier}&password=${password}`,
+      `http://localhost:8080/userservice/login?identifier=${identifier}&password=${password}`,
       {
         method: "POST",
       }

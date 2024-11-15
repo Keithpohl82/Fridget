@@ -13,6 +13,9 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @OneToOne(mappedBy = "user")
+    private UserProfile userProfile;
+
     @Column(nullable = false, unique = true)
     private String username;
 
@@ -36,7 +39,7 @@ public class User implements Serializable {
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public User(int id, String username, String firstName, String lastName, String userEmail, String pwHash, boolean isAdmin, List<RecipeReview> userReviews) {
+    public User(int id, UserProfile userProfile, String username, String firstName, String lastName, String userEmail, String pwHash, boolean isAdmin, List<RecipeReview> userReviews) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
@@ -45,6 +48,7 @@ public class User implements Serializable {
         this.pwHash = encoder.encode(pwHash);
         this.isAdmin = isAdmin;
         this.userReviews = userReviews;
+        this.userProfile = userProfile;
     }
 
     public User() {
@@ -108,5 +112,13 @@ public class User implements Serializable {
 
     public void setUserReviews(List<RecipeReview> userReviews) {
         this.userReviews = userReviews;
+    }
+
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
     }
 }
