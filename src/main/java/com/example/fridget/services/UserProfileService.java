@@ -24,4 +24,9 @@ public class UserProfileService {
 
     }
 
+    public UserProfile getProfileByUsername(String username) {
+        return userProfileRepository.findByUserUsername(username)
+                .orElseThrow(() -> new RuntimeException("Profile not found for username: " + username));
+    }
+
 }
