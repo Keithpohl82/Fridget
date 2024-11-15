@@ -25,9 +25,7 @@ public class UserController {
         if (userService.userExistsByEmail(user.getUserEmail())) {
             return ResponseEntity.status(400).body("A user with this email already exists.");
         }
-
         userService.registerUser(user);
-        System.out.println("This users id is currently:" + user.getId());
         userProfileService.createProfile(user);
         return ResponseEntity.ok("User registered successfully");
     }

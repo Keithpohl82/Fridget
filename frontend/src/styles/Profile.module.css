@@ -1,4 +1,4 @@
-/* UserProfile.module.css */
+UserProfile.module.css
 .profileContainer {
   width: 100%;
   max-width: 600px;
@@ -34,7 +34,6 @@
   border-radius: 50%;
 }
 
-/* Options Popup */
 .optionsPopup {
   position: absolute;
   top: 100%;
@@ -63,7 +62,7 @@
   color: #fff;
 }
 
-/* Predefined Avatars Popup */
+
 .predefinedAvatarsPopup {
   position: absolute;
   top: 140px;
@@ -92,12 +91,10 @@
 .predefinedAvatar:hover {
   border-color: #007bff;
 }
-/* Profile.module.css */
 
-/* Avatar Selection Popup */
 .avatarSelectionPopup {
   position: absolute;
-  top: 150px; /* Adjust as necessary to position below avatar */
+  top: 150px;
   left: 50%;
   transform: translateX(-50%);
   background-color: #fff;
@@ -128,12 +125,10 @@
 .predefinedAvatar:hover {
   border-color: #007bff;
 }
-/* Profile.module.css */
 
-/* Avatar Selection Popup */
 .avatarSelectionPopup {
   position: absolute;
-  top: 150px; /* Adjust as necessary to position below avatar */
+  top: 150px;
   left: 50%;
   transform: translateX(-50%);
   background-color: #fff;
@@ -181,11 +176,9 @@
 }
 
 .avatarInput {
-  display: none; /* Hide the default file input */
+  display: none; 
 }
-/* Profile.module.css */
 
-/* Editable fields styling */
 .usernameInput, .bioInput {
   width: 100%;
   padding: 10px;
@@ -203,7 +196,7 @@
   height: 100px;
 }
 
-/* Save button */
+
 .saveProfile {
   padding: 8px 16px;
   background-color: #007bff;

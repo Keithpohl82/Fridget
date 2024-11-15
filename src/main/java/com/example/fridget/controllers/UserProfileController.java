@@ -10,4 +10,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/userservice/user")
 public class UserProfileController {
 
+
 }
