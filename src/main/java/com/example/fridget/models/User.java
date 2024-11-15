@@ -19,12 +19,6 @@ public class User implements Serializable {
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = false, unique = false)
-    private String firstName;
-
-    @Column(nullable = false, unique = false)
-    private String lastName;
-
     @Column(nullable = true, unique = true)
     private String userEmail;
 
@@ -42,8 +36,6 @@ public class User implements Serializable {
     public User(int id, UserProfile userProfile, String username, String firstName, String lastName, String userEmail, String pwHash, boolean isAdmin, List<RecipeReview> userReviews) {
         this.id = id;
         this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.userEmail = userEmail;
         this.pwHash = encoder.encode(pwHash);
         this.isAdmin = isAdmin;
@@ -82,22 +74,6 @@ public class User implements Serializable {
         isAdmin = admin;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getUserEmail() {
         return userEmail;
     }
@@ -120,5 +96,17 @@ public class User implements Serializable {
 
     public void setUserProfile(UserProfile userProfile) {
         this.userProfile = userProfile;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userProfile=" + userProfile +
+                ", username='" + username + '\'' +
+                ", userEmail='" + userEmail + '\'' +
+                ", pwHash='" + pwHash + '\'' +
+                ", isAdmin=" + isAdmin +
+                ", userReviews=" + userReviews +
+                '}';
     }
 }

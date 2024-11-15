@@ -38,9 +38,7 @@ public class UserService {
 
     public void registerUser(User user) {
         user.setPwHash(encoder.encode(user.getPwHash()));
-
         userRepository.save(user);
-
     }
 
     public User getUserById(Long id) {
