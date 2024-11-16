@@ -8,9 +8,10 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "recipe", discriminatorType = DiscriminatorType.STRING)
 public class Recipe extends AbstractClass{
-    
-    @OneToMany
-    @Column(unique = false)
+
+
+    @ElementCollection
+    @CollectionTable(name = "recipe_ingredients", joinColumns = @JoinColumn(name = "recipe_id"))
     private List<Ingredients> ingredients;
 
     @Column(length = 2000)

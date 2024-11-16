@@ -1,7 +1,6 @@
 package com.example.fridget.services;
 
 import com.example.fridget.models.Recipe;
-import com.example.fridget.models.data.IngredientsRepository;
 import com.example.fridget.models.data.MeasurementsRepository;
 import com.example.fridget.models.data.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,6 @@ public class RecipeService {
     @Autowired
     RecipeRepository recipeRepository;
 
-    @Autowired
-    IngredientsRepository ingredientsRepository;
     @Autowired
     MeasurementsRepository measurementsRepository;
 
