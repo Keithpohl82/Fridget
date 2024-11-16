@@ -95,13 +95,13 @@ const AddRecipe = () => {
     }
   };
 
-  const addStep = () => {
+  const AddStep = () => {
     if(stepInput.trim() !== ""){
       const newStep = {
         directionText : stepInput,
-        stepOrder: stepNumber // I want to set this by getting the index of the step + 1
+        stepOrder: directions.length + 1,
       };
-      setDirections((prevDirections) => [...prevDirections, newStep])
+      setDirections((prevSteps) => [...prevSteps, newStep]);
       setStepInput("");
     }
   };
@@ -309,17 +309,17 @@ const AddRecipe = () => {
               <button
                 type="button"
                 className="button is-primary"
-                onClick={handleAddStep}
+                onClick={AddStep}
               >
                 Add Step
               </button>
             </div>
           </div>
 
-          <ol>
+          <ul>
             {directions.map((step, index) => (
               <li key={index}>
-                Step {index + 1}: {step}
+                Step {step.stepOrder}: {step.directionText}
                 <button
                   type="button"
                   className="delete is-small"
@@ -330,7 +330,7 @@ const AddRecipe = () => {
                 </button>
               </li>
             ))}
-          </ol>
+          </ul>
         </div>
 
         {/* Submit Button */}

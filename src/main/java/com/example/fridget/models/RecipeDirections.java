@@ -16,9 +16,10 @@ public class RecipeDirections {
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
-    public RecipeDirections(String directionText, int stepOrder) {
+    public RecipeDirections(String directionText, int stepOrder, Recipe recipe) {
         this.directionText = directionText;
         this.stepOrder = stepOrder;
+        this.recipe = recipe;
     }
 
     public RecipeDirections() {
@@ -38,5 +39,13 @@ public class RecipeDirections {
 
     public void setStepOrder(int stepOrder) {
         this.stepOrder = stepOrder;
+    }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
     }
 }
