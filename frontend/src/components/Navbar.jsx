@@ -55,6 +55,11 @@ const Navbar = ({ user, refreshUser }) => {
             Fridge
           </Link>
         </li>
+        <li className={styles.navbarItem}>
+          <Link to="/recipelist" className={styles.navbarLink}>
+            All Recipes
+          </Link>
+        </li>
       </ul>
 
       <div className={styles.navbarRight}>

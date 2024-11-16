@@ -12,6 +12,7 @@ import GroceryList from "./components/GroceryList";
 import UserProfile from "./components/UserProfile"; // Import
 import Recipe from "./components/RecipeHub";
 import "bulma/css/bulma.min.css";
+import RecipeList from "./components/RecipeList";
 
 // Sample user data
 const user = {
@@ -79,6 +80,7 @@ const App = () => {
           <Route path="/grocery-list" element={<GroceryList />} />
           <Route path="/profile" element={<UserProfile user={user} logoutUser={logoutUser} />} />
           <Route path="/add-recipe" element={<AddRecipe />} />
+          <Route path="/recipelist" element={<RecipeList />} />
         </Routes>
       </div>
     </Router>

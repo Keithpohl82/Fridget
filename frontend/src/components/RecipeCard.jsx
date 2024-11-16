@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-const RecipeCard = ({ name, cookTime, prepTime, description, directions, photoURL, ingredients, cuisine }) => {
+
+const RecipeCard = ({ recipe }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const handleToggleExpand = () => {
@@ -9,29 +10,29 @@ const RecipeCard = ({ name, cookTime, prepTime, description, directions, photoUR
 
     return (
         <div className="recipe-card" onClick={handleToggleExpand}>
-            <img src={photoURL} alt={`${name}`} className="recipe-card__image" />
+            <img src={recipe.photoURL} alt={`${recipe.name}`} className="recipe-card__image" />
             <div className="recipe-card__content">
-                <h2 className="recipe-card__title">{name}</h2>
-                <p className="recipe-card__cuisine"><strong>Cuisine:</strong> {cuisine}</p>
+                <h2 className="recipe-card__title">{recipe.name}</h2>
+                <p className="recipe-card__cuisine"><strong>Cuisine:</strong> {recipe.cuisine || 'N/A'}</p>
                 {isExpanded && (
                     <>
                         <p className="recipe-card__times">
-                            <strong>Prep Time:</strong> {prepTime} | <strong>Cook Time:</strong> {cookTime}
+                            <strong>Prep Time:</strong> {recipe.prepTime} | <strong>Cook Time:</strong> {recipe.cookTime}
                         </p>
-                        <p className="recipe-card__description">{description}</p>
+                        <p className="recipe-card__description">{recipe.description}</p>
                         <div className="recipe-card__ingredients">
                             <strong>Ingredients:</strong>
                             <ul>
-                                {ingredients.map((ingredient, index) => (
-                                    <li key={index}>{ingredient}</li>
+                                {recipe.ingredients.map((item, index) => (
+                                    <li key={index}>{`${item.amount} ${item.unit} ${item.ingredient}`}</li>
                                 ))}
                             </ul>
                         </div>
                         <div className="recipe-card__directions">
                             <strong>Directions:</strong>
                             <ol>
-                                {directions.map((step, index) => (
-                                    <li key={index}>{step}</li>
+                                {recipe.directions.sort((a, b) => a.stepOrder - b.stepOrder).map((step, index) => (
+                                    <li key={index}>{step.directionText}</li>
                                 ))}
                             </ol>
                         </div>
@@ -41,4 +42,5 @@ const RecipeCard = ({ name, cookTime, prepTime, description, directions, photoUR
         </div>
     );
 };
+
 export default RecipeCard;
