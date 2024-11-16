@@ -1,11 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import { Link } from "react-router-dom";
 import 'bulma/css/bulma.min.css';
 
 const HomePage = () => {
   const [ingredients, setIngredients] = useState('');
   const [recipeResults, setRecipeResults] = useState([]);
+  const [recipes, setRecipes] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingRecipes, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('http://localhost:8080/recipes/')
+        .then(response => response.json())
+        .then(data => {
+            setRecipes(data);
+            setLoading(false);
+        })
+        .catch(error => {
+            console.error('Error fetching recipes:', error);
+            setLoading(false);
+        });
+}, []);
+
+if (loadingRecipes) {
+  return <p>Loading recipes...</p>;
+}
+
+//This is for getting a random index of recipes. 
+  const getRandomIndex = () => {
+    return Math.floor(Math.random() * recipes.length);
+  };
+  const randomIndex = getRandomIndex();
+  const randomRecipe = recipes[randomIndex];
+  console.log(recipes);
+
 
   const handleInputChange = (e) => {
     setIngredients(e.target.value);
@@ -97,8 +125,8 @@ const HomePage = () => {
                   </figure>
                 </div>
                 <div className="card-content">
-                  <p className="title">Recipe 1</p>
-                  <p className="subtitle">A delicious meal!</p>
+                  <p className="title">{randomRecipe.name}</p>
+                  <p className="subtitle">{randomRecipe.description}</p>
                 </div>
               </div>
             </div>
