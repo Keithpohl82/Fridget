@@ -13,6 +13,7 @@ const HomePage = () => {
 
   const handleSearch = async () => {
     if (!ingredients) return;
+   
 
     setIsLoading(true);
     try {

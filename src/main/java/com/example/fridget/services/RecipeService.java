@@ -5,6 +5,8 @@ import com.example.fridget.models.data.IngredientsRepository;
 import com.example.fridget.models.data.MeasurementsRepository;
 import com.example.fridget.models.data.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +29,10 @@ public class RecipeService {
     }
     public List<Recipe> getRecipes() {
         return recipeRepository.findAll();
+    }
+
+    public Page<Recipe> getRecipesForHome(int page, int size) {
+        return recipeRepository.findAll(PageRequest.of(page, size));
     }
 
     public Recipe getRecipeById(Long id) {
