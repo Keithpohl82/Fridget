@@ -79,6 +79,7 @@ const AddRecipe = () => {
   const [amountInput, setAmountInput] = useState("");
   const [unitInput, setUnitInput] = useState("");
   const [stepInput, setStepInput] = useState("");
+  const [cuisine, setCuisine] = useState("");
 
   // Add ingredient to the list
   const addIngredient = () => {
@@ -143,6 +144,7 @@ const AddRecipe = () => {
         directions,
         photoURL,
         ingredients,
+        cuisine,
       }),
     });
     const result = await response.text();
@@ -172,6 +174,22 @@ const AddRecipe = () => {
                   placeholder="Enter recipe name"
                   value={name}
                   onChange={(e) => setRecipeName(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+          {/* Cuisine Column */}
+          <div className="column">          
+            <div className="field">
+              <label className="label">Cuisine</label>
+              <div className="control">
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="Enter Cuisine"
+                  value={cuisine}
+                  onChange={(e) => setCuisine(e.target.value)}
                   required
                 />
               </div>
@@ -224,6 +242,7 @@ const AddRecipe = () => {
               </div>
             </div>
           </div>
+        </div>
         </div>
 
         {/* Ingredients Section */}
