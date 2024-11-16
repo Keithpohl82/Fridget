@@ -1,7 +1,5 @@
 package com.example.fridget.models;
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Embeddable
 public class Ingredients {
@@ -10,7 +8,7 @@ public class Ingredients {
         private String amount;
         private String unit;
 
-        // Getters and setters
+
         public String getIngredient() {
             return ingredient;
         }
