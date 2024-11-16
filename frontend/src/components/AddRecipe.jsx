@@ -96,6 +96,7 @@ const AddRecipe = () => {
     }
   };
 
+  // Add a step to the recipe
   const AddStep = () => {
     if(stepInput.trim() !== ""){
       const newStep = {
@@ -103,14 +104,6 @@ const AddRecipe = () => {
         stepOrder: directions.length + 1,
       };
       setDirections((prevSteps) => [...prevSteps, newStep]);
-      setStepInput("");
-    }
-  };
-
-  // Add a step to the recipe
-  const handleAddStep = () => {
-    if (stepInput.trim() !== "") {
-      setDirections([...directions, stepInput]);
       setStepInput("");
     }
   };

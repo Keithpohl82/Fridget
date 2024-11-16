@@ -9,9 +9,21 @@ const RecipeCard = ({ recipe }) => {
     };
 
     return (
-        <div className="recipe-card" onClick={handleToggleExpand}>
-            <img src={recipe.photoURL} alt={`${recipe.name}`} className="recipe-card__image" />
-            <div className="recipe-card__content">
+        <div 
+            className={`recipe-card ${isExpanded ? 'expanded' : ''}`} 
+            onClick={handleToggleExpand} 
+            style={{
+                backgroundColor: 'black',
+                color: 'white',
+                border: '2px solid yellow',
+                borderRadius: '10px',
+                width: isExpanded ? '600px' : '200px',
+                transition: 'width 0.3s ease',
+                cursor: 'pointer'
+            }}
+        >
+            <img src={recipe.photoURL} alt={`${recipe.name}`} className="recipe-card__image" style={{ width: '100%', borderRadius: '10px 10px 0 0' }} />
+            <div className="recipe-card__content" style={{ padding: '10px' }}>
                 <h2 className="recipe-card__title">{recipe.name}</h2>
                 <p className="recipe-card__cuisine"><strong>Cuisine:</strong> {recipe.cuisine || 'N/A'}</p>
                 {isExpanded && (
