@@ -72,7 +72,8 @@ const AddRecipe = () => {
   const [prepTime, setPrepTime] = useState("");
   const [description, setDescription] = useState("");
   const [photoURL, setPhotoUrl] = useState("");
-  const [recipeSteps, setDirections] = useState([]);
+  const [directions, setDirections] = useState([]);
+  const [stepNumber, setStepNumber] = useState("");
   const [ingredients, setIngredients] = useState([]);
   const [ingredientInput, setIngredientInput] = useState("");
   const [amountInput, setAmountInput] = useState("");
@@ -94,10 +95,21 @@ const AddRecipe = () => {
     }
   };
 
+  const addStep = () => {
+    if(stepInput.trim() !== ""){
+      const newStep = {
+        directionText : stepInput,
+        stepOrder: stepNumber // I want to set this by getting the index of the step + 1
+      };
+      setDirections((prevDirections) => [...prevDirections, newStep])
+      setStepInput("");
+    }
+  };
+
   // Add a step to the recipe
   const handleAddStep = () => {
     if (stepInput.trim() !== "") {
-      setDirections([...recipeSteps, stepInput]);
+      setDirections([...directions, stepInput]);
       setStepInput("");
     }
   };
@@ -110,7 +122,7 @@ const AddRecipe = () => {
 
   // Remove step
   const removeStep = (index) => {
-    const updatedSteps = recipeSteps.filter((_, i) => i !== index);
+    const updatedSteps = directions.filter((_, i) => i !== index);
     setDirections(updatedSteps);
   };
 
@@ -128,7 +140,7 @@ const AddRecipe = () => {
         cookTime,
         prepTime,
         description,
-        recipeSteps,
+        directions,
         photoURL,
         ingredients,
       }),
@@ -305,7 +317,7 @@ const AddRecipe = () => {
           </div>
 
           <ol>
-            {recipeSteps.map((step, index) => (
+            {directions.map((step, index) => (
               <li key={index}>
                 Step {index + 1}: {step}
                 <button
@@ -327,7 +339,7 @@ const AddRecipe = () => {
             <button
               type="submit"
               className="button is-primary is-fullwidth"
-              disabled={ingredients.length === 0 || recipeSteps.length === 0}
+              disabled={ingredients.length === 0 || directions.length === 0}
             >
               Save Recipe
             </button>

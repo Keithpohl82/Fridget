@@ -1,6 +1,7 @@
 package com.example.fridget.services;
 
 import com.example.fridget.models.Recipe;
+import com.example.fridget.models.RecipeDirections;
 import com.example.fridget.models.data.MeasurementsRepository;
 import com.example.fridget.models.data.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,6 +2,7 @@ package com.example.fridget.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,8 +15,9 @@ public class Recipe extends AbstractClass{
     @CollectionTable(name = "recipe_ingredients", joinColumns = @JoinColumn(name = "recipe_id"))
     private List<Ingredients> ingredients;
 
-    @Column(length = 2000)
-    private String recipeDirections;
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("stepOrder ASC")
+    private List<RecipeDirections> directions;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeReview> reviews;
@@ -34,7 +36,7 @@ public class Recipe extends AbstractClass{
 
     private String creator;
 
-    public Recipe(String creator ,List<RecipeReview> reviews, List<Ingredients> ingredients, String recipeDirections, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL) {
+    public Recipe(String creator ,List<RecipeReview> reviews, List<Ingredients> ingredients, List<RecipeDirections> directions, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL) {
         super();
         this.creator = creator;
         this.ingredients = ingredients;
@@ -44,7 +46,7 @@ public class Recipe extends AbstractClass{
         this.cookTime = cookTime;
         this.totalTime = totalTime;
         this.photoURL = photoURL;
-        this.recipeDirections = recipeDirections;
+        this.directions = directions;
         this.reviews = reviews;
     }
 
@@ -54,14 +56,6 @@ public class Recipe extends AbstractClass{
 
     public Long getId() {
         return super.getId();
-    }
-
-    public String getRecipeDirections() {
-        return recipeDirections;
-    }
-
-    public void setRecipeDirections(String recipeDirections) {
-        this.recipeDirections = recipeDirections;
     }
 
     public List<RecipeReview> getReviews() {
@@ -135,12 +129,20 @@ public class Recipe extends AbstractClass{
         this.creator = creator;
     }
 
+    public List<RecipeDirections> getDirections() {
+        return directions;
+    }
+
+    public void setDirections(List<RecipeDirections> directions) {
+        this.directions = directions;
+    }
+
     @Override
     public String toString() {
         return "Recipe{" +
                 "ID=" + getId() +
                 "ingredients=" + ingredients +
-                ", recipeDirections=" + recipeDirections +
+                ", recipeDirections=" + directions +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", prepTime=" + prepTime +
