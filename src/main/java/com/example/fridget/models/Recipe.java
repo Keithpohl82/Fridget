@@ -2,6 +2,7 @@ package com.example.fridget.models;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,9 +37,12 @@ public class Recipe extends AbstractClass{
 
     private String creator;
 
+    @Column(nullable = true, unique = false)
+    private LocalDate dateCreated;
+
     private String cuisine;
 
-    public Recipe(List<Ingredients> ingredients, List<RecipeDirections> directions, List<RecipeReview> reviews, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL, String creator, String cuisine) {
+    public Recipe(LocalDate dateCreated, List<Ingredients> ingredients, List<RecipeDirections> directions, List<RecipeReview> reviews, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL, String creator, String cuisine) {
         super();
         this.ingredients = ingredients;
         this.directions = directions;
@@ -51,6 +55,7 @@ public class Recipe extends AbstractClass{
         this.photoURL = photoURL;
         this.creator = creator;
         this.cuisine = cuisine;
+        this.dateCreated = dateCreated;
     }
 
     public Recipe() {
@@ -146,6 +151,14 @@ public class Recipe extends AbstractClass{
 
     public void setCuisine(String cuisine) {
         this.cuisine = cuisine;
+    }
+
+    public LocalDate getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(LocalDate dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     @Override
