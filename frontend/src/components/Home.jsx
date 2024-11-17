@@ -105,6 +105,33 @@ if (loadingRecipes) {
           </div>
         </div>
       </section>
+      
+{/* Recipe Results Section */}
+{recipeResults.length > 0 && (
+        <section className="section">
+          <div className="container">
+            <h2 className="title has-text-centered">Recipe Results</h2>
+            <div className="columns is-multiline">
+              {recipeResults.map((recipe, index) => (
+                <div className="column is-one-third" key={index}>
+                  <div className="card">
+                    <div className="card-image">
+                      <figure className="image is-4by3">
+                        <img src={recipe.image || 'https://via.placeholder.com/400'} alt={recipe.name} />
+                      </figure>
+                    </div>
+                    <div className="card-content">
+                      <p className="title">{recipe.name}</p>
+                      <p className="subtitle">{recipe.description}</p>
+                      <button className="button is-info">View Recipe</button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Featured Recipes (Optional) */}
       <section className="section">
@@ -130,32 +157,7 @@ if (loadingRecipes) {
         </div>
       </section>
 
-      {/* Recipe Results Section */}
-      {recipeResults.length > 0 && (
-        <section className="section">
-          <div className="container">
-            <h2 className="title has-text-centered">Recipe Results</h2>
-            <div className="columns is-multiline">
-              {recipeResults.map((recipe, index) => (
-                <div className="column is-one-third" key={index}>
-                  <div className="card">
-                    <div className="card-image">
-                      <figure className="image is-4by3">
-                        <img src={recipe.image || 'https://via.placeholder.com/400'} alt={recipe.name} />
-                      </figure>
-                    </div>
-                    <div className="card-content">
-                      <p className="title">{recipe.name}</p>
-                      <p className="subtitle">{recipe.description}</p>
-                      <button className="button is-info">View Recipe</button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      
 
       {/* Ingredient Categories Section */}
       <section className="section">
