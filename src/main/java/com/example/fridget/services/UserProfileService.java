@@ -18,8 +18,8 @@ public class UserProfileService {
         UserProfile profileBeingCreated = new UserProfile();
         profileBeingCreated.setUser(user);
         profileBeingCreated.setBirthday(LocalDate.of(1982,04,20));
-        profileBeingCreated.setFirstName("John");
-        profileBeingCreated.setLastName("Doe");
+        profileBeingCreated.setFirstName(user.getFirstName());
+        profileBeingCreated.setLastName(user.getLastName());
         userProfileRepository.save(profileBeingCreated);
 
     }
