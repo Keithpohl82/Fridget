@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ public class RecipeService {
     MeasurementsRepository measurementsRepository;
 
     public void addNewRecipe(Recipe recipe){
-
+        recipe.setDateCreated(LocalDate.now());
         recipeRepository.save(recipe);
     }
     public List<Recipe> getRecipes() {

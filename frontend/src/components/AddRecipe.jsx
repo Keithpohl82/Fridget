@@ -73,7 +73,6 @@ const AddRecipe = () => {
   const [description, setDescription] = useState("");
   const [photoURL, setPhotoUrl] = useState("");
   const [directions, setDirections] = useState([]);
-  const [stepNumber, setStepNumber] = useState("");
   const [ingredients, setIngredients] = useState([]);
   const [ingredientInput, setIngredientInput] = useState("");
   const [amountInput, setAmountInput] = useState("");
@@ -142,6 +141,16 @@ const AddRecipe = () => {
     });
     const result = await response.text();
     alert(result);
+
+    setCookTime("");
+    setRecipeName("");
+    setDescription("");
+    setPrepTime("");
+    setIngredients([]);
+    setDirections([]);
+    setCuisine("");
+
+
   };
 
   return (
