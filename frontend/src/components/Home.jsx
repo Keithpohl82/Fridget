@@ -3,12 +3,13 @@ import { Link } from "react-router-dom";
 import 'bulma/css/bulma.min.css';
 
 const HomePage = () => {
-  const [ingredients, setIngredients] = useState('');
+  const [ingredientSearch, setIngredients] = useState('');
   const [recipeResults, setRecipeResults] = useState([]);
   const [recipes, setRecipes] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingRecipes, setLoading] = useState(true);
 
+  //This will fetch all recipes in the database and assign them to recipes.
   useEffect(() => {
     fetch('http://localhost:8080/recipes/')
         .then(response => response.json())
@@ -32,28 +33,23 @@ if (loadingRecipes) {
   };
   const randomIndex = getRandomIndex();
   const randomRecipe = recipes[randomIndex];
-  console.log(recipes);
-
 
   const handleInputChange = (e) => {
     setIngredients(e.target.value);
   };
 
-  const handleSearch = async () => {
-    if (!ingredients) return;
-   
-
-    setIsLoading(true);
-    try {
-      const response = await fetch(`http://localhost:8080/recipes?ingredients=${ingredients}`);
-      const data = await response.json();
-      setRecipeResults(data);
-    } catch (error) {
-      console.error("Error fetching recipes:", error);
-    } finally {
-      setIsLoading(false);
+const handleFilter = (e) => {
+  const filterArr = [];
+  recipes.forEach(recipe => {
+    if (recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase() === ingredientSearch.toLowerCase())) {
+      //console.log(recipe);
+      const filteredRecipe = recipe;
+      filterArr.push(recipe);
     }
-  };
+  });
+  setRecipeResults(filterArr);
+  console.log("filterarr: "+recipeResults);
+}
 
   return (
     <div>
@@ -70,12 +66,12 @@ if (loadingRecipes) {
                   className="input"
                   type="text"
                   placeholder="Enter ingredients (e.g., chicken, rice, broccoli)"
-                  value={ingredients}
+                  value={ingredientSearch}
                   onChange={handleInputChange}
                 />
               </div>
               <div className="control">
-                <button className="button is-info" onClick={handleSearch} disabled={isLoading}>
+                <button className="button is-info" onClick={handleFilter} disabled={isLoading}>
                   {isLoading ? 'Searching...' : 'Find Recipes'}
                 </button>
               </div>
