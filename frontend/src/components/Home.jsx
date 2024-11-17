@@ -1,29 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import { Link } from "react-router-dom";
 import 'bulma/css/bulma.min.css';
 
 const HomePage = () => {
-  const [ingredients, setIngredients] = useState('');
+  const [ingredientSearch, setIngredients] = useState('');
   const [recipeResults, setRecipeResults] = useState([]);
+  const [recipes, setRecipes] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingRecipes, setLoading] = useState(true);
+
+  //This will fetch all recipes in the database and assign them to recipes.
+  useEffect(() => {
+    fetch('http://localhost:8080/recipes/')
+        .then(response => response.json())
+        .then(data => {
+            setRecipes(data);
+            setLoading(false);
+        })
+        .catch(error => {
+            console.error('Error fetching recipes:', error);
+            setLoading(false);
+        });
+}, []);
+
+if (loadingRecipes) {
+  return <p>Loading recipes...</p>;
+}
+
+//This is for getting a random index of recipes. 
+  const getRandomIndex = () => {
+    return Math.floor(Math.random() * recipes.length);
+  };
+  const randomIndex = getRandomIndex();
+  const randomRecipe = recipes[randomIndex];
 
   const handleInputChange = (e) => {
     setIngredients(e.target.value);
   };
 
-  const handleSearch = async () => {
-    if (!ingredients) return;
-
-    setIsLoading(true);
-    try {
-      const response = await fetch(`http://localhost:8080/recipes?ingredients=${ingredients}`);
-      const data = await response.json();
-      setRecipeResults(data);
-    } catch (error) {
-      console.error("Error fetching recipes:", error);
-    } finally {
-      setIsLoading(false);
-    }
+  //Filters all recipes from the database to display recipes that have the ingredient that was typed in the searchbar
+  //Currently only works with one ingredient.
+  const handleFilter = () => {
+    const filterArr = recipes.filter(recipe =>
+      recipe.ingredients.some(
+        ingredient => ingredient.ingredient.toLowerCase() === ingredientSearch.toLowerCase()
+      )
+    );
+    setRecipeResults(filterArr);
+    console.log("filterArr:", filterArr);
   };
 
   return (
@@ -41,12 +65,12 @@ const HomePage = () => {
                   className="input"
                   type="text"
                   placeholder="Enter ingredients (e.g., chicken, rice, broccoli)"
-                  value={ingredients}
+                  value={ingredientSearch}
                   onChange={handleInputChange}
                 />
               </div>
               <div className="control">
-                <button className="button is-info" onClick={handleSearch} disabled={isLoading}>
+                <button className="button is-info" onClick={handleFilter} disabled={isLoading}>
                   {isLoading ? 'Searching...' : 'Find Recipes'}
                 </button>
               </div>
@@ -81,33 +105,9 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-
-      {/* Featured Recipes (Optional) */}
-      <section className="section">
-        <div className="container">
-          <h2 className="title has-text-centered">Featured Recipes</h2>
-          <div className="columns is-multiline">
-            {/* Example recipe items */}
-            <div className="column is-one-third">
-              <div className="card">
-                <div className="card-image">
-                  <figure className="image is-4by3">
-                    <img src="https://via.placeholder.com/400" alt="Recipe 1" />
-                  </figure>
-                </div>
-                <div className="card-content">
-                  <p className="title">Recipe 1</p>
-                  <p className="subtitle">A delicious meal!</p>
-                </div>
-              </div>
-            </div>
-            {/* Repeat similar blocks for other featured recipes */}
-          </div>
-        </div>
-      </section>
-
-      {/* Recipe Results Section */}
-      {recipeResults.length > 0 && (
+      
+{/* Recipe Results Section */}
+{recipeResults.length > 0 && (
         <section className="section">
           <div className="container">
             <h2 className="title has-text-centered">Recipe Results</h2>
@@ -132,6 +132,32 @@ const HomePage = () => {
           </div>
         </section>
       )}
+
+      {/* Featured Recipes (Optional) */}
+      <section className="section">
+        <div className="container">
+          <h2 className="title has-text-centered">Featured Recipes</h2>
+          <div className="columns is-multiline">
+            {/* Example recipe items */}
+            <div className="column is-one-third">
+              <div className="card">
+                <div className="card-image">
+                  <figure className="image is-4by3">
+                    <img src="https://via.placeholder.com/400" alt="Recipe 1" />
+                  </figure>
+                </div>
+                <div className="card-content">
+                  <p className="title">{randomRecipe.name}</p>
+                  <p className="subtitle">{randomRecipe.description}</p>
+                </div>
+              </div>
+            </div>
+            {/* Repeat similar blocks for other featured recipes */}
+          </div>
+        </div>
+      </section>
+
+      
 
       {/* Ingredient Categories Section */}
       <section className="section">

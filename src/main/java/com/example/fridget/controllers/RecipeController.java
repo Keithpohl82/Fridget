@@ -4,6 +4,7 @@ package com.example.fridget.controllers;
 import com.example.fridget.models.Recipe;
 import com.example.fridget.services.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,14 @@ public class RecipeController {
     public ResponseEntity<List<Recipe>> index() {
         List<Recipe> recipes = recipeService.getRecipes();
         return ResponseEntity.ok(recipes);
+    }
+
+    @GetMapping("getall")
+    public Page<Recipe> getRecipesForHome(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        return recipeService.getRecipesForHome(page, size);
     }
 
     @GetMapping("/{id}")

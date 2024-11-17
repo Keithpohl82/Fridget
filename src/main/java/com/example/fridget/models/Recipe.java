@@ -2,19 +2,23 @@ package com.example.fridget.models;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "recipe", discriminatorType = DiscriminatorType.STRING)
 public class Recipe extends AbstractClass{
-    
-    @OneToMany
-    @Column(unique = false)
+
+
+    @ElementCollection
+    @CollectionTable(name = "recipe_ingredients", joinColumns = @JoinColumn(name = "recipe_id"))
     private List<Ingredients> ingredients;
 
-    @Column(length = 2000)
-    private String recipeDirections;
+    @ElementCollection
+    @CollectionTable(name = "recipe_directions", joinColumns = @JoinColumn(name = "recipe_id"))
+    private List<RecipeDirections> directions;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeReview> reviews;
@@ -33,34 +37,48 @@ public class Recipe extends AbstractClass{
 
     private String creator;
 
-    public Recipe(String creator ,List<RecipeReview> reviews, List<Ingredients> ingredients, String recipeDirections, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL) {
+    @Column(nullable = true, unique = false)
+    private LocalDate dateCreated;
+
+    private String cuisine;
+
+    public Recipe(LocalDate dateCreated, List<Ingredients> ingredients, List<RecipeDirections> directions, List<RecipeReview> reviews, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL, String creator, String cuisine) {
         super();
-        this.creator = creator;
         this.ingredients = ingredients;
+        this.directions = directions;
+        this.reviews = reviews;
         this.name = name;
         this.description = description;
         this.prepTime = prepTime;
         this.cookTime = cookTime;
         this.totalTime = totalTime;
         this.photoURL = photoURL;
-        this.recipeDirections = recipeDirections;
-        this.reviews = reviews;
+        this.creator = creator;
+        this.cuisine = cuisine;
+        this.dateCreated = dateCreated;
     }
 
     public Recipe() {
-
     }
 
     public Long getId() {
         return super.getId();
     }
 
-    public String getRecipeDirections() {
-        return recipeDirections;
+    public List<Ingredients> getIngredients() {
+        return ingredients;
     }
 
-    public void setRecipeDirections(String recipeDirections) {
-        this.recipeDirections = recipeDirections;
+    public void setIngredients(List<Ingredients> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public List<RecipeDirections> getDirections() {
+        return directions;
+    }
+
+    public void setDirections(List<RecipeDirections> directions) {
+        this.directions = directions;
     }
 
     public List<RecipeReview> getReviews() {
@@ -69,13 +87,6 @@ public class Recipe extends AbstractClass{
 
     public void setReviews(List<RecipeReview> reviews) {
         this.reviews = reviews;
-    }
-    public List<Ingredients> getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(List<Ingredients> ingredients) {
-        this.ingredients = ingredients;
     }
 
     public String getName() {
@@ -134,12 +145,28 @@ public class Recipe extends AbstractClass{
         this.creator = creator;
     }
 
+    public String getCuisine() {
+        return cuisine;
+    }
+
+    public void setCuisine(String cuisine) {
+        this.cuisine = cuisine;
+    }
+
+    public LocalDate getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(LocalDate dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
     @Override
     public String toString() {
         return "Recipe{" +
                 "ID=" + getId() +
                 "ingredients=" + ingredients +
-                ", recipeDirections=" + recipeDirections +
+                ", recipeDirections=" + directions +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", prepTime=" + prepTime +

@@ -1,45 +1,36 @@
 package com.example.fridget.models;
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
-@Entity
-public class Ingredients extends AbstractClass {
+@Embeddable
+public class Ingredients {
+
+        private String ingredient;
+        private String amount;
+        private String unit;
 
 
-    @OneToMany(mappedBy = "ingredients")
-    @Column(unique = false)
-    private List<Recipe> recipe = new ArrayList<>();
+        public String getIngredient() {
+            return ingredient;
+        }
 
-    private String name;
+        public void setIngredient(String ingredient) {
+            this.ingredient = ingredient;
+        }
 
-    public Ingredients() {
+        public String getAmount() {
+            return amount;
+        }
 
-    }
+        public void setAmount(String amount) {
+            this.amount = amount;
+        }
 
-    public Ingredients(List<Recipe> recipe, String name) {
-        this.name = name;
-        this.recipe = recipe;
-    }
+        public String getUnit() {
+            return unit;
+        }
 
-    public Long getId() {
-        return super.getId();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Recipe> getRecipe() {
-        return recipe;
-    }
-
-    public void setRecipe(List<Recipe> recipe) {
-        this.recipe = recipe;
-    }
+        public void setUnit(String unit) {
+            this.unit = unit;
+        }
 
 }

@@ -1,8 +1,27 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import styles from "../styles/Navbar.module.css"; // Import the CSS module
+import { Link, useNavigate } from "react-router-dom";
+import styles from "../styles/Navbar.module.css";
 
-const Navbar = () => {
+const Navbar = ({ user, refreshUser }) => {
+  const navigate = useNavigate();
+
+  const logoutUser = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/userservice/logout", {
+        method: "POST",
+        credentials: "include", // Ensures session cookies are sent
+      });
+      if (response.ok) {
+        refreshUser(); // Refresh user state
+        navigate("/login"); // Redirect to login page
+      } else {
+        console.error("Failed to log out");
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
   return (
     <nav className={styles.navbar}>
       <ul className={styles.navbarLinks}>
@@ -11,7 +30,6 @@ const Navbar = () => {
             Fridget Home
           </Link>
         </li>
-        
         <li className={styles.navbarItem}>
           <Link to="/ingredients" className={styles.navbarLink}>
             Ingredients
@@ -37,19 +55,45 @@ const Navbar = () => {
             Fridge
           </Link>
         </li>
-        
+        <li className={styles.navbarItem}>
+          <Link to="/recipelist" className={styles.navbarLink}>
+            All Recipes
+          </Link>
+        </li>
       </ul>
-      
 
       <div className={styles.navbarRight}>
-      <li className={styles.navbarItem}>
-        <Link to="/profile" className={styles.navbarLink}>
-          Profile
-        </Link>
-      </li>
-        <Link to="/login" className={styles.navbarLink}>
-          Login
-        </Link>
+        {user ? (
+          <div className={`dropdown is-right is-hoverable ${styles.userInfo}`}>
+            <div className={`dropdown-trigger ${styles.dropdownTrigger}`}>
+              <button className={`button ${styles.dropdownButton}`}>
+                <span>
+                  <img src={user.avatar || "/default-avatar.png"} alt="Avatar" className={`${styles.avatar} is-rounded`} />
+                </span>
+                <Link to="/profile">
+                  <span>{user.username}</span>
+                </Link>
+                <span className="icon is-small">
+                  <i className="fas fa-angle-down"></i>
+                </span>
+              </button>
+            </div>
+            <div className={`dropdown-menu ${styles.dropdownMenu}`} role="menu">
+              <div className="dropdown-content">
+                <Link to="/profile" className={`dropdown-item ${styles.dropdownItem}`}>
+                  My Profile
+                </Link>
+                <button className={`dropdown-item ${styles.dropdownItem}`} onClick={logoutUser}>
+                  Logout
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <Link to="/login" className={styles.navbarLink}>
+            Login
+          </Link>
+        )}
       </div>
     </nav>
   );
