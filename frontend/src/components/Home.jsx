@@ -38,18 +38,17 @@ if (loadingRecipes) {
     setIngredients(e.target.value);
   };
 
-const handleFilter = (e) => {
-  const filterArr = [];
-  recipes.forEach(recipe => {
-    if (recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase() === ingredientSearch.toLowerCase())) {
-      //console.log(recipe);
-      const filteredRecipe = recipe;
-      filterArr.push(recipe);
-    }
-  });
-  setRecipeResults(filterArr);
-  console.log("filterarr: "+recipeResults);
-}
+  //Filters all recipes from the database to display recipes that have the ingredient that was typed in the searchbar
+  //Currently only works with one ingredient.
+  const handleFilter = () => {
+    const filterArr = recipes.filter(recipe =>
+      recipe.ingredients.some(
+        ingredient => ingredient.ingredient.toLowerCase() === ingredientSearch.toLowerCase()
+      )
+    );
+    setRecipeResults(filterArr);
+    console.log("filterArr:", filterArr);
+  };
 
   return (
     <div>
