@@ -26,10 +26,15 @@ const UserProfile = ({ user, logoutUser }) => {
 
   const saveProfileChanges = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/userservice/update-email?newEmail=${encodeURIComponent(email)}`, {
-        method: "PUT",
-        credentials: "include",
-      });
+      const response = await fetch(
+        `http://localhost:8080/userservice/update-email?newEmail=${encodeURIComponent(
+          email
+        )}`,
+        {
+          method: "PUT",
+          credentials: "include",
+        }
+      );
 
       if (response.ok) {
         setSuccessMessage("Email updated successfully.");
@@ -48,22 +53,56 @@ const UserProfile = ({ user, logoutUser }) => {
       <div className="box">
         <div className="columns is-vcentered">
           <div className="column is-narrow has-text-centered">
-            <figure className="image is-128x128 is-clickable" onClick={() => setShowAvatarSelection(!showAvatarSelection)}>
-              <img src={avatar || "https://via.placeholder.com/150"} alt="User Avatar" className="is-rounded" />
+            <figure
+              className="image is-128x128 is-clickable"
+              onClick={() => setShowAvatarSelection(!showAvatarSelection)}
+            >
+              <img
+                src={avatar || "https://via.placeholder.com/150"}
+                alt="User Avatar"
+                className="is-rounded"
+              />
             </figure>
           </div>
           <div className="column">
             {isEditing ? (
               <div>
-                <input type="text" value={username} disabled className="input mb-3" placeholder="Username" />
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="input mb-3" placeholder="Email" />
-                <textarea value={bio} onChange={(e) => setBio(e.target.value)} className="textarea mb-3" placeholder="Bio" />
-                {errorMessage && <p className="help is-danger">{errorMessage}</p>}
-                {successMessage && <p className="help is-success">{successMessage}</p>}
-                <button className="button is-primary is-fullwidth" onClick={saveProfileChanges}>
+                <input
+                  type="text"
+                  value={username}
+                  disabled
+                  className="input mb-3"
+                  placeholder="Username"
+                />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="input mb-3"
+                  placeholder="Email"
+                />
+                <textarea
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value)}
+                  className="textarea mb-3"
+                  placeholder="Bio"
+                />
+                {errorMessage && (
+                  <p className="help is-danger">{errorMessage}</p>
+                )}
+                {successMessage && (
+                  <p className="help is-success">{successMessage}</p>
+                )}
+                <button
+                  className="button is-primary is-fullwidth"
+                  onClick={saveProfileChanges}
+                >
                   Save Changes
                 </button>
-                <button className="button is-light is-fullwidth mt-2" onClick={toggleEditProfile}>
+                <button
+                  className="button is-light is-fullwidth mt-2"
+                  onClick={toggleEditProfile}
+                >
                   Cancel
                 </button>
               </div>
@@ -84,11 +123,18 @@ const UserProfile = ({ user, logoutUser }) => {
       {/* Optional: Avatar Selection Popup */}
       {showAvatarSelection && (
         <div className="modal is-active">
-          <div className="modal-background" onClick={() => setShowAvatarSelection(false)}></div>
+          <div
+            className="modal-background"
+            onClick={() => setShowAvatarSelection(false)}
+          ></div>
           <div className="modal-card">
             <header className="modal-card-head">
               <p className="modal-card-title">Choose an Avatar</p>
-              <button className="delete" onClick={() => setShowAvatarSelection(false)} aria-label="close"></button>
+              <button
+                className="delete"
+                onClick={() => setShowAvatarSelection(false)}
+                aria-label="close"
+              ></button>
             </header>
             <section className="modal-card-body">
               <p>Avatar selection functionality will be added here.</p>

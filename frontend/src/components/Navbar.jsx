@@ -68,7 +68,11 @@ const Navbar = ({ user, refreshUser }) => {
             <div className={`dropdown-trigger ${styles.dropdownTrigger}`}>
               <button className={`button ${styles.dropdownButton}`}>
                 <span>
-                  <img src={user.avatar || "/default-avatar.png"} alt="Avatar" className={`${styles.avatar} is-rounded`} />
+                  <img
+                    src={user.avatar || "/default-avatar.png"}
+                    alt="Avatar"
+                    className={`${styles.avatar} is-rounded`}
+                  />
                 </span>
                 <Link to="/profile">
                   <span>{user.username}</span>
@@ -80,10 +84,16 @@ const Navbar = ({ user, refreshUser }) => {
             </div>
             <div className={`dropdown-menu ${styles.dropdownMenu}`} role="menu">
               <div className="dropdown-content">
-                <Link to="/profile" className={`dropdown-item ${styles.dropdownItem}`}>
+                <Link
+                  to="/profile"
+                  className={`dropdown-item ${styles.dropdownItem}`}
+                >
                   My Profile
                 </Link>
-                <button className={`dropdown-item ${styles.dropdownItem}`} onClick={logoutUser}>
+                <button
+                  className={`dropdown-item ${styles.dropdownItem}`}
+                  onClick={logoutUser}
+                >
                   Logout
                 </button>
               </div>

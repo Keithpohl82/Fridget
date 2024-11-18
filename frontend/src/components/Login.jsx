@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-const avatar = "https://img.freepik.com/free-vector/happy-cute-girl-chef-holding-bowl-with-whisk-banner-logo-cartoon-art-illustration_56104-786.jpg";
+const avatar =
+  "https://img.freepik.com/free-vector/happy-cute-girl-chef-holding-bowl-with-whisk-banner-logo-cartoon-art-illustration_56104-786.jpg";
 
 const Login = ({ refreshUser }) => {
   const [identifier, setIdentifier] = useState(""); // Username or email
@@ -13,10 +14,13 @@ const Login = ({ refreshUser }) => {
     setError("");
 
     try {
-      const response = await fetch(`http://localhost:8080/userservice/login?identifier=${identifier}&password=${password}`, {
-        method: "POST",
-        credentials: "include", // Ensure session cookies are sent
-      });
+      const response = await fetch(
+        `http://localhost:8080/userservice/login?identifier=${identifier}&password=${password}`,
+        {
+          method: "POST",
+          credentials: "include", // Ensure session cookies are sent
+        }
+      );
       const result = await response.text();
 
       if (response.ok) {
@@ -41,7 +45,14 @@ const Login = ({ refreshUser }) => {
 
         <div className="field">
           <div className="control has-icons-left">
-            <input className="input" type="text" placeholder="Username or Email" value={identifier} onChange={(e) => setIdentifier(e.target.value)} required />
+            <input
+              className="input"
+              type="text"
+              placeholder="Username or Email"
+              value={identifier}
+              onChange={(e) => setIdentifier(e.target.value)}
+              required
+            />
             <span className="icon is-small is-left">
               <i className="fas fa-user"></i>
             </span>
@@ -50,7 +61,14 @@ const Login = ({ refreshUser }) => {
 
         <div className="field">
           <div className="control has-icons-left">
-            <input className="input" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <input
+              className="input"
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
             <span className="icon is-small is-left">
               <i className="fas fa-lock"></i>
             </span>
