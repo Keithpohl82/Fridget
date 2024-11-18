@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import clean from '../Pictures/Clean-Plate-Chef.jpg'; // Avatar Image
+import clean from "../Pictures/Clean-Plate-Chef.jpg"; // Avatar Image
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -19,7 +19,9 @@ const Register = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/userservice/check-username?username=${username}`);
+      const response = await fetch(
+        `http://localhost:8080/userservice/check-username?username=${username}`
+      );
       const message = await response.text();
       setUsernameMessage(message);
     } catch (error) {
@@ -53,14 +55,19 @@ const Register = () => {
       setError("Passwords do not match. Please try again.");
       return;
     }
-    
+
     const response = await fetch("http://localhost:8080/userservice/register", {
-    
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username, pwHash, firstName, lastName, userEmail }),
+      body: JSON.stringify({
+        username,
+        pwHash,
+        firstName,
+        lastName,
+        userEmail,
+      }),
     });
 
     const result = await response.text();
@@ -104,7 +111,11 @@ const Register = () => {
             <div className="field">
               <div className="control has-icons-left has-icons-right">
                 <input
-                  className={`input ${usernameMessage.includes("available") ? "is-success" : "is-danger"}`}
+                  className={`input ${
+                    usernameMessage.includes("available")
+                      ? "is-success"
+                      : "is-danger"
+                  }`}
                   type="text"
                   placeholder="Enter your username"
                   value={username}
@@ -114,7 +125,13 @@ const Register = () => {
                 <span className="icon is-small is-left">
                   <i className="fas fa-user"></i>
                 </span>
-                <p className={`help ${usernameMessage.includes("available") ? "is-success" : "is-danger"}`}>
+                <p
+                  className={`help ${
+                    usernameMessage.includes("available")
+                      ? "is-success"
+                      : "is-danger"
+                  }`}
+                >
                   {usernameMessage}
                 </p>
               </div>
@@ -147,7 +164,9 @@ const Register = () => {
                 <div className="field">
                   <div className="control has-icons-left">
                     <input
-                      className={`input ${passwordMatchMessage ? "is-danger" : "is-success"}`}
+                      className={`input ${
+                        passwordMatchMessage ? "is-danger" : "is-success"
+                      }`}
                       type="password"
                       placeholder="Re-enter your password"
                       value={reenterPassword}

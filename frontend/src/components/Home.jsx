@@ -1,9 +1,9 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import 'bulma/css/bulma.min.css';
+import "bulma/css/bulma.min.css";
 
 const HomePage = () => {
-  const [ingredientSearch, setIngredients] = useState('');
+  const [ingredientSearch, setIngredients] = useState("");
   const [recipeResults, setRecipeResults] = useState([]);
   const [recipes, setRecipes] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -11,23 +11,23 @@ const HomePage = () => {
 
   //This will fetch all recipes in the database and assign them to recipes.
   useEffect(() => {
-    fetch('http://localhost:8080/recipes/')
-        .then(response => response.json())
-        .then(data => {
-            setRecipes(data);
-            setLoading(false);
-        })
-        .catch(error => {
-            console.error('Error fetching recipes:', error);
-            setLoading(false);
-        });
-}, []);
+    fetch("http://localhost:8080/recipes/")
+      .then((response) => response.json())
+      .then((data) => {
+        setRecipes(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching recipes:", error);
+        setLoading(false);
+      });
+  }, []);
 
-if (loadingRecipes) {
-  return <p>Loading recipes...</p>;
-}
+  if (loadingRecipes) {
+    return <p>Loading recipes...</p>;
+  }
 
-//This is for getting a random index of recipes. 
+  //This is for getting a random index of recipes.
   const getRandomIndex = () => {
     return Math.floor(Math.random() * recipes.length);
   };
@@ -41,9 +41,10 @@ if (loadingRecipes) {
   //Filters all recipes from the database to display recipes that have the ingredient that was typed in the searchbar
   //Currently only works with one ingredient.
   const handleFilter = () => {
-    const filterArr = recipes.filter(recipe =>
+    const filterArr = recipes.filter((recipe) =>
       recipe.ingredients.some(
-        ingredient => ingredient.ingredient.toLowerCase() === ingredientSearch.toLowerCase()
+        (ingredient) =>
+          ingredient.ingredient.toLowerCase() === ingredientSearch.toLowerCase()
       )
     );
     setRecipeResults(filterArr);
@@ -57,8 +58,10 @@ if (loadingRecipes) {
         <div className="hero-body">
           <div className="container">
             <h1 className="title">What's in Your Kitchen?</h1>
-            <h2 className="subtitle">Let us help you cook with the ingredients you already have!</h2>
-            
+            <h2 className="subtitle">
+              Let us help you cook with the ingredients you already have!
+            </h2>
+
             <div className="field has-addons">
               <div className="control is-expanded">
                 <input
@@ -70,8 +73,12 @@ if (loadingRecipes) {
                 />
               </div>
               <div className="control">
-                <button className="button is-info" onClick={handleFilter} disabled={isLoading}>
-                  {isLoading ? 'Searching...' : 'Find Recipes'}
+                <button
+                  className="button is-info"
+                  onClick={handleFilter}
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Searching..." : "Find Recipes"}
                 </button>
               </div>
             </div>
@@ -105,9 +112,9 @@ if (loadingRecipes) {
           </div>
         </div>
       </section>
-      
-{/* Recipe Results Section */}
-{recipeResults.length > 0 && (
+
+      {/* Recipe Results Section */}
+      {recipeResults.length > 0 && (
         <section className="section">
           <div className="container">
             <h2 className="title has-text-centered">Recipe Results</h2>
@@ -117,7 +124,12 @@ if (loadingRecipes) {
                   <div className="card">
                     <div className="card-image">
                       <figure className="image is-4by3">
-                        <img src={recipe.image || 'https://via.placeholder.com/400'} alt={recipe.name} />
+                        <img
+                          src={
+                            recipe.image || "https://via.placeholder.com/400"
+                          }
+                          alt={recipe.name}
+                        />
                       </figure>
                     </div>
                     <div className="card-content">
@@ -157,8 +169,6 @@ if (loadingRecipes) {
         </div>
       </section>
 
-      
-
       {/* Ingredient Categories Section */}
       <section className="section">
         <div className="container">
@@ -168,7 +178,9 @@ if (loadingRecipes) {
               <button className="button is-link is-fullwidth">Meats</button>
             </div>
             <div className="column is-one-quarter">
-              <button className="button is-link is-fullwidth">Vegetables</button>
+              <button className="button is-link is-fullwidth">
+                Vegetables
+              </button>
             </div>
             <div className="column is-one-quarter">
               <button className="button is-link is-fullwidth">Spices</button>

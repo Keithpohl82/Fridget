@@ -39,7 +39,9 @@ const PhotoUpload = ({ setPhotoUrl, photoURL }) => {
               border: "2px solid #ccc",
             }}
           />
-          <p style={{ textAlign: "center", color: "#007bff" }}>Change the photo</p>
+          <p style={{ textAlign: "center", color: "#007bff" }}>
+            Change the photo
+          </p>
         </div>
       ) : (
         <label
@@ -58,7 +60,10 @@ const PhotoUpload = ({ setPhotoUrl, photoURL }) => {
             fontWeight: "bold",
           }}
         >
-          <span role="img" aria-label="Upload Image">📷</span> Upload Image
+          <span role="img" aria-label="Upload Image">
+            📷
+          </span>{" "}
+          Upload Image
         </label>
       )}
     </div>
@@ -82,7 +87,11 @@ const AddRecipe = () => {
 
   // Add ingredient to the list
   const addIngredient = () => {
-    if (ingredientInput.trim() !== "" && amountInput.trim() !== "" && unitInput !== "") {
+    if (
+      ingredientInput.trim() !== "" &&
+      amountInput.trim() !== "" &&
+      unitInput !== ""
+    ) {
       const newIngredient = {
         ingredient: ingredientInput,
         amount: amountInput,
@@ -97,9 +106,9 @@ const AddRecipe = () => {
 
   // Add a step to the recipe
   const AddStep = () => {
-    if(stepInput.trim() !== ""){
+    if (stepInput.trim() !== "") {
       const newStep = {
-        directionText : stepInput,
+        directionText: stepInput,
         stepOrder: directions.length + 1,
       };
       setDirections((prevSteps) => [...prevSteps, newStep]);
@@ -149,8 +158,6 @@ const AddRecipe = () => {
     setIngredients([]);
     setDirections([]);
     setCuisine("");
-
-
   };
 
   return (
@@ -181,70 +188,70 @@ const AddRecipe = () => {
               </div>
             </div>
 
-          {/* Cuisine Column */}
-          <div className="column">          
-            <div className="field">
-              <label className="label">Cuisine</label>
-              <div className="control">
-                <input
-                  className="input"
-                  type="text"
-                  placeholder="Enter Cuisine"
-                  value={cuisine}
-                  onChange={(e) => setCuisine(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="field">
-              <label className="label">Description</label>
-              <div className="control">
-                <textarea
-                  className="textarea"
-                  placeholder="Brief description of the recipe"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="columns">
-              <div className="column">
-                <div className="field">
-                  <label className="label">Cook Time (minutes)</label>
-                  <div className="control">
-                    <input
-                      className="input"
-                      type="number"
-                      placeholder="e.g. 30"
-                      value={cookTime}
-                      onChange={(e) => setCookTime(e.target.value)}
-                      required
-                    />
-                  </div>
+            {/* Cuisine Column */}
+            <div className="column">
+              <div className="field">
+                <label className="label">Cuisine</label>
+                <div className="control">
+                  <input
+                    className="input"
+                    type="text"
+                    placeholder="Enter Cuisine"
+                    value={cuisine}
+                    onChange={(e) => setCuisine(e.target.value)}
+                    required
+                  />
                 </div>
               </div>
 
-              <div className="column">
-                <div className="field">
-                  <label className="label">Prep Time (minutes)</label>
-                  <div className="control">
-                    <input
-                      className="input"
-                      type="number"
-                      placeholder="e.g. 15"
-                      value={prepTime}
-                      onChange={(e) => setPrepTime(e.target.value)}
-                      required
-                    />
+              <div className="field">
+                <label className="label">Description</label>
+                <div className="control">
+                  <textarea
+                    className="textarea"
+                    placeholder="Brief description of the recipe"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="columns">
+                <div className="column">
+                  <div className="field">
+                    <label className="label">Cook Time (minutes)</label>
+                    <div className="control">
+                      <input
+                        className="input"
+                        type="number"
+                        placeholder="e.g. 30"
+                        value={cookTime}
+                        onChange={(e) => setCookTime(e.target.value)}
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="column">
+                  <div className="field">
+                    <label className="label">Prep Time (minutes)</label>
+                    <div className="control">
+                      <input
+                        className="input"
+                        type="number"
+                        placeholder="e.g. 15"
+                        value={prepTime}
+                        onChange={(e) => setPrepTime(e.target.value)}
+                        required
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
         </div>
 
         {/* Ingredients Section */}
@@ -300,15 +307,15 @@ const AddRecipe = () => {
 
           <ul>
             {ingredients.map((ingredient, index) => (
-            <li key={index} style={{ display: "flex", alignItems: "center" }}>
-              {ingredient.amount} {ingredient.unit} of {ingredient.ingredient}
-              <button
-                type="button"
-                className="delete is-small"
-                onClick={() => removeIngredient(index)}
-                style={{ marginLeft: "10px", cursor: "pointer" }}
-              />
-            </li>
+              <li key={index} style={{ display: "flex", alignItems: "center" }}>
+                {ingredient.amount} {ingredient.unit} of {ingredient.ingredient}
+                <button
+                  type="button"
+                  className="delete is-small"
+                  onClick={() => removeIngredient(index)}
+                  style={{ marginLeft: "10px", cursor: "pointer" }}
+                />
+              </li>
             ))}
           </ul>
         </div>
