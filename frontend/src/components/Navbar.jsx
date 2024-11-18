@@ -60,6 +60,11 @@ const Navbar = ({ user, refreshUser }) => {
             All Recipes
           </Link>
         </li>
+        <li className={styles.navbarItem}>
+          <Link to="/recipes" className={styles.navbarLink}>
+            API Recipes
+          </Link>
+        </li>
       </ul>
 
       <div className={styles.navbarRight}>
