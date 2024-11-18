@@ -2,10 +2,6 @@ Check IngredientsController and UserController and update @CrossOrigin path to y
 Create a schema on your mysqlworkbench names fridget.
 Create a new user on mysqlworkbench with the username = roomsix and password = room6
 
--~-~-~-~-~-~-~-~-~-~-~-~IMPORTANT-~-~-~-~-~-~-~-~-~-~-~-~
-In application.properties make sure to update spring.datasource.url=jdbc:mysql://localhost:3308/fridget to match the port your sql server is running (most likely 3306)
--~-~-~-~-~-~-~-~-~-~-~-~IMPORTANT-~-~-~-~-~-~-~-~-~-~-~-~
-
 Starting the Java application should populate your sql server with appropriate tables. 
 
 ------Seed the database------
