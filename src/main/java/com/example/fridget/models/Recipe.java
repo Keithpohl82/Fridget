@@ -33,7 +33,8 @@ public class Recipe extends AbstractClass{
 
     private int totalTime;
 
-    private String photoURL;
+    @Column(name = "photo_path", nullable = true)
+    private String photoPath;
 
     private String creator;
 
@@ -52,7 +53,7 @@ public class Recipe extends AbstractClass{
         this.prepTime = prepTime;
         this.cookTime = cookTime;
         this.totalTime = totalTime;
-        this.photoURL = photoURL;
+        this.photoPath = photoPath;
         this.creator = creator;
         this.cuisine = cuisine;
         this.dateCreated = dateCreated;
@@ -129,12 +130,12 @@ public class Recipe extends AbstractClass{
         this.totalTime = totalTime;
     }
 
-    public String getPhotoURL() {
-        return photoURL;
+    public String getPhotoPath() {
+        return photoPath;
     }
 
-    public void setPhotoURL(String photoURL) {
-        this.photoURL = photoURL;
+    public void setPhotoPath(String photoURL) {
+        this.photoPath = photoURL;
     }
 
     public String getCreator() {
@@ -172,7 +173,7 @@ public class Recipe extends AbstractClass{
                 ", prepTime=" + prepTime +
                 ", cookTime=" + cookTime +
                 ", totalTime=" + totalTime +
-                ", photoURL='" + photoURL + '\'' +
+                ", photoPath='" + photoPath + '\'' +
                 '}';
     }
 }

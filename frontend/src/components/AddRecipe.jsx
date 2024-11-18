@@ -1,34 +1,47 @@
 import React, { useState } from "react";
+import imageCompression from "browser-image-compression";
 import "bulma/css/bulma.min.css";
 
-// PhotoUpload Component
-const PhotoUpload = ({ setPhotoUrl, photoURL }) => {
-  const handleFileChange = (e) => {
+const PhotoUpload = ({ setPhotoUrl, photoURL, setPhotoFile }) => {
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const fileURL = URL.createObjectURL(file);
-      setPhotoUrl(fileURL);
+    if (!file) return;
+
+    // Validate file size (e.g., 5MB max)
+    if (file.size > 5 * 1024 * 1024) {
+      alert("File is too large. Maximum size is 5MB.");
+      return;
+    }
+
+    try {
+      // Compress the image
+      const options = {
+        maxSizeMB: 1, // Compress to max 1MB
+        maxWidthOrHeight: 1024, // Resize to max 1024px dimension
+        useWebWorker: true,
+      };
+      const compressedFile = await imageCompression(file, options);
+
+      // Update preview and pass file to parent
+      const previewURL = URL.createObjectURL(compressedFile);
+      setPhotoUrl(previewURL); // Update the preview in AddRecipe
+      setPhotoFile(compressedFile); // Pass the compressed file to AddRecipe
+    } catch (error) {
+      console.error("Error compressing photo:", error);
+      alert("An error occurred while processing the photo.");
     }
   };
 
   const handleResetPhoto = () => {
-    setPhotoUrl("");
+    setPhotoUrl(""); // Clear the preview
+    setPhotoFile(null); // Clear the file in AddRecipe
   };
 
   return (
     <div>
-      <input
-        type="file"
-        id="photo-upload"
-        accept="image/*"
-        onChange={handleFileChange}
-        style={{ display: "none" }}
-      />
+      <input type="file" id="photo-upload" accept="image/*" onChange={handleFileChange} style={{ display: "none" }} />
       {photoURL ? (
-        <div
-          style={{ marginTop: "20px", cursor: "pointer" }}
-          onClick={handleResetPhoto}
-        >
+        <div style={{ marginTop: "20px", cursor: "pointer" }} onClick={handleResetPhoto}>
           <img
             src={photoURL}
             alt="Uploaded Preview"
@@ -39,9 +52,7 @@ const PhotoUpload = ({ setPhotoUrl, photoURL }) => {
               border: "2px solid #ccc",
             }}
           />
-          <p style={{ textAlign: "center", color: "#007bff" }}>
-            Change the photo
-          </p>
+          <p style={{ textAlign: "center", color: "#007bff" }}>Change the photo</p>
         </div>
       ) : (
         <label
@@ -77,6 +88,7 @@ const AddRecipe = () => {
   const [prepTime, setPrepTime] = useState("");
   const [description, setDescription] = useState("");
   const [photoURL, setPhotoUrl] = useState("");
+  const [photoFile, setPhotoFile] = useState(null); // Store the file for backend upload
   const [directions, setDirections] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [ingredientInput, setIngredientInput] = useState("");
@@ -87,11 +99,7 @@ const AddRecipe = () => {
 
   // Add ingredient to the list
   const addIngredient = () => {
-    if (
-      ingredientInput.trim() !== "" &&
-      amountInput.trim() !== "" &&
-      unitInput !== ""
-    ) {
+    if (ingredientInput.trim() !== "" && amountInput.trim() !== "" && unitInput !== "") {
       const newIngredient = {
         ingredient: ingredientInput,
         amount: amountInput,
@@ -132,32 +140,72 @@ const AddRecipe = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch(`http://localhost:8080/recipes/add`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        cookTime,
-        prepTime,
-        description,
-        directions,
-        photoURL,
-        ingredients,
-        cuisine,
-      }),
-    });
-    const result = await response.text();
-    alert(result);
+    try {
+      // Submit recipe data
+      const recipeResponse = await fetch("http://localhost:8080/recipes/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          cookTime,
+          prepTime,
+          description,
+          directions,
+          ingredients,
+          cuisine,
+        }),
+      });
 
-    setCookTime("");
-    setRecipeName("");
-    setDescription("");
-    setPrepTime("");
-    setIngredients([]);
-    setDirections([]);
-    setCuisine("");
+      if (!recipeResponse.ok) {
+        throw new Error("Failed to add recipe.");
+      }
+
+      const recipeData = await recipeResponse.json();
+      const recipeId = recipeData.id;
+
+      console.log("Recipe created with ID:", recipeId);
+
+      // Upload the photo if provided
+      if (photoFile) {
+        console.log("Photo file details:", photoFile);
+        console.log("Photo file name:", photoFile.name);
+
+        const formData = new FormData();
+        formData.append("file", photoFile);
+
+        const photoResponse = await fetch(`http://localhost:8080/recipes/${recipeId}/upload-photo`, {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!photoResponse.ok) {
+          throw new Error("Failed to upload photo.");
+        }
+
+        const photoResult = await photoResponse.json();
+        console.log("Photo uploaded:", photoResult.photoPath);
+
+        alert("Recipe and photo added successfully!");
+      } else {
+        alert("Recipe added successfully!");
+      }
+
+      // Reset form
+      setRecipeName("");
+      setCookTime("");
+      setPrepTime("");
+      setDescription("");
+      setIngredients([]);
+      setDirections([]);
+      setCuisine("");
+      setPhotoUrl("");
+      setPhotoFile(null);
+    } catch (error) {
+      console.error("Error submitting recipe:", error);
+      alert(error.message);
+    }
   };
 
   return (
@@ -168,7 +216,7 @@ const AddRecipe = () => {
           {/* Photo Upload Column */}
           <div className="column is-one-third">
             <h2 className="title is-4">Upload Photo</h2>
-            <PhotoUpload setPhotoUrl={setPhotoUrl} photoURL={photoURL} />
+            <PhotoUpload setPhotoUrl={setPhotoUrl} photoURL={photoURL} setPhotoFile={setPhotoFile} />
           </div>
 
           {/* Description Column */}
@@ -177,14 +225,7 @@ const AddRecipe = () => {
             <div className="field">
               <label className="label">Recipe Name</label>
               <div className="control">
-                <input
-                  className="input"
-                  type="text"
-                  placeholder="Enter recipe name"
-                  value={name}
-                  onChange={(e) => setRecipeName(e.target.value)}
-                  required
-                />
+                <input className="input" type="text" placeholder="Enter recipe name" value={name} onChange={(e) => setRecipeName(e.target.value)} required />
               </div>
             </div>
 
@@ -193,61 +234,14 @@ const AddRecipe = () => {
               <div className="field">
                 <label className="label">Cuisine</label>
                 <div className="control">
-                  <input
-                    className="input"
-                    type="text"
-                    placeholder="Enter Cuisine"
-                    value={cuisine}
-                    onChange={(e) => setCuisine(e.target.value)}
-                    required
-                  />
+                  <input className="input" type="text" placeholder="Enter Cuisine" value={cuisine} onChange={(e) => setCuisine(e.target.value)} required />
                 </div>
               </div>
 
               <div className="field">
                 <label className="label">Description</label>
                 <div className="control">
-                  <textarea
-                    className="textarea"
-                    placeholder="Brief description of the recipe"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="columns">
-                <div className="column">
-                  <div className="field">
-                    <label className="label">Cook Time (minutes)</label>
-                    <div className="control">
-                      <input
-                        className="input"
-                        type="number"
-                        placeholder="e.g. 30"
-                        value={cookTime}
-                        onChange={(e) => setCookTime(e.target.value)}
-                        required
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="column">
-                  <div className="field">
-                    <label className="label">Prep Time (minutes)</label>
-                    <div className="control">
-                      <input
-                        className="input"
-                        type="number"
-                        placeholder="e.g. 15"
-                        value={prepTime}
-                        onChange={(e) => setPrepTime(e.target.value)}
-                        required
-                      />
-                    </div>
-                  </div>
+                  <textarea className="textarea" placeholder="Brief description of the recipe" value={description} onChange={(e) => setDescription(e.target.value)} required />
                 </div>
               </div>
             </div>
@@ -259,21 +253,12 @@ const AddRecipe = () => {
           <h2 className="title is-4">Ingredients</h2>
           <div className="field has-addons">
             <div className="control">
-              <input
-                className="input"
-                type="number"
-                placeholder="Amount"
-                value={amountInput}
-                onChange={(e) => setAmountInput(e.target.value)}
-              />
+              <input className="input" type="number" placeholder="Amount" value={amountInput} onChange={(e) => setAmountInput(e.target.value)} />
             </div>
 
             <div className="control">
               <div className="select">
-                <select
-                  value={unitInput}
-                  onChange={(e) => setUnitInput(e.target.value)}
-                >
+                <select value={unitInput} onChange={(e) => setUnitInput(e.target.value)}>
                   <option value="">Select unit</option>
                   <option value="cups">Cups</option>
                   <option value="teaspoons">Teaspoons</option>
@@ -285,21 +270,11 @@ const AddRecipe = () => {
             </div>
 
             <div className="control is-expanded">
-              <input
-                className="input"
-                type="text"
-                placeholder="Ingredient"
-                value={ingredientInput}
-                onChange={(e) => setIngredientInput(e.target.value)}
-              />
+              <input className="input" type="text" placeholder="Ingredient" value={ingredientInput} onChange={(e) => setIngredientInput(e.target.value)} />
             </div>
 
             <div className="control">
-              <button
-                type="button"
-                className="button is-primary"
-                onClick={addIngredient}
-              >
+              <button type="button" className="button is-primary" onClick={addIngredient}>
                 Add Ingredient
               </button>
             </div>
@@ -309,12 +284,7 @@ const AddRecipe = () => {
             {ingredients.map((ingredient, index) => (
               <li key={index} style={{ display: "flex", alignItems: "center" }}>
                 {ingredient.amount} {ingredient.unit} of {ingredient.ingredient}
-                <button
-                  type="button"
-                  className="delete is-small"
-                  onClick={() => removeIngredient(index)}
-                  style={{ marginLeft: "10px", cursor: "pointer" }}
-                />
+                <button type="button" className="delete is-small" onClick={() => removeIngredient(index)} style={{ marginLeft: "10px", cursor: "pointer" }} />
               </li>
             ))}
           </ul>
@@ -325,20 +295,10 @@ const AddRecipe = () => {
           <h2 className="title is-4">Directions</h2>
           <div className="field has-addons">
             <div className="control is-expanded">
-              <input
-                className="input"
-                type="text"
-                placeholder="Add a step"
-                value={stepInput}
-                onChange={(e) => setStepInput(e.target.value)}
-              />
+              <input className="input" type="text" placeholder="Add a step" value={stepInput} onChange={(e) => setStepInput(e.target.value)} />
             </div>
             <div className="control">
-              <button
-                type="button"
-                className="button is-primary"
-                onClick={AddStep}
-              >
+              <button type="button" className="button is-primary" onClick={AddStep}>
                 Add Step
               </button>
             </div>
@@ -348,12 +308,7 @@ const AddRecipe = () => {
             {directions.map((step, index) => (
               <li key={index}>
                 Step {step.stepOrder}: {step.directionText}
-                <button
-                  type="button"
-                  className="delete is-small"
-                  onClick={() => removeStep(index)}
-                  style={{ marginLeft: "10px", cursor: "pointer" }}
-                >
+                <button type="button" className="delete is-small" onClick={() => removeStep(index)} style={{ marginLeft: "10px", cursor: "pointer" }}>
                   X
                 </button>
               </li>
@@ -364,11 +319,7 @@ const AddRecipe = () => {
         {/* Submit Button */}
         <div className="section">
           <div className="field">
-            <button
-              type="submit"
-              className="button is-primary is-fullwidth"
-              disabled={ingredients.length === 0 || directions.length === 0}
-            >
+            <button type="submit" className="button is-primary is-fullwidth" disabled={ingredients.length === 0 || directions.length === 0}>
               Save Recipe
             </button>
           </div>
