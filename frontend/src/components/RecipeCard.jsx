@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import 'bulma/css/bulma.min.css';
+import "bulma/css/bulma.min.css";
 
 const RecipeCard = ({ recipe }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -8,6 +8,11 @@ const RecipeCard = ({ recipe }) => {
     setIsExpanded(!isExpanded);
   };
 
+  // Construct image URL
+  const recipeImage = recipe.photoPath
+    ? `http://localhost:8080/${recipe.photoPath}` // Use backend photo path
+    : "https://via.placeholder.com/400"; // Placeholder image
+
   return (
     <div
       className={`card ${isExpanded ? "is-expanded" : ""}`}
@@ -15,9 +20,9 @@ const RecipeCard = ({ recipe }) => {
       style={{
         transition: "transform 0.3s, box-shadow 0.3s",
         cursor: "pointer",
-        maxWidth: "100%", // Takes full width of the column
+        maxWidth: "100%",
         margin: "10px",
-        border: "2px solid #ffdd57", // Yellow border for styling
+        border: "2px solid #ffdd57",
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = "scale(1.05)";
@@ -31,7 +36,7 @@ const RecipeCard = ({ recipe }) => {
       <div className="card-image">
         <figure className="image is-4by3">
           <img
-            src={recipe.photoURL || "https://via.placeholder.com/400"}
+            src={recipeImage} // Updated to use recipeImage
             alt={`${recipe.name}`}
             style={{ borderRadius: "5px 5px 0 0" }}
           />
@@ -47,21 +52,17 @@ const RecipeCard = ({ recipe }) => {
             </p>
           </div>
         </div>
-
         {isExpanded && (
           <div className="content">
             <p>
-              <strong>Prep Time:</strong> {recipe.prepTime} |{" "}
-              <strong>Cook Time:</strong> {recipe.cookTime}
+              <strong>Prep Time:</strong> {recipe.prepTime} | <strong>Cook Time:</strong> {recipe.cookTime}
             </p>
             <p>{recipe.description}</p>
             <div className="content">
               <strong>Ingredients:</strong>
               <ul style={{ marginTop: "10px" }}>
                 {recipe.ingredients.map((item, index) => (
-                  <li key={index}>
-                    {`${item.amount} ${item.unit} ${item.ingredient}`}
-                  </li>
+                  <li key={index}>{`${item.amount} ${item.unit} ${item.ingredient}`}</li>
                 ))}
               </ul>
             </div>

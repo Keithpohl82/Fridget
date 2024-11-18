@@ -24,8 +24,8 @@ const PhotoUpload = ({ setPhotoUrl, photoURL, setPhotoFile }) => {
 
       // Update preview and pass file to parent
       const previewURL = URL.createObjectURL(compressedFile);
-      setPhotoUrl(previewURL); // Update the preview in AddRecipe
-      setPhotoFile(compressedFile); // Pass the compressed file to AddRecipe
+      setPhotoUrl(previewURL); // Update the preview
+      setPhotoFile(compressedFile); // Pass the compressed file to parent
     } catch (error) {
       console.error("Error compressing photo:", error);
       alert("An error occurred while processing the photo.");
@@ -33,14 +33,14 @@ const PhotoUpload = ({ setPhotoUrl, photoURL, setPhotoFile }) => {
   };
 
   const handleResetPhoto = () => {
-    setPhotoUrl(""); // Clear the preview
-    setPhotoFile(null); // Clear the file in AddRecipe
+    setPhotoUrl("https://via.placeholder.com/400"); // Clear preview to placeholder
+    setPhotoFile(null); // Clear the file
   };
 
   return (
     <div>
       <input type="file" id="photo-upload" accept="image/*" onChange={handleFileChange} style={{ display: "none" }} />
-      {photoURL ? (
+      {photoURL !== "https://via.placeholder.com/400" ? (
         <div style={{ marginTop: "20px", cursor: "pointer" }} onClick={handleResetPhoto}>
           <img
             src={photoURL}
@@ -81,13 +81,12 @@ const PhotoUpload = ({ setPhotoUrl, photoURL, setPhotoFile }) => {
   );
 };
 
-// AddRecipe Component
 const AddRecipe = () => {
   const [name, setRecipeName] = useState("");
   const [cookTime, setCookTime] = useState("");
   const [prepTime, setPrepTime] = useState("");
   const [description, setDescription] = useState("");
-  const [photoURL, setPhotoUrl] = useState("");
+  const [photoURL, setPhotoUrl] = useState("https://via.placeholder.com/400");
   const [photoFile, setPhotoFile] = useState(null); // Store the file for backend upload
   const [directions, setDirections] = useState([]);
   const [ingredients, setIngredients] = useState([]);
@@ -96,8 +95,8 @@ const AddRecipe = () => {
   const [unitInput, setUnitInput] = useState("");
   const [stepInput, setStepInput] = useState("");
   const [cuisine, setCuisine] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Add ingredient to the list
   const addIngredient = () => {
     if (ingredientInput.trim() !== "" && amountInput.trim() !== "" && unitInput !== "") {
       const newIngredient = {
@@ -112,7 +111,6 @@ const AddRecipe = () => {
     }
   };
 
-  // Add a step to the recipe
   const AddStep = () => {
     if (stepInput.trim() !== "") {
       const newStep = {
@@ -124,24 +122,32 @@ const AddRecipe = () => {
     }
   };
 
-  // Remove ingredient
   const removeIngredient = (index) => {
     const updatedIngredients = ingredients.filter((_, i) => i !== index);
     setIngredients(updatedIngredients);
   };
 
-  // Remove step
   const removeStep = (index) => {
     const updatedSteps = directions.filter((_, i) => i !== index);
     setDirections(updatedSteps);
   };
 
-  // Handle form submission
+  const resetForm = () => {
+    setRecipeName("");
+    setCookTime("");
+    setPrepTime("");
+    setDescription("");
+    setIngredients([]);
+    setDirections([]);
+    setCuisine("");
+    setPhotoUrl("https://via.placeholder.com/400");
+    setPhotoFile(null);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setIsSubmitting(true);
     try {
-      // Submit recipe data
       const recipeResponse = await fetch("http://localhost:8080/recipes/add", {
         method: "POST",
         headers: {
@@ -165,13 +171,7 @@ const AddRecipe = () => {
       const recipeData = await recipeResponse.json();
       const recipeId = recipeData.id;
 
-      console.log("Recipe created with ID:", recipeId);
-
-      // Upload the photo if provided
       if (photoFile) {
-        console.log("Photo file details:", photoFile);
-        console.log("Photo file name:", photoFile.name);
-
         const formData = new FormData();
         formData.append("file", photoFile);
 
@@ -186,25 +186,17 @@ const AddRecipe = () => {
 
         const photoResult = await photoResponse.json();
         console.log("Photo uploaded:", photoResult.photoPath);
-
         alert("Recipe and photo added successfully!");
       } else {
-        alert("Recipe added successfully!");
+        alert("Recipe added successfully! (No photo uploaded)");
       }
 
-      // Reset form
-      setRecipeName("");
-      setCookTime("");
-      setPrepTime("");
-      setDescription("");
-      setIngredients([]);
-      setDirections([]);
-      setCuisine("");
-      setPhotoUrl("");
-      setPhotoFile(null);
+      resetForm();
     } catch (error) {
       console.error("Error submitting recipe:", error);
       alert(error.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -213,117 +205,74 @@ const AddRecipe = () => {
       <h1 className="title is-2">Add a New Recipe</h1>
       <form onSubmit={handleSubmit} className="box">
         <div className="columns">
-          {/* Photo Upload Column */}
           <div className="column is-one-third">
             <h2 className="title is-4">Upload Photo</h2>
             <PhotoUpload setPhotoUrl={setPhotoUrl} photoURL={photoURL} setPhotoFile={setPhotoFile} />
           </div>
-
-          {/* Description Column */}
           <div className="column">
             <h2 className="title is-4">Recipe Information</h2>
             <div className="field">
               <label className="label">Recipe Name</label>
-              <div className="control">
-                <input className="input" type="text" placeholder="Enter recipe name" value={name} onChange={(e) => setRecipeName(e.target.value)} required />
-              </div>
+              <input className="input" type="text" placeholder="Enter recipe name" value={name} onChange={(e) => setRecipeName(e.target.value)} required />
             </div>
-
-            {/* Cuisine Column */}
-            <div className="column">
-              <div className="field">
-                <label className="label">Cuisine</label>
-                <div className="control">
-                  <input className="input" type="text" placeholder="Enter Cuisine" value={cuisine} onChange={(e) => setCuisine(e.target.value)} required />
-                </div>
-              </div>
-
-              <div className="field">
-                <label className="label">Description</label>
-                <div className="control">
-                  <textarea className="textarea" placeholder="Brief description of the recipe" value={description} onChange={(e) => setDescription(e.target.value)} required />
-                </div>
-              </div>
+            <div className="field">
+              <label className="label">Cuisine</label>
+              <input className="input" type="text" placeholder="Enter Cuisine" value={cuisine} onChange={(e) => setCuisine(e.target.value)} required />
+            </div>
+            <div className="field">
+              <label className="label">Description</label>
+              <textarea className="textarea" placeholder="Brief description of the recipe" value={description} onChange={(e) => setDescription(e.target.value)} required />
             </div>
           </div>
         </div>
-
-        {/* Ingredients Section */}
         <div className="section">
           <h2 className="title is-4">Ingredients</h2>
           <div className="field has-addons">
-            <div className="control">
-              <input className="input" type="number" placeholder="Amount" value={amountInput} onChange={(e) => setAmountInput(e.target.value)} />
+            <input className="input" type="number" placeholder="Amount" value={amountInput} onChange={(e) => setAmountInput(e.target.value)} />
+            <div className="select">
+              <select value={unitInput} onChange={(e) => setUnitInput(e.target.value)}>
+                <option value="">Select unit</option>
+                <option value="cups">Cups</option>
+                <option value="teaspoons">Teaspoons</option>
+                <option value="tablespoons">Tablespoons</option>
+                <option value="grams">Grams</option>
+                <option value="ounces">Ounces</option>
+              </select>
             </div>
-
-            <div className="control">
-              <div className="select">
-                <select value={unitInput} onChange={(e) => setUnitInput(e.target.value)}>
-                  <option value="">Select unit</option>
-                  <option value="cups">Cups</option>
-                  <option value="teaspoons">Teaspoons</option>
-                  <option value="tablespoons">Tablespoons</option>
-                  <option value="grams">Grams</option>
-                  <option value="ounces">Ounces</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="control is-expanded">
-              <input className="input" type="text" placeholder="Ingredient" value={ingredientInput} onChange={(e) => setIngredientInput(e.target.value)} />
-            </div>
-
-            <div className="control">
-              <button type="button" className="button is-primary" onClick={addIngredient}>
-                Add Ingredient
-              </button>
-            </div>
+            <input className="input" type="text" placeholder="Ingredient" value={ingredientInput} onChange={(e) => setIngredientInput(e.target.value)} />
+            <button type="button" className="button is-primary" onClick={addIngredient}>
+              Add Ingredient
+            </button>
           </div>
-
           <ul>
             {ingredients.map((ingredient, index) => (
-              <li key={index} style={{ display: "flex", alignItems: "center" }}>
-                {ingredient.amount} {ingredient.unit} of {ingredient.ingredient}
-                <button type="button" className="delete is-small" onClick={() => removeIngredient(index)} style={{ marginLeft: "10px", cursor: "pointer" }} />
+              <li key={index}>
+                {ingredient.amount} {ingredient.unit} {ingredient.ingredient}
+                <button type="button" className="delete" onClick={() => removeIngredient(index)} />
               </li>
             ))}
           </ul>
         </div>
-
-        {/* Directions Section */}
         <div className="section">
           <h2 className="title is-4">Directions</h2>
           <div className="field has-addons">
-            <div className="control is-expanded">
-              <input className="input" type="text" placeholder="Add a step" value={stepInput} onChange={(e) => setStepInput(e.target.value)} />
-            </div>
-            <div className="control">
-              <button type="button" className="button is-primary" onClick={AddStep}>
-                Add Step
-              </button>
-            </div>
+            <input className="input" type="text" placeholder="Add a step" value={stepInput} onChange={(e) => setStepInput(e.target.value)} />
+            <button type="button" className="button is-primary" onClick={AddStep}>
+              Add Step
+            </button>
           </div>
-
-          <ul>
+          <ol>
             {directions.map((step, index) => (
               <li key={index}>
                 Step {step.stepOrder}: {step.directionText}
-                <button type="button" className="delete is-small" onClick={() => removeStep(index)} style={{ marginLeft: "10px", cursor: "pointer" }}>
-                  X
-                </button>
+                <button type="button" className="delete" onClick={() => removeStep(index)} />
               </li>
             ))}
-          </ul>
+          </ol>
         </div>
-
-        {/* Submit Button */}
-        <div className="section">
-          <div className="field">
-            <button type="submit" className="button is-primary is-fullwidth" disabled={ingredients.length === 0 || directions.length === 0}>
-              Save Recipe
-            </button>
-          </div>
-        </div>
+        <button type="submit" className="button is-primary is-fullwidth" disabled={isSubmitting || name.trim() === "" || description.trim() === "" || ingredients.length === 0 || directions.length === 0}>
+          {isSubmitting ? "Saving..." : "Save Recipe"}
+        </button>
       </form>
     </div>
   );
