@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import clean from "../Pictures/Clean-Plate-Chef.jpg"; // Avatar Image
 
 const Register = () => {
@@ -11,6 +12,8 @@ const Register = () => {
   const [error, setError] = useState("");
   const [usernameMessage, setUsernameMessage] = useState("");
   const [passwordMatchMessage, setPasswordMatchMessage] = useState("");
+
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
   const checkUsernameAvailability = async (username) => {
     if (username.trim() === "") {
@@ -84,7 +87,12 @@ const Register = () => {
       setUserEmail("");
       setUsernameMessage("");
       setPasswordMatchMessage("");
+      navigate("/login"); // Redirect to the login page after successful registration
     }
+  };
+
+  const handleCancel = () => {
+    navigate("/"); // Redirect to the home page when "Cancel" is clicked
   };
 
   return (
@@ -112,9 +120,7 @@ const Register = () => {
               <div className="control has-icons-left has-icons-right">
                 <input
                   className={`input ${
-                    usernameMessage.includes("available")
-                      ? "is-success"
-                      : "is-danger"
+                    usernameMessage.includes("available") ? "is-success" : "is-danger"
                   }`}
                   type="text"
                   placeholder="Enter your username"
@@ -127,9 +133,7 @@ const Register = () => {
                 </span>
                 <p
                   className={`help ${
-                    usernameMessage.includes("available")
-                      ? "is-success"
-                      : "is-danger"
+                    usernameMessage.includes("available") ? "is-success" : "is-danger"
                   }`}
                 >
                   {usernameMessage}
@@ -164,9 +168,7 @@ const Register = () => {
                 <div className="field">
                   <div className="control has-icons-left">
                     <input
-                      className={`input ${
-                        passwordMatchMessage ? "is-danger" : "is-success"
-                      }`}
+                      className={`input ${passwordMatchMessage ? "is-danger" : "is-success"}`}
                       type="password"
                       placeholder="Re-enter your password"
                       value={reenterPassword}
@@ -234,7 +236,7 @@ const Register = () => {
           <button type="submit" className="button is-link">
             Register
           </button>
-          <button type="reset" className="button is-light">
+          <button type="button" className="button is-light" onClick={handleCancel}>
             Cancel
           </button>
         </div>
