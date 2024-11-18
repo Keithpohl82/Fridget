@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom"; // Import Link component
 import "bulma/css/bulma.min.css";
 
 const HomePage = () => {
   const [ingredientSearch, setIngredients] = useState("");
   const [recipeResults, setRecipeResults] = useState([]);
   const [recipes, setRecipes] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Show loading spinner while fetching recipes
   const [loadingRecipes, setLoading] = useState(true);
 
   // Fetch all recipes in the database
@@ -15,16 +16,14 @@ const HomePage = () => {
       .then((data) => {
         setRecipes(data);
         setLoading(false);
+        setIsLoading(false); // Set loading to false once data is fetched
       })
       .catch((error) => {
         console.error("Error fetching recipes:", error);
         setLoading(false);
+        setIsLoading(false);
       });
   }, []);
-
-  if (loadingRecipes) {
-    return <p>Loading recipes...</p>;
-  }
 
   // Get a random recipe for the featured section
   const getRandomIndex = () => Math.floor(Math.random() * recipes.length);
@@ -37,9 +36,13 @@ const HomePage = () => {
 
   // Filter recipes based on ingredient search
   const handleFilter = () => {
-    const filterArr = recipes.filter((recipe) => recipe.ingredients.some((ingredient) => ingredient.ingredient.toLowerCase() === ingredientSearch.toLowerCase()));
+    const filterArr = recipes.filter((recipe) =>
+      recipe.ingredients.some(
+        (ingredient) =>
+          ingredient.ingredient.toLowerCase() === ingredientSearch.toLowerCase()
+      )
+    );
     setRecipeResults(filterArr);
-    console.log("filterArr:", filterArr);
   };
 
   // Construct image URL or use placeholder
@@ -56,7 +59,13 @@ const HomePage = () => {
 
             <div className="field has-addons">
               <div className="control is-expanded">
-                <input className="input" type="text" placeholder="Enter ingredients (e.g., chicken, rice, broccoli)" value={ingredientSearch} onChange={handleInputChange} />
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="Enter ingredients (e.g., chicken, rice, broccoli)"
+                  value={ingredientSearch}
+                  onChange={handleInputChange}
+                />
               </div>
               <div className="control">
                 <button className="button is-info" onClick={handleFilter} disabled={isLoading}>
@@ -96,6 +105,10 @@ const HomePage = () => {
       </section>
 
       {/* Recipe Results Section */}
+      {!isLoading && recipeResults.length === 0 && ingredientSearch && (
+        <p className="has-text-centered">No recipes found for this ingredient.</p>
+      )}
+
       {recipeResults.length > 0 && (
         <section className="section">
           <div className="container">
@@ -106,10 +119,7 @@ const HomePage = () => {
                   <div className="card">
                     <div className="card-image">
                       <figure className="image is-4by3">
-                        <img
-                          src={getImageUrl(recipe.photoPath)} // Use dynamic image URL
-                          alt={recipe.name}
-                        />
+                        <img src={getImageUrl(recipe.photoPath)} alt={recipe.name} />
                       </figure>
                     </div>
                     <div className="card-content">
@@ -128,30 +138,29 @@ const HomePage = () => {
       )}
 
       {/* Featured Recipes Section */}
-      <section className="section">
-        <div className="container">
-          <h2 className="title has-text-centered">Featured Recipes</h2>
-          <div className="columns is-multiline">
-            <div className="column is-one-third">
-              <div className="card">
-                <div className="card-image">
-                  <figure className="image is-4by3">
-                    <img
-                      src={getImageUrl(randomRecipe.photoPath)} // Use dynamic image URL
-                      alt={randomRecipe.name}
-                    />
-                  </figure>
-                </div>
-                <div className="card-content">
-                  <p className="title">{randomRecipe.name}</p>
-                  <p className="subtitle">{randomRecipe.description}</p>
+      {!isLoading && recipes.length > 0 && (
+        <section className="section">
+          <div className="container">
+            <h2 className="title has-text-centered">Featured Recipes</h2>
+            <div className="columns is-multiline">
+              <div className="column is-one-third">
+                <div className="card">
+                  <div className="card-image">
+                    <figure className="image is-4by3">
+                      <img src={getImageUrl(randomRecipe.photoPath)} alt={randomRecipe.name} />
+                    </figure>
+                  </div>
+                  <div className="card-content">
+                    <p className="title">{randomRecipe.name}</p>
+                    <p className="subtitle">{randomRecipe.description}</p>
+                  </div>
                 </div>
               </div>
+              {/* Repeat similar blocks for other featured recipes if needed */}
             </div>
-            {/* Repeat similar blocks for other featured recipes if needed */}
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Footer */}
       <footer className="footer">
