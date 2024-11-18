@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import "bulma/css/bulma.min.css";
 
 const HomePage = () => {
@@ -9,7 +8,7 @@ const HomePage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingRecipes, setLoading] = useState(true);
 
-  //This will fetch all recipes in the database and assign them to recipes.
+  // This will fetch all recipes in the database and assign them to recipes.
   useEffect(() => {
     fetch("http://localhost:8080/recipes/")
       .then((response) => response.json())
@@ -27,19 +26,18 @@ const HomePage = () => {
     return <p>Loading recipes...</p>;
   }
 
-  //This is for getting a random index of recipes.
+  // Handle the case where there are no recipes
   const getRandomIndex = () => {
     return Math.floor(Math.random() * recipes.length);
   };
-  const randomIndex = getRandomIndex();
-  const randomRecipe = recipes[randomIndex];
+
+  const randomRecipe = recipes.length > 0 ? recipes[getRandomIndex()] : null;
 
   const handleInputChange = (e) => {
     setIngredients(e.target.value);
   };
 
-  //Filters all recipes from the database to display recipes that have the ingredient that was typed in the searchbar
-  //Currently only works with one ingredient.
+  // Filters all recipes from the database to display recipes that have the ingredient typed in the searchbar
   const handleFilter = () => {
     const filterArr = recipes.filter((recipe) =>
       recipe.ingredients.some(
@@ -125,9 +123,7 @@ const HomePage = () => {
                     <div className="card-image">
                       <figure className="image is-4by3">
                         <img
-                          src={
-                            recipe.image || "https://via.placeholder.com/400"
-                          }
+                          src={recipe.image || "https://via.placeholder.com/400"}
                           alt={recipe.name}
                         />
                       </figure>
@@ -150,21 +146,26 @@ const HomePage = () => {
         <div className="container">
           <h2 className="title has-text-centered">Featured Recipes</h2>
           <div className="columns is-multiline">
-            {/* Example recipe items */}
-            <div className="column is-one-third">
-              <div className="card">
-                <div className="card-image">
-                  <figure className="image is-4by3">
-                    <img src="https://via.placeholder.com/400" alt="Recipe 1" />
-                  </figure>
-                </div>
-                <div className="card-content">
-                  <p className="title">{randomRecipe.name}</p>
-                  <p className="subtitle">{randomRecipe.description}</p>
+            {randomRecipe ? (
+              <div className="column is-one-third">
+                <div className="card">
+                  <div className="card-image">
+                    <figure className="image is-4by3">
+                      <img
+                        src={randomRecipe.image || "https://via.placeholder.com/400"}
+                        alt={randomRecipe.name}
+                      />
+                    </figure>
+                  </div>
+                  <div className="card-content">
+                    <p className="title">{randomRecipe.name}</p>
+                    <p className="subtitle">{randomRecipe.description}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            {/* Repeat similar blocks for other featured recipes */}
+            ) : (
+              <p>No featured recipes available.</p>
+            )}
           </div>
         </div>
       </section>
@@ -178,9 +179,7 @@ const HomePage = () => {
               <button className="button is-link is-fullwidth">Meats</button>
             </div>
             <div className="column is-one-quarter">
-              <button className="button is-link is-fullwidth">
-                Vegetables
-              </button>
+              <button className="button is-link is-fullwidth">Vegetables</button>
             </div>
             <div className="column is-one-quarter">
               <button className="button is-link is-fullwidth">Spices</button>
