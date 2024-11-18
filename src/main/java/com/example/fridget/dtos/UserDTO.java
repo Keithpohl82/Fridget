@@ -1,12 +1,28 @@
 package com.example.fridget.dtos;
 
 public class UserDTO {
+    private Long id; // Add this field
     private String username;
-    private String avatar;
+    private String profilePicture;
+    private String email;
+    private String bio; // Optional field for user bio
 
-    public UserDTO(String username, String avatar) {
+    // Constructor
+    public UserDTO(Long id, String username, String profilePicture, String email, String bio) {
+        this.id = id;
         this.username = username;
-        this.avatar = avatar;
+        this.profilePicture = profilePicture;
+        this.email = email;
+        this.bio = bio;
+    }
+
+    // Getters and setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -17,11 +33,28 @@ public class UserDTO {
         this.username = username;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public String getProfilePicture() {
+        return profilePicture;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 }
+

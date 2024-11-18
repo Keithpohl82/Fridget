@@ -36,10 +36,13 @@ const App = () => {
         method: "GET",
         credentials: "include", // Ensures session cookies are sent
       });
+
       if (response.ok) {
         const userData = await response.json();
-        setUser(userData);
+        console.log("Fetched current user:", userData); // Debug log
+        setUser(userData); // Ensure the full UserDTO is set, including id
       } else {
+        console.error("Failed to fetch current user.");
         setUser(null); // No user logged in
       }
     } catch (error) {
