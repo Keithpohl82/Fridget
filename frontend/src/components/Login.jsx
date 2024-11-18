@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-
-const avatar =
-  "https://img.freepik.com/free-vector/happy-cute-girl-chef-holding-bowl-with-whisk-banner-logo-cartoon-art-illustration_56104-786.jpg";
+import { Link, useNavigate } from "react-router-dom";
+import happy from '../Pictures/Happy-Chef.jpg';
 
 const Login = ({ refreshUser }) => {
   const [identifier, setIdentifier] = useState(""); // Username or email
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  
+  // Initialize the navigate function
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,6 +27,9 @@ const Login = ({ refreshUser }) => {
       if (response.ok) {
         alert(result); // Login successful
         refreshUser(); // Notify Navbar to update
+        
+        // Redirect to the homepage
+        navigate("/"); // Navigate to the homepage
       } else {
         setError(result);
         setIdentifier(""); // Clear input fields if login fails
@@ -38,8 +42,21 @@ const Login = ({ refreshUser }) => {
   };
 
   return (
-    <div className="container">
+    <div className="container" style={{ marginTop: "50px" }}>
       <form onSubmit={handleSubmit} className="box">
+        <div className="avatar-container" style={{ textAlign: "center", marginBottom: "20px" }}>
+          <img
+            src={happy} // Replace with actual image URL
+            alt="Avatar"
+            style={{
+              width: "300px",
+              height: "300px",
+              borderRadius: "50%",
+              border: "2px solid #ffdd57", // Optional: adds a border to the avatar
+              objectFit: "cover",
+            }}
+          />
+        </div>
         <h1 className="title has-text-centered">Login</h1>
         {error && <p className="help is-danger has-text-centered">{error}</p>}
 
@@ -87,7 +104,7 @@ const Login = ({ refreshUser }) => {
           </button>
         </div>
 
-        <p>
+        <p className="has-text-centered">
           Don't have an account?{" "}
           <Link to="/register" className="is-link">
             Sign Up!
