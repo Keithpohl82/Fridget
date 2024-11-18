@@ -3,12 +3,18 @@ package com.example.fridget.controllers;
 import com.example.fridget.dtos.UserDTO;
 import com.example.fridget.models.User;
 import com.example.fridget.models.UserProfile;
+import com.example.fridget.models.data.UserRepository;
+import com.example.fridget.services.FileStorageService;
 import com.example.fridget.services.UserProfileService;
 import com.example.fridget.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/userservice")
@@ -16,10 +22,16 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
     private UserProfileService userProfileService;
+
+    @Autowired
+    private FileStorageService fileStorageService;
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
@@ -89,16 +101,30 @@ public class UserController {
             return ResponseEntity.status(401).body("No user logged in");
         }
 
+        // Fetch user by username
         User user = userService.findByUsername(username).orElse(null);
         if (user == null) {
             return ResponseEntity.status(404).body("User not found");
         }
 
-        // Temporary default avatar placeholder
-        String avatar = "https://fontawesome.com/icons/paypal?f=brands&s=solid"; // Replace with an actual default avatar URL if desired
+        // Include the user's profile picture or a default one
+        String profilePicture = user.getProfilePicturePath();
+        if (profilePicture == null || profilePicture.isEmpty()) {
+            profilePicture = "https://via.placeholder.com/150"; // Replace with your desired default avatar URL
+        }
 
-        return ResponseEntity.ok(new UserDTO(user.getUsername(), avatar));
+        // Return the full user object or a DTO with required fields
+        UserDTO userDTO = new UserDTO(
+                user.getId(),                     // Include the user ID
+                user.getUsername(),
+                profilePicture,
+                user.getUserEmail(),
+                user.getUserProfile().getUserbio()    // Example: Include bio from UserProfile if available
+        );
+
+        return ResponseEntity.ok(userDTO);
     }
+
 
     @PutMapping("/update-email")
     public ResponseEntity<String> updateEmail(@RequestParam String newEmail, HttpSession session) {
@@ -118,5 +144,30 @@ public class UserController {
             return ResponseEntity.status(400).body(e.getMessage());
         }
     }
+
+    @PostMapping("/{id}/upload-profile-picture")
+    public ResponseEntity<String> uploadProfilePicture(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        try {
+            // Fetch the user from the database
+            User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+
+            // Delete the old profile picture if it exists
+            if (user.getProfilePicturePath() != null) {
+                String oldFilePath = user.getProfilePicturePath();
+                fileStorageService.deleteFile(oldFilePath);
+            }
+
+            // Save the new profile picture
+            String filePath = fileStorageService.saveFile(file, "profile-pictures");
+            user.setProfilePicturePath(filePath);
+            userRepository.save(user);
+
+            return ResponseEntity.ok("Profile picture uploaded successfully. Path: " + filePath);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading file: " + e.getMessage());
+        }
+    }
+
+
 
 }

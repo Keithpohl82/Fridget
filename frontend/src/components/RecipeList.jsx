@@ -23,12 +23,20 @@ const RecipeList = () => {
   }
 
   return (
-    <div className="recipe-list">
-      {recipes.map((recipe, index) => (
-        <RecipeCard key={index} recipe={recipe} />
-      ))}
+    <div className="container mt-5">
+      <div className="columns is-multiline is-mobile">
+        {recipes.map((recipe, index) => (
+          <div
+            className="column is-one-quarter" // 1/4 of the row for desktop, making 4 columns per row
+            key={index}
+          >
+            <RecipeCard recipe={recipe} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
+
 
 export default RecipeList;

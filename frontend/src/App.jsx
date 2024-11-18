@@ -13,6 +13,8 @@ import UserProfile from "./components/UserProfile"; // Import
 import Recipe from "./components/RecipeHub";
 import "bulma/css/bulma.min.css";
 import RecipeList from "./components/RecipeList";
+import RecipeAPI from "./components/RecipeAPI";
+import RecipeDetail from "./components/RecipeDetail";
 
 // Sample user data
 const user = {
@@ -34,10 +36,13 @@ const App = () => {
         method: "GET",
         credentials: "include", // Ensures session cookies are sent
       });
+
       if (response.ok) {
         const userData = await response.json();
-        setUser(userData);
+        console.log("Fetched current user:", userData); // Debug log
+        setUser(userData); // Ensure the full UserDTO is set, including id
       } else {
+        console.error("Failed to fetch current user.");
         setUser(null); // No user logged in
       }
     } catch (error) {
@@ -81,6 +86,8 @@ const App = () => {
           <Route path="/profile" element={<UserProfile user={user} logoutUser={logoutUser} />} />
           <Route path="/add-recipe" element={<AddRecipe />} />
           <Route path="/recipelist" element={<RecipeList />} />
+          <Route path="/recipes" element={<RecipeAPI />} />
+          <Route path="/recipe/:idMeal" element={<RecipeDetail />} /> {/* New route */}
         </Routes>
       </div>
     </Router>

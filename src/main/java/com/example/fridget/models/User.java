@@ -11,7 +11,7 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @OneToOne(mappedBy = "user")
     private UserProfile userProfile;
@@ -37,9 +37,12 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeReview> userReviews;
 
+    @Column(name = "profile_picture_path", nullable = true)
+    private String profilePicturePath;
+
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public User(int id, UserProfile userProfile, String username, String firstName, String lastName, String userEmail, String pwHash, boolean isAdmin, List<RecipeReview> userReviews) {
+    public User(Long id, UserProfile userProfile, String username, String firstName, String lastName, String userEmail, String pwHash, boolean isAdmin, List<RecipeReview> userReviews) {
         this.id = id;
         this.username = username;
         this.userEmail = userEmail;
@@ -84,7 +87,7 @@ public class User implements Serializable {
         this.pwHash = pwHash;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -118,6 +121,14 @@ public class User implements Serializable {
 
     public void setUserProfile(UserProfile userProfile) {
         this.userProfile = userProfile;
+    }
+
+    public String getProfilePicturePath() {
+        return profilePicturePath;
+    }
+
+    public void setProfilePicturePath(String profilePicturePath) {
+        this.profilePicturePath = profilePicturePath;
     }
 
     @Override

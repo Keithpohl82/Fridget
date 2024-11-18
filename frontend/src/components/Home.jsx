@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import "bulma/css/bulma.min.css";
 
 const HomePage = () => {
@@ -9,7 +8,7 @@ const HomePage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingRecipes, setLoading] = useState(true);
 
-  //This will fetch all recipes in the database and assign them to recipes.
+  // Fetch all recipes in the database
   useEffect(() => {
     fetch("http://localhost:8080/recipes/")
       .then((response) => response.json())
@@ -27,10 +26,8 @@ const HomePage = () => {
     return <p>Loading recipes...</p>;
   }
 
-  //This is for getting a random index of recipes.
-  const getRandomIndex = () => {
-    return Math.floor(Math.random() * recipes.length);
-  };
+  // Get a random recipe for the featured section
+  const getRandomIndex = () => Math.floor(Math.random() * recipes.length);
   const randomIndex = getRandomIndex();
   const randomRecipe = recipes[randomIndex];
 
@@ -38,18 +35,15 @@ const HomePage = () => {
     setIngredients(e.target.value);
   };
 
-  //Filters all recipes from the database to display recipes that have the ingredient that was typed in the searchbar
-  //Currently only works with one ingredient.
+  // Filter recipes based on ingredient search
   const handleFilter = () => {
-    const filterArr = recipes.filter((recipe) =>
-      recipe.ingredients.some(
-        (ingredient) =>
-          ingredient.ingredient.toLowerCase() === ingredientSearch.toLowerCase()
-      )
-    );
+    const filterArr = recipes.filter((recipe) => recipe.ingredients.some((ingredient) => ingredient.ingredient.toLowerCase() === ingredientSearch.toLowerCase()));
     setRecipeResults(filterArr);
     console.log("filterArr:", filterArr);
   };
+
+  // Construct image URL or use placeholder
+  const getImageUrl = (path) => (path ? `http://localhost:8080/${path}` : "https://via.placeholder.com/400");
 
   return (
     <div>
@@ -58,26 +52,14 @@ const HomePage = () => {
         <div className="hero-body">
           <div className="container">
             <h1 className="title">What's in Your Kitchen?</h1>
-            <h2 className="subtitle">
-              Let us help you cook with the ingredients you already have!
-            </h2>
+            <h2 className="subtitle">Let us help you cook with the ingredients you already have!</h2>
 
             <div className="field has-addons">
               <div className="control is-expanded">
-                <input
-                  className="input"
-                  type="text"
-                  placeholder="Enter ingredients (e.g., chicken, rice, broccoli)"
-                  value={ingredientSearch}
-                  onChange={handleInputChange}
-                />
+                <input className="input" type="text" placeholder="Enter ingredients (e.g., chicken, rice, broccoli)" value={ingredientSearch} onChange={handleInputChange} />
               </div>
               <div className="control">
-                <button
-                  className="button is-info"
-                  onClick={handleFilter}
-                  disabled={isLoading}
-                >
+                <button className="button is-info" onClick={handleFilter} disabled={isLoading}>
                   {isLoading ? "Searching..." : "Find Recipes"}
                 </button>
               </div>
@@ -125,9 +107,7 @@ const HomePage = () => {
                     <div className="card-image">
                       <figure className="image is-4by3">
                         <img
-                          src={
-                            recipe.image || "https://via.placeholder.com/400"
-                          }
+                          src={getImageUrl(recipe.photoPath)} // Use dynamic image URL
                           alt={recipe.name}
                         />
                       </figure>
@@ -135,7 +115,9 @@ const HomePage = () => {
                     <div className="card-content">
                       <p className="title">{recipe.name}</p>
                       <p className="subtitle">{recipe.description}</p>
-                      <button className="button is-info">View Recipe</button>
+                      <Link to={`/recipes/${recipe.id}`} className="button is-info">
+                        View Recipe
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -145,17 +127,19 @@ const HomePage = () => {
         </section>
       )}
 
-      {/* Featured Recipes (Optional) */}
+      {/* Featured Recipes Section */}
       <section className="section">
         <div className="container">
           <h2 className="title has-text-centered">Featured Recipes</h2>
           <div className="columns is-multiline">
-            {/* Example recipe items */}
             <div className="column is-one-third">
               <div className="card">
                 <div className="card-image">
                   <figure className="image is-4by3">
-                    <img src="https://via.placeholder.com/400" alt="Recipe 1" />
+                    <img
+                      src={getImageUrl(randomRecipe.photoPath)} // Use dynamic image URL
+                      alt={randomRecipe.name}
+                    />
                   </figure>
                 </div>
                 <div className="card-content">
@@ -164,30 +148,7 @@ const HomePage = () => {
                 </div>
               </div>
             </div>
-            {/* Repeat similar blocks for other featured recipes */}
-          </div>
-        </div>
-      </section>
-
-      {/* Ingredient Categories Section */}
-      <section className="section">
-        <div className="container">
-          <h2 className="title has-text-centered">Popular Ingredients</h2>
-          <div className="columns is-centered">
-            <div className="column is-one-quarter">
-              <button className="button is-link is-fullwidth">Meats</button>
-            </div>
-            <div className="column is-one-quarter">
-              <button className="button is-link is-fullwidth">
-                Vegetables
-              </button>
-            </div>
-            <div className="column is-one-quarter">
-              <button className="button is-link is-fullwidth">Spices</button>
-            </div>
-            <div className="column is-one-quarter">
-              <button className="button is-link is-fullwidth">Grains</button>
-            </div>
+            {/* Repeat similar blocks for other featured recipes if needed */}
           </div>
         </div>
       </section>
