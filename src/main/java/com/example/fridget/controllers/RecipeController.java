@@ -84,37 +84,29 @@ public class RecipeController {
     @PostMapping("/{id}/upload-photo")
     public ResponseEntity<Map<String, String>> uploadRecipePhoto(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
         try {
-            System.out.println("Uploading photo for recipe ID: " + id); // Debug log for ID
-
-            // Validate that the recipe exists
             Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new RuntimeException("Recipe not found"));
-            System.out.println("Found recipe: " + recipe.getName()); // Debug log for Recipe
 
-            // Save the file
+            // Delete the old photo if it exists
+            String oldPhotoPath = recipe.getPhotoPath();
+            if (oldPhotoPath != null && !oldPhotoPath.isBlank()) {
+                fileStorageService.deleteFile("uploads/" + oldPhotoPath);
+            }
+
+            // Save the new photo
             String filePath = fileStorageService.saveFile(file, "recipe-photos");
-            System.out.println("Saved file at path: " + filePath); // Debug log for file path
-
-            // Update the recipe with the photo path
             recipe.setPhotoPath(filePath);
             recipeRepository.save(recipe);
-            System.out.println("Updated recipe with photo path"); // Debug log for update
 
-            // Return success response
             Map<String, String> response = new HashMap<>();
             response.put("message", "Recipe photo uploaded successfully");
             response.put("photoPath", filePath);
             return ResponseEntity.ok(response);
         } catch (IOException e) {
-            System.err.println("Error uploading file: " + e.getMessage()); // Debug log for IOException
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("error", "Error uploading file: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-        } catch (RuntimeException e) {
-            System.err.println("Error: " + e.getMessage()); // Debug log for Recipe not found
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
+
 
 }
