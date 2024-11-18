@@ -3,12 +3,18 @@ package com.example.fridget.controllers;
 import com.example.fridget.dtos.UserDTO;
 import com.example.fridget.models.User;
 import com.example.fridget.models.UserProfile;
+import com.example.fridget.models.data.UserRepository;
+import com.example.fridget.services.FileStorageService;
 import com.example.fridget.services.UserProfileService;
 import com.example.fridget.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/userservice")
@@ -16,10 +22,16 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
     private UserProfileService userProfileService;
+
+    @Autowired
+    private FileStorageService fileStorageService;
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
@@ -116,6 +128,19 @@ public class UserController {
             }
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(400).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/{id}/upload-profile-picture")
+    public ResponseEntity<String> uploadProfilePicture(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        try {
+            User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+            String filePath = fileStorageService.saveFile(file, "profile-pictures");
+            user.setProfilePicturePath(filePath);
+            userRepository.save(user);
+            return ResponseEntity.ok("Profile picture uploaded successfully. Path: " + filePath);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading file: " + e.getMessage());
         }
     }
 
