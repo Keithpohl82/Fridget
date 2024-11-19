@@ -62,20 +62,13 @@ public class RecipeController {
     }
 
     @PostMapping("add")
-    public ResponseEntity<Map<String, Object>> addNewRecipe(@RequestBody Recipe recipe,
-                                                            HttpSession session) {
+    public ResponseEntity<Map<String, Object>> addNewRecipe(@RequestBody Recipe recipe) {
         try {
-            // Sets user to current logged in user.
-            User user = (User) session.getAttribute("user");
-            System.out.println(user.getUsername() + " tried to save this recipe");
+
             // Calculate total time for the recipe
             recipe.setTotalTime(recipe.getCookTime() + recipe.getPrepTime());
 
-            if(user != null) {
-                recipe.setCreator(user.getId());
-            } else {
-                recipe.setCreator(99999L);
-            }
+            
             // Save the recipe
             recipeService.addNewRecipe(recipe);
 
