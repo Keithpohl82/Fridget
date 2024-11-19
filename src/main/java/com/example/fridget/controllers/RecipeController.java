@@ -1,9 +1,11 @@
 package com.example.fridget.controllers;
 
 import com.example.fridget.models.Recipe;
+import com.example.fridget.models.User;
 import com.example.fridget.models.data.RecipeRepository;
 import com.example.fridget.services.FileStorageService;
 import com.example.fridget.services.RecipeService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,9 @@ public class RecipeController {
 
     @Autowired
     private FileStorageService fileStorageService;
+
+    @Autowired
+    private UserController userController;
 
     @GetMapping("/")
     public ResponseEntity<List<Recipe>> index() {
@@ -59,9 +64,11 @@ public class RecipeController {
     @PostMapping("add")
     public ResponseEntity<Map<String, Object>> addNewRecipe(@RequestBody Recipe recipe) {
         try {
+
             // Calculate total time for the recipe
             recipe.setTotalTime(recipe.getCookTime() + recipe.getPrepTime());
 
+            
             // Save the recipe
             recipeService.addNewRecipe(recipe);
 
