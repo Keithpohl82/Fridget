@@ -1,9 +1,11 @@
 package com.example.fridget.controllers;
 
 import com.example.fridget.models.Recipe;
+import com.example.fridget.models.User;
 import com.example.fridget.models.data.RecipeRepository;
 import com.example.fridget.services.FileStorageService;
 import com.example.fridget.services.RecipeService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,9 @@ public class RecipeController {
     @Autowired
     private FileStorageService fileStorageService;
 
+    @Autowired
+    private UserController userController;
+
     @GetMapping("/")
     public ResponseEntity<List<Recipe>> index() {
         List<Recipe> recipes = recipeService.getRecipes();
@@ -57,11 +62,20 @@ public class RecipeController {
     }
 
     @PostMapping("add")
-    public ResponseEntity<Map<String, Object>> addNewRecipe(@RequestBody Recipe recipe) {
+    public ResponseEntity<Map<String, Object>> addNewRecipe(@RequestBody Recipe recipe,
+                                                            HttpSession session) {
         try {
+            // Sets user to current logged in user.
+            User user = (User) session.getAttribute("user");
+            System.out.println(user.getUsername() + " tried to save this recipe");
             // Calculate total time for the recipe
             recipe.setTotalTime(recipe.getCookTime() + recipe.getPrepTime());
 
+            if(user != null) {
+                recipe.setCreator(user.getId());
+            } else {
+                recipe.setCreator(99999L);
+            }
             // Save the recipe
             recipeService.addNewRecipe(recipe);
 
