@@ -22,6 +22,12 @@ const Navbar = ({ user, refreshUser }) => {
     }
   };
 
+  // Construct profile picture URL
+  const profilePictureURL =
+    user && user.profilePicture
+      ? `http://localhost:8080/${user.profilePicture}` // Use backend-served image
+      : "/default-avatar.png"; // Fallback to default avatar
+
   return (
     <nav className={styles.navbar}>
       <ul className={styles.navbarLinks}>
@@ -60,6 +66,11 @@ const Navbar = ({ user, refreshUser }) => {
             All Recipes
           </Link>
         </li>
+        <li className={styles.navbarItem}>
+          <Link to="/recipes" className={styles.navbarLink}>
+            API Recipes
+          </Link>
+        </li>
       </ul>
 
       <div className={styles.navbarRight}>
@@ -69,7 +80,7 @@ const Navbar = ({ user, refreshUser }) => {
               <button className={`button ${styles.dropdownButton}`}>
                 <span>
                   <img
-                    src={user.avatar || "/default-avatar.png"}
+                    src={profilePictureURL} // Updated profile picture URL
                     alt="Avatar"
                     className={`${styles.avatar} is-rounded`}
                   />
@@ -84,16 +95,10 @@ const Navbar = ({ user, refreshUser }) => {
             </div>
             <div className={`dropdown-menu ${styles.dropdownMenu}`} role="menu">
               <div className="dropdown-content">
-                <Link
-                  to="/profile"
-                  className={`dropdown-item ${styles.dropdownItem}`}
-                >
+                <Link to="/profile" className={`dropdown-item ${styles.dropdownItem}`}>
                   My Profile
                 </Link>
-                <button
-                  className={`dropdown-item ${styles.dropdownItem}`}
-                  onClick={logoutUser}
-                >
+                <button className={`dropdown-item ${styles.dropdownItem}`} onClick={logoutUser}>
                   Logout
                 </button>
               </div>

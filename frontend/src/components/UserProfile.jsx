@@ -1,50 +1,56 @@
 import React, { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
 import "bulma/css/bulma.min.css";
 
 const UserProfile = ({ user, logoutUser }) => {
-  const [avatar, setAvatar] = useState(user?.profilePicture || "");
-  const [username, setUsername] = useState(user?.username || "");
-  const [bio, setBio] = useState(user?.bio || "");
-  const [email, setEmail] = useState(user?.email || ""); // Add email state
-  const [showAvatarSelection, setShowAvatarSelection] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [avatar, setAvatar] = useState(user?.profilePicture ? `http://localhost:8080/${user.profilePicture}` : "https://via.placeholder.com/150");
+  const [photoFile, setPhotoFile] = useState(null); // File selected for upload
+  const [photoPreview, setPhotoPreview] = useState(""); // Local preview
+  const [uploading, setUploading] = useState(false);
 
-  const navigate = useNavigate();
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
+    // Validate file size (e.g., 5MB max)
+    if (file.size > 5 * 1024 * 1024) {
+      alert("File is too large. Maximum size is 5MB.");
+      return;
+    }
 
-  const toggleEditProfile = () => {
-    setIsEditing(!isEditing);
-    setErrorMessage(""); // Clear error messages when toggling edit mode
-    setSuccessMessage(""); // Clear success messages when toggling edit mode
+    setPhotoFile(file);
+    setPhotoPreview(URL.createObjectURL(file)); // Set local preview
   };
 
-  const saveProfileChanges = async () => {
+  const handleUpload = async () => {
+    if (!photoFile) {
+      alert("No file selected. Please choose a file.");
+      return;
+    }
+
     try {
-      const response = await fetch(
-        `http://localhost:8080/userservice/update-email?newEmail=${encodeURIComponent(
-          email
-        )}`,
-        {
-          method: "PUT",
-          credentials: "include",
-        }
-      );
+      const formData = new FormData();
+      formData.append("file", photoFile); // Use photoFile state
+
+      const response = await fetch(`http://localhost:8080/userservice/${user.id}/upload-profile-picture`, {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      });
 
       if (response.ok) {
-        setSuccessMessage("Email updated successfully.");
-        setIsEditing(false);
+        const newFilePath = await response.text(); // Backend returns the new file path
+        console.log("File uploaded successfully:", newFilePath);
+        setAvatar(newFilePath); // Update the avatar state
+        setPhotoPreview(""); // Clear the local preview after successful upload
+        alert("Profile picture updated successfully!");
       } else {
-        const message = await response.text();
-        setErrorMessage(message);
+        const errorText = await response.text();
+        console.error("Error uploading profile picture:", errorText);
+        alert(`Failed to update profile picture: ${errorText}`);
       }
     } catch (error) {
-      setErrorMessage("An unexpected error occurred. Please try again.");
+      console.error("Error uploading profile picture:", error);
+      alert("An error occurred while uploading the profile picture.");
     }
   };
 
@@ -52,101 +58,29 @@ const UserProfile = ({ user, logoutUser }) => {
     <div className="container mt-5">
       <div className="box">
         <div className="columns is-vcentered">
+          {/* Profile Picture Section */}
           <div className="column is-narrow has-text-centered">
-            <figure
-              className="image is-128x128 is-clickable"
-              onClick={() => setShowAvatarSelection(!showAvatarSelection)}
-            >
-              <img
-                src={avatar || "https://via.placeholder.com/150"}
-                alt="User Avatar"
-                className="is-rounded"
-              />
+            <figure className="image is-128x128">
+              <img src={photoPreview || avatar} alt="User Avatar" className="is-rounded" />
             </figure>
-          </div>
-          <div className="column">
-            {isEditing ? (
-              <div>
-                <input
-                  type="text"
-                  value={username}
-                  disabled
-                  className="input mb-3"
-                  placeholder="Username"
-                />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="input mb-3"
-                  placeholder="Email"
-                />
-                <textarea
-                  value={bio}
-                  onChange={(e) => setBio(e.target.value)}
-                  className="textarea mb-3"
-                  placeholder="Bio"
-                />
-                {errorMessage && (
-                  <p className="help is-danger">{errorMessage}</p>
-                )}
-                {successMessage && (
-                  <p className="help is-success">{successMessage}</p>
-                )}
-                <button
-                  className="button is-primary is-fullwidth"
-                  onClick={saveProfileChanges}
-                >
-                  Save Changes
-                </button>
-                <button
-                  className="button is-light is-fullwidth mt-2"
-                  onClick={toggleEditProfile}
-                >
-                  Cancel
-                </button>
-              </div>
-            ) : (
-              <div>
-                <h2 className="title is-4">{username}</h2>
-                <p className="subtitle is-6">Email: {email}</p>
-                <p className="subtitle is-6">{bio}</p>
-                <button className="button is-info" onClick={toggleEditProfile}>
-                  Edit Profile
-                </button>
-              </div>
+            <input type="file" accept="image/*" onChange={handleFileChange} style={{ marginTop: "10px" }} />
+            {photoPreview && (
+              <button className="button is-primary mt-3" onClick={handleUpload} disabled={uploading}>
+                {uploading ? "Uploading..." : "Update Profile Picture"}
+              </button>
             )}
+            {uploading && <p>Uploading...</p>}
+          </div>
+
+          {/* Other profile details */}
+          <div className="column">
+            <h2 className="title is-4">{user.username}</h2>
+            <p className="subtitle is-6">{user.email}</p>
+            <button className="button is-danger" onClick={logoutUser}>
+              Logout
+            </button>
           </div>
         </div>
-      </div>
-
-      {/* Optional: Avatar Selection Popup */}
-      {showAvatarSelection && (
-        <div className="modal is-active">
-          <div
-            className="modal-background"
-            onClick={() => setShowAvatarSelection(false)}
-          ></div>
-          <div className="modal-card">
-            <header className="modal-card-head">
-              <p className="modal-card-title">Choose an Avatar</p>
-              <button
-                className="delete"
-                onClick={() => setShowAvatarSelection(false)}
-                aria-label="close"
-              ></button>
-            </header>
-            <section className="modal-card-body">
-              <p>Avatar selection functionality will be added here.</p>
-            </section>
-          </div>
-        </div>
-      )}
-
-      <div className="buttons is-centered mt-4">
-        <button className="button is-danger" onClick={logoutUser}>
-          Logout
-        </button>
       </div>
     </div>
   );

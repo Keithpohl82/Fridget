@@ -136,6 +136,12 @@ public class UserService {
         return email.matches(emailRegex);
     }
 
+    public User getCurrentUser(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+
 
     public boolean userExistsByEmail(String email) {
         return userRepository.findByUserEmail(email).isPresent();

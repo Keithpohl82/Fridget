@@ -28,6 +28,14 @@ dependencies {
 	testImplementation("org.jmockit:jmockit:1.49")
 	implementation("org.springframework.security:spring-security-crypto:5.5.1")
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	// Imgscalr for image resizing and manipulation
+	implementation 'org.imgscalr:imgscalr-lib:4.2'
+
+	// TwelveMonkeys ImageIO for extended image format support
+	implementation 'com.twelvemonkeys.imageio:imageio-jpeg:3.8.0'
+	implementation 'com.twelvemonkeys.imageio:imageio-tiff:3.8.0'
+	implementation 'com.twelvemonkeys.imageio:imageio-webp:3.8.0'
 }
 
 tasks.named('test') {

@@ -1,36 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"; // Import Link component
 import "bulma/css/bulma.min.css";
 
 const HomePage = () => {
   const [ingredientSearch, setIngredients] = useState("");
   const [recipeResults, setRecipeResults] = useState([]);
   const [recipes, setRecipes] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Show loading spinner while fetching recipes
   const [loadingRecipes, setLoading] = useState(true);
 
-  //This will fetch all recipes in the database and assign them to recipes.
+  // Fetch all recipes in the database
   useEffect(() => {
     fetch("http://localhost:8080/recipes/")
       .then((response) => response.json())
       .then((data) => {
         setRecipes(data);
         setLoading(false);
+        setIsLoading(false); // Set loading to false once data is fetched
       })
       .catch((error) => {
         console.error("Error fetching recipes:", error);
         setLoading(false);
+        setIsLoading(false);
       });
   }, []);
 
-  if (loadingRecipes) {
-    return <p>Loading recipes...</p>;
-  }
-
-  //This is for getting a random index of recipes.
-  const getRandomIndex = () => {
-    return Math.floor(Math.random() * recipes.length);
-  };
+  // Get a random recipe for the featured section
+  const getRandomIndex = () => Math.floor(Math.random() * recipes.length);
   const randomIndex = getRandomIndex();
   const randomRecipe = recipes[randomIndex];
 
@@ -38,8 +34,7 @@ const HomePage = () => {
     setIngredients(e.target.value);
   };
 
-  //Filters all recipes from the database to display recipes that have the ingredient that was typed in the searchbar
-  //Currently only works with one ingredient.
+  // Filter recipes based on ingredient search
   const handleFilter = () => {
     const filterArr = recipes.filter((recipe) =>
       recipe.ingredients.some(
@@ -48,8 +43,10 @@ const HomePage = () => {
       )
     );
     setRecipeResults(filterArr);
-    console.log("filterArr:", filterArr);
   };
+
+  // Construct image URL or use placeholder
+  const getImageUrl = (path) => (path ? `http://localhost:8080/${path}` : "https://via.placeholder.com/400");
 
   return (
     <div>
@@ -58,9 +55,7 @@ const HomePage = () => {
         <div className="hero-body">
           <div className="container">
             <h1 className="title">What's in Your Kitchen?</h1>
-            <h2 className="subtitle">
-              Let us help you cook with the ingredients you already have!
-            </h2>
+            <h2 className="subtitle">Let us help you cook with the ingredients you already have!</h2>
 
             <div className="field has-addons">
               <div className="control is-expanded">
@@ -73,11 +68,7 @@ const HomePage = () => {
                 />
               </div>
               <div className="control">
-                <button
-                  className="button is-info"
-                  onClick={handleFilter}
-                  disabled={isLoading}
-                >
+                <button className="button is-info" onClick={handleFilter} disabled={isLoading}>
                   {isLoading ? "Searching..." : "Find Recipes"}
                 </button>
               </div>
@@ -114,6 +105,10 @@ const HomePage = () => {
       </section>
 
       {/* Recipe Results Section */}
+      {!isLoading && recipeResults.length === 0 && ingredientSearch && (
+        <p className="has-text-centered">No recipes found for this ingredient.</p>
+      )}
+
       {recipeResults.length > 0 && (
         <section className="section">
           <div className="container">
@@ -124,18 +119,15 @@ const HomePage = () => {
                   <div className="card">
                     <div className="card-image">
                       <figure className="image is-4by3">
-                        <img
-                          src={
-                            recipe.image || "https://via.placeholder.com/400"
-                          }
-                          alt={recipe.name}
-                        />
+                        <img src={getImageUrl(recipe.photoPath)} alt={recipe.name} />
                       </figure>
                     </div>
                     <div className="card-content">
                       <p className="title">{recipe.name}</p>
                       <p className="subtitle">{recipe.description}</p>
-                      <button className="button is-info">View Recipe</button>
+                      <Link to={`/recipes/${recipe.id}`} className="button is-info">
+                        View Recipe
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -145,52 +137,30 @@ const HomePage = () => {
         </section>
       )}
 
-      {/* Featured Recipes (Optional) */}
-      <section className="section">
-        <div className="container">
-          <h2 className="title has-text-centered">Featured Recipes</h2>
-          <div className="columns is-multiline">
-            {/* Example recipe items */}
-            <div className="column is-one-third">
-              <div className="card">
-                <div className="card-image">
-                  <figure className="image is-4by3">
-                    <img src="https://via.placeholder.com/400" alt="Recipe 1" />
-                  </figure>
-                </div>
-                <div className="card-content">
-                  <p className="title">{randomRecipe.name}</p>
-                  <p className="subtitle">{randomRecipe.description}</p>
+      {/* Featured Recipes Section */}
+      {!isLoading && recipes.length > 0 && (
+        <section className="section">
+          <div className="container">
+            <h2 className="title has-text-centered">Featured Recipes</h2>
+            <div className="columns is-multiline">
+              <div className="column is-one-third">
+                <div className="card">
+                  <div className="card-image">
+                    <figure className="image is-4by3">
+                      <img src={getImageUrl(randomRecipe.photoPath)} alt={randomRecipe.name} />
+                    </figure>
+                  </div>
+                  <div className="card-content">
+                    <p className="title">{randomRecipe.name}</p>
+                    <p className="subtitle">{randomRecipe.description}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            {/* Repeat similar blocks for other featured recipes */}
-          </div>
-        </div>
-      </section>
-
-      {/* Ingredient Categories Section */}
-      <section className="section">
-        <div className="container">
-          <h2 className="title has-text-centered">Popular Ingredients</h2>
-          <div className="columns is-centered">
-            <div className="column is-one-quarter">
-              <button className="button is-link is-fullwidth">Meats</button>
-            </div>
-            <div className="column is-one-quarter">
-              <button className="button is-link is-fullwidth">
-                Vegetables
-              </button>
-            </div>
-            <div className="column is-one-quarter">
-              <button className="button is-link is-fullwidth">Spices</button>
-            </div>
-            <div className="column is-one-quarter">
-              <button className="button is-link is-fullwidth">Grains</button>
+              {/* Repeat similar blocks for other featured recipes if needed */}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Footer */}
       <footer className="footer">
