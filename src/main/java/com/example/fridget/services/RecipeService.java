@@ -1,8 +1,7 @@
 package com.example.fridget.services;
 
 import com.example.fridget.models.Recipe;
-import com.example.fridget.models.RecipeDirections;
-import com.example.fridget.models.data.MeasurementsRepository;
+
 import com.example.fridget.models.data.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,9 +17,6 @@ public class RecipeService {
 
     @Autowired
     RecipeRepository recipeRepository;
-
-    @Autowired
-    MeasurementsRepository measurementsRepository;
 
     public void addNewRecipe(Recipe recipe){
         recipe.setDateCreated(LocalDate.now());
