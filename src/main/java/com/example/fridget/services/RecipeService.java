@@ -17,9 +17,12 @@ public class RecipeService {
 
     @Autowired
     RecipeRepository recipeRepository;
+    @Autowired
+    UserService userService;
 
     public void addNewRecipe(Recipe recipe){
         recipe.setDateCreated(LocalDate.now());
+        //userService.getCurrentUser();
         recipeRepository.save(recipe);
     }
     public List<Recipe> getRecipes() {
