@@ -1,11 +1,9 @@
 package com.example.fridget.controllers;
 
 import com.example.fridget.models.Recipe;
-import com.example.fridget.models.User;
 import com.example.fridget.models.data.RecipeRepository;
 import com.example.fridget.services.FileStorageService;
 import com.example.fridget.services.RecipeService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -13,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -68,7 +65,6 @@ public class RecipeController {
             // Calculate total time for the recipe
             recipe.setTotalTime(recipe.getCookTime() + recipe.getPrepTime());
 
-            
             // Save the recipe
             recipeService.addNewRecipe(recipe);
 
