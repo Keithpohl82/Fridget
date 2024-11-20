@@ -149,4 +149,8 @@ public class UserService {
     public boolean userExistsByUsername(String username) {
         return userRepository.findByUsername(username).isPresent();
     }
+
+    public void updateUser(User user) {
+        userRepository.save(user);
+    }
 }

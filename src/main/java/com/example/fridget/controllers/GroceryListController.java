@@ -1,5 +1,6 @@
 package com.example.fridget.controllers;
 
+import com.example.fridget.dtos.GroceryListDTO;
 import com.example.fridget.models.Ingredients;
 import com.example.fridget.models.Recipe;
 import com.example.fridget.models.User;
@@ -34,7 +35,17 @@ public class GroceryListController {
     }
 
     @PostMapping("addlist")
-    public ResponseEntity<String> addNewGroceryList(@RequestBody User user){
+    public ResponseEntity<String> addNewGroceryList(@RequestBody GroceryListDTO groceryListDTO) {
+        Long userid = groceryListDTO.getUserid();
+        List<Ingredients> items = groceryListDTO.getItems();
+
+        User user = userService.getUserById(userid);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        user.setGrocerylist(items); // Assuming `setGrocerylist` persists the list
+        userService.updateUser(user); // Save user with updated grocery list
 
         return ResponseEntity.ok("List saved");
     }
