@@ -36,14 +36,12 @@ public class Recipe extends AbstractClass{
     @Column(name = "photo_path", nullable = true)
     private String photoPath;
 
-    private long creatorid;
-
     @Column(nullable = true, unique = false)
     private LocalDate dateCreated;
 
     private String cuisine;
 
-    public Recipe(LocalDate dateCreated, List<Ingredients> ingredients, List<RecipeDirections> directions, List<RecipeReview> reviews, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL, Long creatorid, String cuisine) {
+    public Recipe(LocalDate dateCreated, List<Ingredients> ingredients, List<RecipeDirections> directions, List<RecipeReview> reviews, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL, String cuisine) {
         super();
         this.ingredients = ingredients;
         this.directions = directions;
@@ -54,7 +52,6 @@ public class Recipe extends AbstractClass{
         this.cookTime = cookTime;
         this.totalTime = totalTime;
         this.photoPath = photoPath;
-        this.creatorid = creatorid;
         this.cuisine = cuisine;
         this.dateCreated = dateCreated;
     }
@@ -136,14 +133,6 @@ public class Recipe extends AbstractClass{
 
     public void setPhotoPath(String photoURL) {
         this.photoPath = photoURL;
-    }
-
-    public Long getCreator() {
-        return creatorid;
-    }
-
-    public void setCreator(Long creatorid) {
-        this.creatorid = creatorid;
     }
 
     public String getCuisine() {
