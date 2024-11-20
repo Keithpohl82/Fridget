@@ -40,9 +40,13 @@ public class User implements Serializable {
     @Column(name = "profile_picture_path", nullable = true)
     private String profilePicturePath;
 
+    @ElementCollection
+    @CollectionTable(name = "user_grocery_list", joinColumns = @JoinColumn(name = "user_id"))
+    private List<Ingredients> grocerylist;
+
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public User(Long id, UserProfile userProfile, String username, String firstName, String lastName, String userEmail, String pwHash, boolean isAdmin, List<RecipeReview> userReviews) {
+    public User(Long id, UserProfile userProfile, String username, String firstName, String lastName, String userEmail, String pwHash, boolean isAdmin, List<RecipeReview> userReviews, List<Ingredients> grocerylist) {
         this.id = id;
         this.username = username;
         this.userEmail = userEmail;
@@ -50,6 +54,7 @@ public class User implements Serializable {
         this.isAdmin = isAdmin;
         this.userReviews = userReviews;
         this.userProfile = userProfile;
+        this.grocerylist = grocerylist;
     }
 
     public User() {
@@ -129,6 +134,14 @@ public class User implements Serializable {
 
     public void setProfilePicturePath(String profilePicturePath) {
         this.profilePicturePath = profilePicturePath;
+    }
+
+    public List<Ingredients> getGrocerylist() {
+        return grocerylist;
+    }
+
+    public void setGrocerylist(List<Ingredients> grocerylist) {
+        this.grocerylist = grocerylist;
     }
 
     @Override
