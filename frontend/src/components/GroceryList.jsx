@@ -2,7 +2,7 @@ import { useState } from "react";
 import styles from "../styles/Grocery.module.css";
 
 export default function GroceryList() {
-  const [items, setItems] = useState(["***Not connected to database yet***"]);
+  const [items, setItems] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [heading, setHeading] = useState("My Grocery List");
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -19,9 +19,13 @@ export default function GroceryList() {
     if (!inputValue.trim()) {
       alert("You must write something!");
       return;
-    }
-    setItems([...items, inputValue]);
+    }else{
+    const newIngredient = inputValue
+    setItems((preItems)=>[...preItems, newIngredient]);
     setInputValue("");
+    
+    }
+    console.log(items);
   };
 
   const removeItem = (index) => {
