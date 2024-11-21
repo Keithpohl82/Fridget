@@ -17,7 +17,6 @@ public class User implements Serializable {
     private Long id;
 
     @OneToOne(mappedBy = "user")
-    @JsonManagedReference
     private UserProfile userProfile;
 
     @Column(nullable = true, unique = false)
@@ -38,9 +37,6 @@ public class User implements Serializable {
     @Column(nullable = false, unique = false)
     private boolean isAdmin = false;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RecipeReview> userReviews;
-
     @Column(name = "profile_picture_path", nullable = true)
     private String profilePicturePath;
 
@@ -49,18 +45,16 @@ public class User implements Serializable {
     private List<String> grocerylist;
 
     @OneToOne(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonBackReference
     private Recipe authoredrecipe;
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public User(Recipe authoredrecipe, Long id, UserProfile userProfile, String username, String firstName, String lastName, String userEmail, String pwHash, boolean isAdmin, List<RecipeReview> userReviews, List<String> grocerylist) {
+    public User(Recipe authoredrecipe, Long id, UserProfile userProfile, String username, String firstName, String lastName, String userEmail, String pwHash, boolean isAdmin, List<String> grocerylist) {
         this.id = id;
         this.username = username;
         this.userEmail = userEmail;
         this.pwHash = encoder.encode(pwHash);
         this.isAdmin = isAdmin;
-        this.userReviews = userReviews;
         this.userProfile = userProfile;
         this.grocerylist = grocerylist;
         this.authoredrecipe = authoredrecipe;
@@ -129,14 +123,6 @@ public class User implements Serializable {
         this.userEmail = userEmail;
     }
 
-    public List<RecipeReview> getUserReviews() {
-        return userReviews;
-    }
-
-    public void setUserReviews(List<RecipeReview> userReviews) {
-        this.userReviews = userReviews;
-    }
-
     public UserProfile getUserProfile() {
         return userProfile;
     }
@@ -169,7 +155,6 @@ public class User implements Serializable {
                 ", userEmail='" + userEmail + '\'' +
                 ", pwHash='" + pwHash + '\'' +
                 ", isAdmin=" + isAdmin +
-                ", userReviews=" + userReviews +
                 '}';
     }
 }
