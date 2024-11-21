@@ -1,4 +1,5 @@
 package com.example.fridget.models;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -14,6 +15,7 @@ public class User implements Serializable {
     private Long id;
 
     @OneToOne(mappedBy = "user")
+    @JsonIgnore
     private UserProfile userProfile;
 
     @Column(nullable = true, unique = false)

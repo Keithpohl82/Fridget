@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 @Embeddable
 public class Ingredients {
 
+
         private String ingredient;
         private String amount;
         private String unit;
