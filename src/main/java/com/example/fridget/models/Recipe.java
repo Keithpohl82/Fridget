@@ -19,10 +19,6 @@ public class Recipe extends AbstractClass{
 
     private List<RecipeDirections> directions;
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonBackReference
-    private List<RecipeReview> reviews;
-
     private String name;
 
     private String description;
@@ -44,11 +40,10 @@ public class Recipe extends AbstractClass{
     @ManyToOne
     private User author;
 
-    public Recipe(User author, LocalDate dateCreated, List<Ingredients> ingredients, List<RecipeDirections> directions, List<RecipeReview> reviews, String name, String description, int prepTime, int cookTime, int totalTime, String photoPath, String cuisine) {
+    public Recipe(User author, LocalDate dateCreated, List<Ingredients> ingredients, List<RecipeDirections> directions, String name, String description, int prepTime, int cookTime, int totalTime, String photoPath, String cuisine) {
         super();
         this.ingredients = ingredients;
         this.directions = directions;
-        this.reviews = reviews;
         this.name = name;
         this.description = description;
         this.prepTime = prepTime;
@@ -89,14 +84,6 @@ public class Recipe extends AbstractClass{
 
     public void setDirections(List<RecipeDirections> directions) {
         this.directions = directions;
-    }
-
-    public List<RecipeReview> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<RecipeReview> reviews) {
-        this.reviews = reviews;
     }
 
     public String getName() {
@@ -168,7 +155,6 @@ public class Recipe extends AbstractClass{
         return "Recipe{" +
                 "ingredients=" + ingredients +
                 ", directions=" + directions +
-                ", reviews=" + reviews +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", prepTime=" + prepTime +
