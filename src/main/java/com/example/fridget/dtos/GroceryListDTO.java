@@ -7,7 +7,7 @@ import java.util.List;
 public class GroceryListDTO {
 
     private Long userid;
-    private List<Ingredients> items;
+    private List<String> items;
 
     // Getters and Setters
     public Long getUserid() {
@@ -18,11 +18,11 @@ public class GroceryListDTO {
         this.userid = userid;
     }
 
-    public List<Ingredients> getItems() {
+    public List<String> getItems() {
         return items;
     }
 
-    public void setItems(List<Ingredients> items) {
+    public void setItems(List<String> items) {
         this.items = items;
     }
 }

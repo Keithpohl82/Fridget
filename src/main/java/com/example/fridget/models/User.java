@@ -46,7 +46,7 @@ public class User implements Serializable {
 
     @ElementCollection
     @CollectionTable(name = "user_grocery_list", joinColumns = @JoinColumn(name = "user_id"))
-    private List<Ingredients> grocerylist;
+    private List<String> grocerylist;
 
     @OneToOne(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
@@ -54,7 +54,7 @@ public class User implements Serializable {
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public User(Recipe authoredrecipe, Long id, UserProfile userProfile, String username, String firstName, String lastName, String userEmail, String pwHash, boolean isAdmin, List<RecipeReview> userReviews, List<Ingredients> grocerylist) {
+    public User(Recipe authoredrecipe, Long id, UserProfile userProfile, String username, String firstName, String lastName, String userEmail, String pwHash, boolean isAdmin, List<RecipeReview> userReviews, List<String> grocerylist) {
         this.id = id;
         this.username = username;
         this.userEmail = userEmail;
@@ -153,11 +153,11 @@ public class User implements Serializable {
         this.profilePicturePath = profilePicturePath;
     }
 
-    public List<Ingredients> getGrocerylist() {
+    public List<String> getGrocerylist() {
         return grocerylist;
     }
 
-    public void setGrocerylist(List<Ingredients> grocerylist) {
+    public void setGrocerylist(List<String> grocerylist) {
         this.grocerylist = grocerylist;
     }
 

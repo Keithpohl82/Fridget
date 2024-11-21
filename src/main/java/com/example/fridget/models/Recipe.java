@@ -44,7 +44,7 @@ public class Recipe extends AbstractClass{
     @ManyToOne
     private User author;
 
-    public Recipe(User author, LocalDate dateCreated, List<Ingredients> ingredients, List<RecipeDirections> directions, List<RecipeReview> reviews, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL, String cuisine) {
+    public Recipe(User author, LocalDate dateCreated, List<Ingredients> ingredients, List<RecipeDirections> directions, List<RecipeReview> reviews, String name, String description, int prepTime, int cookTime, int totalTime, String photoPath, String cuisine) {
         super();
         this.ingredients = ingredients;
         this.directions = directions;
@@ -166,15 +166,17 @@ public class Recipe extends AbstractClass{
     @Override
     public String toString() {
         return "Recipe{" +
-                "ID=" + getId() +
                 "ingredients=" + ingredients +
-                ", recipeDirections=" + directions +
+                ", directions=" + directions +
+                ", reviews=" + reviews +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", prepTime=" + prepTime +
                 ", cookTime=" + cookTime +
                 ", totalTime=" + totalTime +
                 ", photoPath='" + photoPath + '\'' +
+                ", dateCreated=" + dateCreated +
+                ", cuisine='" + cuisine + '\'' +
                 '}';
     }
 }
