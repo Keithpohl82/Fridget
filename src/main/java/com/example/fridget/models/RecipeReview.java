@@ -1,5 +1,6 @@
 package com.example.fridget.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -18,6 +19,7 @@ public class RecipeReview extends AbstractClass{
 
     @ManyToOne
     @JoinColumn(name = "recipe_id", nullable = false)
+    @JsonManagedReference
     private Recipe recipe;
 
     public String getReviewText() {

@@ -1,10 +1,12 @@
 package com.example.fridget.models;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Embeddable
 public class RecipeDirections {
 
     private String directionText;
+    @JsonBackReference
     private int stepOrder;
 
     public RecipeDirections() {
