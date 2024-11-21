@@ -2,7 +2,6 @@ package com.example.fridget.controllers;
 
 import com.example.fridget.dtos.GroceryListDTO;
 import com.example.fridget.models.Ingredients;
-import com.example.fridget.models.Recipe;
 import com.example.fridget.models.User;
 import com.example.fridget.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Map;
+
 
 
 @Controller

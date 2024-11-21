@@ -1,18 +1,14 @@
 package com.example.fridget.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "recipe", discriminatorType = DiscriminatorType.STRING)
 public class Recipe extends AbstractClass{
-
 
     @ElementCollection
     @CollectionTable(name = "recipe_ingredients", joinColumns = @JoinColumn(name = "recipe_id"))
@@ -46,7 +42,6 @@ public class Recipe extends AbstractClass{
     private String cuisine;
 
     @ManyToOne
-    @JsonBackReference
     private User author;
 
     public Recipe(User author, LocalDate dateCreated, List<Ingredients> ingredients, List<RecipeDirections> directions, List<RecipeReview> reviews, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL, String cuisine) {
