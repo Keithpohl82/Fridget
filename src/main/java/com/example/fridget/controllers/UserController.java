@@ -2,7 +2,6 @@ package com.example.fridget.controllers;
 
 import com.example.fridget.dtos.UserDTO;
 import com.example.fridget.models.User;
-import com.example.fridget.models.UserProfile;
 import com.example.fridget.models.data.UserRepository;
 import com.example.fridget.services.FileStorageService;
 import com.example.fridget.services.UserProfileService;
