@@ -108,7 +108,7 @@ const AddRecipe = () => {
 
       if (response.ok) {
         const recipeAuthor = await response.json();
-        console.log("Fetched Creator:", recipeAuthor); // Debug log
+        console.log("Fetched author:", recipeAuthor); // Debug log
         setAuthor(recipeAuthor.id); // Ensure the full UserDTO is set, including id
       } else {
         console.error("Failed to fetch current user.");
@@ -187,15 +187,16 @@ const AddRecipe = () => {
           cuisine,
           author,
         }),
+        
       });
-
+      
       if (!recipeResponse.ok) {
         throw new Error("Failed to add recipe.");
       }
 
       const recipeData = await recipeResponse.json();
       const recipeId = recipeData.id;
-
+      
       if (photoFile) {
         const formData = new FormData();
         formData.append("file", photoFile);

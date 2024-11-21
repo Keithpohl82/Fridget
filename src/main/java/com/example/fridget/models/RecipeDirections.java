@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 public class RecipeDirections {
 
     private String directionText;
-    @JsonBackReference
     private int stepOrder;
 
     public RecipeDirections() {
