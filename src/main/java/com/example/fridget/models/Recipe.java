@@ -41,7 +41,10 @@ public class Recipe extends AbstractClass{
 
     private String cuisine;
 
-    public Recipe(LocalDate dateCreated, List<Ingredients> ingredients, List<RecipeDirections> directions, List<RecipeReview> reviews, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL, String cuisine) {
+    @ManyToOne
+    private User author;
+
+    public Recipe(User author, LocalDate dateCreated, List<Ingredients> ingredients, List<RecipeDirections> directions, List<RecipeReview> reviews, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL, String cuisine) {
         super();
         this.ingredients = ingredients;
         this.directions = directions;
@@ -54,9 +57,18 @@ public class Recipe extends AbstractClass{
         this.photoPath = photoPath;
         this.cuisine = cuisine;
         this.dateCreated = dateCreated;
+        this.author = author;
     }
 
     public Recipe() {
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
     public Long getId() {
