@@ -1,5 +1,6 @@
 package com.example.fridget.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
@@ -15,16 +16,16 @@ public class Recipe extends AbstractClass{
 
     @ElementCollection
     @CollectionTable(name = "recipe_ingredients", joinColumns = @JoinColumn(name = "recipe_id"))
-    @JsonIgnore
+    @JsonBackReference
     private List<Ingredients> ingredients;
 
     @ElementCollection
     @CollectionTable(name = "recipe_directions", joinColumns = @JoinColumn(name = "recipe_id"))
-    @JsonIgnore
+    @JsonBackReference
     private List<RecipeDirections> directions;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
+    @JsonBackReference
     private List<RecipeReview> reviews;
 
     private String name;
@@ -46,7 +47,7 @@ public class Recipe extends AbstractClass{
     private String cuisine;
 
     @ManyToOne
-    @JsonIgnore
+    @JsonBackReference
     private User author;
 
     public Recipe(User author, LocalDate dateCreated, List<Ingredients> ingredients, List<RecipeDirections> directions, List<RecipeReview> reviews, String name, String description, int prepTime, int cookTime, int totalTime, String photoURL, String cuisine) {

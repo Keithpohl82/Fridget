@@ -1,5 +1,6 @@
 package com.example.fridget.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 public class UserProfile extends AbstractClass{
 
     @OneToOne
+    @JsonBackReference
     private User user;
 
     @Column(nullable = true, unique = false)

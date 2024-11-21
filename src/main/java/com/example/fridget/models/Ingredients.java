@@ -1,10 +1,11 @@
 package com.example.fridget.models;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Embeddable
 public class Ingredients {
 
-
+        @JsonBackReference
         private String ingredient;
         private String amount;
         private String unit;
