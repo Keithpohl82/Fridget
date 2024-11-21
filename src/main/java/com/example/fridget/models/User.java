@@ -1,4 +1,5 @@
 package com.example.fridget.models;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -14,6 +15,7 @@ public class User implements Serializable {
     private Long id;
 
     @OneToOne(mappedBy = "user")
+    @JsonIgnore
     private UserProfile userProfile;
 
     @Column(nullable = true, unique = false)
@@ -44,9 +46,12 @@ public class User implements Serializable {
     @CollectionTable(name = "user_grocery_list", joinColumns = @JoinColumn(name = "user_id"))
     private List<Ingredients> grocerylist;
 
+    @OneToOne(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Recipe authoredrecipe;
+
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public User(Long id, UserProfile userProfile, String username, String firstName, String lastName, String userEmail, String pwHash, boolean isAdmin, List<RecipeReview> userReviews, List<Ingredients> grocerylist) {
+    public User(Recipe authoredrecipe, Long id, UserProfile userProfile, String username, String firstName, String lastName, String userEmail, String pwHash, boolean isAdmin, List<RecipeReview> userReviews, List<Ingredients> grocerylist) {
         this.id = id;
         this.username = username;
         this.userEmail = userEmail;
@@ -55,9 +60,18 @@ public class User implements Serializable {
         this.userReviews = userReviews;
         this.userProfile = userProfile;
         this.grocerylist = grocerylist;
+        this.authoredrecipe = authoredrecipe;
     }
 
     public User() {
+    }
+
+    public Recipe getAuthoredrecipe() {
+        return authoredrecipe;
+    }
+
+    public void setAuthoredrecipe(Recipe authoredrecipe) {
+        this.authoredrecipe = authoredrecipe;
     }
 
     public String getFirstName() {

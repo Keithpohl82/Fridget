@@ -96,6 +96,29 @@ const AddRecipe = () => {
   const [stepInput, setStepInput] = useState("");
   const [cuisine, setCuisine] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [author, setAuthor] = useState();
+
+  //Gets the user so we can assign them as the author.
+  const getUser = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/userservice/current-user", {
+        method: "GET",
+        credentials: "include", // Ensures session cookies are sent
+      });
+
+      if (response.ok) {
+        const recipeAuthor = await response.json();
+        console.log("Fetched Creator:", recipeAuthor); // Debug log
+        setAuthor(recipeAuthor.id); // Ensure the full UserDTO is set, including id
+      } else {
+        console.error("Failed to fetch current user.");
+        setUser(null); // No user logged in
+      }
+    } catch (error) {
+      console.error("Error refreshing user:", error);
+      setUser(null);
+    }
+  }
 
   const addIngredient = () => {
     if (ingredientInput.trim() !== "" && amountInput.trim() !== "" && unitInput !== "") {
@@ -146,6 +169,7 @@ const AddRecipe = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    getUser();
     setIsSubmitting(true);
     try {
       const recipeResponse = await fetch("http://localhost:8080/recipes/add", {
@@ -161,6 +185,7 @@ const AddRecipe = () => {
           directions,
           ingredients,
           cuisine,
+          author,
         }),
       });
 
