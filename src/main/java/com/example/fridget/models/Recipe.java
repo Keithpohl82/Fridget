@@ -16,12 +16,11 @@ public class Recipe extends AbstractClass{
 
     @ElementCollection
     @CollectionTable(name = "recipe_ingredients", joinColumns = @JoinColumn(name = "recipe_id"))
-    @JsonBackReference
     private List<Ingredients> ingredients;
 
     @ElementCollection
     @CollectionTable(name = "recipe_directions", joinColumns = @JoinColumn(name = "recipe_id"))
-    @JsonBackReference
+
     private List<RecipeDirections> directions;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)

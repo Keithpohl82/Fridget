@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 @Embeddable
 public class Ingredients {
 
-        @JsonBackReference
+        
         private String ingredient;
         private String amount;
         private String unit;
