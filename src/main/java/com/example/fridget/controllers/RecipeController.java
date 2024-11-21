@@ -36,6 +36,7 @@ public class RecipeController {
     @GetMapping("/")
     public ResponseEntity<List<Recipe>> index() {
         List<Recipe> recipes = recipeService.getRecipes();
+        System.out.println(recipes.toString());
         return ResponseEntity.ok(recipes);
     }
 

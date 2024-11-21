@@ -22,7 +22,6 @@ public class RecipeService {
 
     public void addNewRecipe(Recipe recipe){
         recipe.setDateCreated(LocalDate.now());
-        //userService.getCurrentUser();
         recipeRepository.save(recipe);
     }
     public List<Recipe> getRecipes() {

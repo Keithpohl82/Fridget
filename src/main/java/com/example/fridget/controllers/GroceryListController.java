@@ -14,7 +14,7 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("grocery-list")
+@RequestMapping("grocerylist")
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class GroceryListController {
 
@@ -23,7 +23,7 @@ public class GroceryListController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<List<Ingredients>> getGroceryList(@PathVariable Long id) {
+    public ResponseEntity<List<String>> getGroceryList(@PathVariable Long id) {
         try {
             User user = userService.getUserById(id);
             return ResponseEntity.ok(user.getGrocerylist());
@@ -35,7 +35,7 @@ public class GroceryListController {
     @PostMapping("addlist")
     public ResponseEntity<String> addNewGroceryList(@RequestBody GroceryListDTO groceryListDTO) {
         Long userid = groceryListDTO.getUserid();
-        List<Ingredients> items = groceryListDTO.getItems();
+        List<String> items = groceryListDTO.getItems();
 
         User user = userService.getUserById(userid);
         if (user == null) {
