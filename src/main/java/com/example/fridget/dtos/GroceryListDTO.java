@@ -1,7 +1,5 @@
 package com.example.fridget.dtos;
 
-import com.example.fridget.models.Ingredients;
-
 import java.util.List;
 
 public class GroceryListDTO {

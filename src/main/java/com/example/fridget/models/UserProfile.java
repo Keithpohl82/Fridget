@@ -14,22 +14,22 @@ public class UserProfile extends AbstractClass{
     @JsonBackReference
     private User user;
 
-    @Column(nullable = true, unique = false)
+    @Column()
     private String firstName;
 
-    @Column(nullable = true, unique = false)
+    @Column()
     private String lastName;
 
-    @Column(nullable = true, unique = false)
+    @Column()
     private LocalDate birthday;
 
-    @Column(nullable = true, unique = false)
+    @Column()
     private String profileImage;
 
-    @Column(nullable = true, unique = false, length = 2000)
+    @Column(length = 2000)
     private String userbio;
 
-    @Column(nullable = true, unique = false)
+    @Column()
     private String location;
 
     public LocalDate getBirthday() {

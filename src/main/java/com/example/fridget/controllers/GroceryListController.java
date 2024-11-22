@@ -1,7 +1,6 @@
 package com.example.fridget.controllers;
 
 import com.example.fridget.dtos.GroceryListDTO;
-import com.example.fridget.models.Ingredients;
 import com.example.fridget.models.User;
 import com.example.fridget.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
