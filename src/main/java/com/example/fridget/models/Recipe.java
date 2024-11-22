@@ -37,7 +37,7 @@ public class Recipe extends AbstractClass{
     private String cuisine;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference //owner
     private User author;
 
     public Recipe(User author, LocalDate dateCreated, List<Ingredients> ingredients, List<RecipeDirections> directions, String name, String description, int prepTime, int cookTime, int totalTime, String photoPath, String cuisine) {

@@ -108,7 +108,7 @@ const AddRecipe = () => {
 
       if (response.ok) {
         const recipeAuthor = await response.json();
-        console.log("Fetched author:", recipeAuthor); // Debug log
+        console.log("Fetched author:", recipeAuthor.id); // Debug log
         setAuthor(recipeAuthor.id); // Ensure the full UserDTO is set, including id
       } else {
         console.error("Failed to fetch current user.");

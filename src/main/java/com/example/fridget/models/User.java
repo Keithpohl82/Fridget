@@ -44,7 +44,7 @@ public class User implements Serializable {
     private List<String> grocerylist;
 
     @OneToOne(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference //inverse
     private Recipe authoredrecipe;
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
