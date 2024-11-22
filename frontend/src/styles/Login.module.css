@@ -1,0 +1,143 @@
+/* Hero Section Styles */
+.hero {
+    position: relative;
+    overflow: hidden;
+    height: 33vh; /* Adjusted to take up only the top third of the page */
+  }
+  
+  /* Keyframes for Rotating Background */
+  @keyframes rotateBackground {
+    0% {
+      background-image: url('https://img.freepik.com/free-photo/top-view-delicious-groceries-paper-bag_23-2149139455.jpg?t=st=1732300764~exp=1732304364~hmac=fa36ace306ae02ac1c6681a84035500cbefa00da20d87e610b227d6e48daacaf&w=1380');
+    }
+    33% {
+      background-image: url('https://img.freepik.com/free-photo/top-view-assortment-vegetables-paper-bag_23-2148853335.jpg?t=st=1732300784~exp=1732304384~hmac=73e0755a4c7ea862b0db480da5b14f35b591d721e8aa50b173967e83d7e503ed&w=1380');
+    }
+    66% {
+      background-image: url('https://img.freepik.com/free-photo/delicious-food-arrangement-view_23-2149235810.jpg?t=st=1732300798~exp=1732304398~hmac=e106c61cf6bf9ba25b83d6ac8ae8265aeab62c6829ff07ca8562423cbc963a72&w=1380');
+    }
+    100% {
+      background-image: url('https://img.freepik.com/free-photo/top-view-bunch-fresh-food-donation_23-2148733834.jpg?t=st=1732300860~exp=1732304460~hmac=56b10be1265c9c5d5990bc24c752a97216177f726b76c7a0f8bd29990ee6b7fa&w=996'); /* Loop back to the first image */
+    }
+  }
+  
+  /* Frosted Glass Effect */
+  .heroBody {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 30%;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem 1rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 2; /* Ensure frosted container sits above background */
+  }
+  
+  /* Form Container Styling */
+  .formContainer {
+    border-radius: 15px; /* Rounded edges for the form */
+    overflow: hidden; /* Ensure the form input and button don't spill over */
+  }
+  
+  .input, .button {
+    border-radius: 5px; /* Optional, to round form elements */
+  }
+  
+  .title, .subtitle {
+    color: #fff; /* Ensure text stands out against frosted background */
+  }
+  
+  .button {
+    background-color: #3273dc;
+    color: white;
+  }
+  
+  .button:disabled {
+    background-color: #b5b5b5;
+  }
+  
+  /* Optional: Background animation for the Hero */
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    animation: rotateBackground 40s infinite;
+    z-index: -1; /* Ensure the background stays behind the frosted container */
+  }
+
+  /* Small square cards */
+/* Card Styling */
+.card {
+    width: 200px; /* Small square card */
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1; /* Ensure card is not behind form */
+  }
+  
+  /* Expanded state */
+  .card .card-image {
+    transition: all 0.3s ease;
+    height: 100%;
+  }
+  
+  /* Card content transition */
+  .card-content {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  
+  /* Expanded card effect */
+  .card:hover {
+    transform: scale(1.1); /* Slightly zoom-in effect */
+  }
+  
+  .card.expanded {
+    width: 300px; /* Expand width */
+    height: 400px; /* Expand height */
+  }
+  
+  .card.expanded .card-image {
+    height: 60%; /* Adjust image height */
+  }
+  
+  .card.expanded .card-content {
+    opacity: 1;
+    visibility: visible;
+    position: absolute;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    transition: opacity 0.5s ease;
+  }
+  
+  .card-content .title {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .card-content .subtitle {
+    font-size: 1rem;
+    color: gray;
+  }
+ 
+  .section2 {
+    margin-top: 30vh;
+  }

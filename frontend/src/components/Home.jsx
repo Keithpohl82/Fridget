@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom"; // Import Link component
 import "bulma/css/bulma.min.css";
+import styles from "../styles/Login.module.css";
 
 const HomePage = () => {
   const [ingredientSearch, setIngredients] = useState("");
   const [recipeResults, setRecipeResults] = useState([]);
   const [recipes, setRecipes] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // Show loading spinner while fetching recipes
-  const [loadingRecipes, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false); // Updated to show loading during both local and API fetch
+  const [expandedRecipe, setExpandedRecipe] = useState(null); // Track expanded recipe
 
   // Fetch all recipes in the database
   useEffect(() => {
@@ -15,157 +16,144 @@ const HomePage = () => {
       .then((response) => response.json())
       .then((data) => {
         setRecipes(data);
-        setLoading(false);
-        setIsLoading(false); // Set loading to false once data is fetched
       })
       .catch((error) => {
         console.error("Error fetching recipes:", error);
-        setLoading(false);
-        setIsLoading(false);
       });
   }, []);
 
-  // Get a random recipe for the featured section
-  const getRandomIndex = () => Math.floor(Math.random() * recipes.length);
-  const randomIndex = getRandomIndex();
-  const randomRecipe = recipes[randomIndex];
+  // Function to search recipes from Meal DB API
+  const searchApiRecipes = (ingredientSearch) => {
+    const apiKey = "1"; // Replace with your actual API key
+    return fetch(
+      `https://www.themealdb.com/api/json/v1/${apiKey}/search.php?s=${ingredientSearch}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        return data.meals || []; // Returns empty array if no results
+      })
+      .catch((error) => {
+        console.error("Error fetching recipes from API:", error);
+        return [];
+      });
+  };
 
   const handleInputChange = (e) => {
     setIngredients(e.target.value);
   };
 
-  // Filter recipes based on ingredient search
-  const handleFilter = () => {
-    const filterArr = recipes.filter((recipe) =>
+  // Filter and combine local and API recipes
+  const handleFilter = async () => {
+    setIsLoading(true); // Show loading indicator while fetching
+
+    // Filter saved recipes from the backend
+    const savedRecipes = recipes.filter((recipe) =>
       recipe.ingredients.some(
         (ingredient) =>
           ingredient.ingredient.toLowerCase() === ingredientSearch.toLowerCase()
       )
     );
-    setRecipeResults(filterArr);
+
+    // Fetch recipes from the Meal DB API
+    const apiRecipes = await searchApiRecipes(ingredientSearch);
+
+    // Combine results from both sources
+    const combinedResults = [...savedRecipes, ...apiRecipes];
+    setRecipeResults(combinedResults);
+
+    setIsLoading(false); // Hide loading indicator once done
   };
 
   // Construct image URL or use placeholder
   const getImageUrl = (path) => (path ? `http://localhost:8080/${path}` : "https://via.placeholder.com/400");
 
+  const handleCardClick = (recipeId) => {
+    // Toggle the expanded recipe on click
+    setExpandedRecipe(expandedRecipe === recipeId ? null : recipeId);
+  };
+
   return (
     <div>
-      {/* Hero Section */}
-      <section className="hero is-primary">
-        <div className="hero-body">
-          <div className="container">
-            <h1 className="title">What's in Your Kitchen?</h1>
-            <h2 className="subtitle">Let us help you cook with the ingredients you already have!</h2>
+      <section className={`hero is-fullheight is-bold ${styles.hero}`}>
+        <div className={`hero-body ${styles.heroBody}`}>
+          <div className="container has-text-centered">
+            <h1 className={`title ${styles.title}`}>What's in Your Kitchen?</h1>
+            <h2 className={`subtitle ${styles.subtitle}`}>
+              Let us help you cook with the ingredients you already have!
+            </h2>
 
-            <div className="field has-addons">
+            <div className={`field has-addons ${styles.formContainer}`}>
               <div className="control is-expanded">
                 <input
-                  className="input"
+                  className={`input ${styles.input}`}
                   type="text"
                   placeholder="Enter ingredients (e.g., chicken, rice, broccoli)"
                   value={ingredientSearch}
                   onChange={handleInputChange}
                 />
               </div>
+
               <div className="control">
-                <button className="button is-info" onClick={handleFilter} disabled={isLoading}>
+                <button
+                  className={`button is-info ${styles.button}`}
+                  onClick={handleFilter}
+                  disabled={isLoading}
+                >
                   {isLoading ? "Searching..." : "Find Recipes"}
                 </button>
               </div>
             </div>
           </div>
         </div>
-      </section>
 
-      {/* How It Works Section */}
-      <section className="section">
-        <div className="container">
-          <h2 className="title has-text-centered">How It Works</h2>
-          <div className="columns is-centered">
-            <div className="column is-one-third">
-              <div className="box">
-                <h3 className="subtitle">1. Add Ingredients</h3>
-                <p>Type in the ingredients you have in your kitchen.</p>
+        {/* Recipe Results Section */}
+        <div>
+          {!isLoading && recipeResults.length === 0 && ingredientSearch && (
+            <p className="has-text-centered">No recipes found for this ingredient.</p>
+          )}
+
+          {recipeResults.length > 0 && (
+            <section className={`section ${styles.section2}`}>
+              <div className="container">
+                <h2 className="title has-text-centered">Recipe Results</h2>
+                <div className="columns is-multiline">
+                  {recipeResults.map((recipe) => (
+                    <div className="column is-one-third" key={recipe.id}>
+                      <div
+                        className={`${styles.card} card`}
+                        onClick={() => handleCardClick(recipe.id)}
+                      >
+                        <div className={`card-image ${expandedRecipe === recipe.id ? styles.expanded : ""}`}>
+                          <figure className="image is-4by3">
+                            <img
+                              src={getImageUrl(recipe.photoPath || recipe.strMealThumb)} // Handle API and local images
+                              alt={recipe.name || recipe.strMeal}
+                            />
+                          </figure>
+                        </div>
+                        {expandedRecipe === recipe.id && (
+                          <div className="card-content">
+                            <p className="title">{recipe.name || recipe.strMeal}</p>
+                            <p className="subtitle">{recipe.description || recipe.strInstructions}</p>``
+                            <Link to={`/recipes/${recipe.id}`} className="button is-info">
+                              View Recipe
+                            </Link>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-            <div className="column is-one-third">
-              <div className="box">
-                <h3 className="subtitle">2. Get Recipe Suggestions</h3>
-                <p>We will suggest recipes based on what you have.</p>
-              </div>
-            </div>
-            <div className="column is-one-third">
-              <div className="box">
-                <h3 className="subtitle">3. Cook and Enjoy!</h3>
-                <p>Choose your recipe, cook it, and enjoy your meal!</p>
-              </div>
-            </div>
-          </div>
+            </section>
+          )}
         </div>
       </section>
-
-      {/* Recipe Results Section */}
-      {!isLoading && recipeResults.length === 0 && ingredientSearch && (
-        <p className="has-text-centered">No recipes found for this ingredient.</p>
-      )}
-
-      {recipeResults.length > 0 && (
-        <section className="section">
-          <div className="container">
-            <h2 className="title has-text-centered">Recipe Results</h2>
-            <div className="columns is-multiline">
-              {recipeResults.map((recipe, index) => (
-                <div className="column is-one-third" key={index}>
-                  <div className="card">
-                    <div className="card-image">
-                      <figure className="image is-4by3">
-                        <img src={getImageUrl(recipe.photoPath)} alt={recipe.name} />
-                      </figure>
-                    </div>
-                    <div className="card-content">
-                      <p className="title">{recipe.name}</p>
-                      <p className="subtitle">{recipe.description}</p>
-                      <Link to={`/recipes/${recipe.id}`} className="button is-info">
-                        View Recipe
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Featured Recipes Section */}
-      {!isLoading && recipes.length > 0 && (
-        <section className="section">
-          <div className="container">
-            <h2 className="title has-text-centered">Featured Recipes</h2>
-            <div className="columns is-multiline">
-              <div className="column is-one-third">
-                <div className="card">
-                  <div className="card-image">
-                    <figure className="image is-4by3">
-                      <img src={getImageUrl(randomRecipe.photoPath)} alt={randomRecipe.name} />
-                    </figure>
-                  </div>
-                  <div className="card-content">
-                    <p className="title">{randomRecipe.name}</p>
-                    <p className="subtitle">{randomRecipe.description}</p>
-                  </div>
-                </div>
-              </div>
-              {/* Repeat similar blocks for other featured recipes if needed */}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Footer */}
       <footer className="footer">
         <div className="content has-text-centered">
-          <p>&copy; 2024 My Recipe App</p>
+          <p>&copy; 2024 Fridget</p>
         </div>
       </footer>
     </div>
