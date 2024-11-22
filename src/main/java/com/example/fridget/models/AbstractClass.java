@@ -21,7 +21,7 @@ public class AbstractClass {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof AbstractClass that)) return false;
-        return id == that.id;
+        return id.equals(that.id);
     }
 
     @Override

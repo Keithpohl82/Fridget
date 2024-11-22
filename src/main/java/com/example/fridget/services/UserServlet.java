@@ -1,6 +1,5 @@
 package com.example.fridget.services;
 
-import com.example.fridget.models.Recipe;
 import com.example.fridget.models.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -13,7 +12,7 @@ import java.io.IOException;
 public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         HttpSession session = request.getSession();
 
         // Retrieve the User object from the session

@@ -1,5 +1,6 @@
 package com.example.fridget.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -17,25 +18,25 @@ public class User implements Serializable {
     @OneToOne(mappedBy = "user")
     private UserProfile userProfile;
 
-    @Column(nullable = true, unique = false)
+    @Column()
     private String firstName;
 
-    @Column(nullable = true, unique = false)
+    @Column()
     private String lastName;
 
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = true, unique = true)
+    @Column(unique = true)
     private String userEmail;
 
-    @Column(nullable = false, unique = false)
+    @Column(nullable = false)
     private String pwHash;
 
-    @Column(nullable = false, unique = false)
+    @Column(nullable = false)
     private boolean isAdmin = false;
 
-    @Column(name = "profile_picture_path", nullable = true)
+    @Column(name = "profile_picture_path")
     private String profilePicturePath;
 
     @ElementCollection
@@ -43,6 +44,7 @@ public class User implements Serializable {
     private List<String> grocerylist;
 
     @OneToOne(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Recipe authoredrecipe;
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();

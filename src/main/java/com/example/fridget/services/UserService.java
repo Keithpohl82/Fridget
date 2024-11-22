@@ -1,9 +1,7 @@
 package com.example.fridget.services;
 
 import com.example.fridget.models.PasswordResetToken;
-import com.example.fridget.models.Recipe;
 import com.example.fridget.models.User;
-import com.example.fridget.models.UserProfile;
 import com.example.fridget.models.data.PasswordResetTokenRepository;
 import com.example.fridget.models.data.UserProfileRepository;
 import com.example.fridget.models.data.UserRepository;

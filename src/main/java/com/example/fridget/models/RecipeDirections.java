@@ -1,5 +1,4 @@
 package com.example.fridget.models;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Embeddable
