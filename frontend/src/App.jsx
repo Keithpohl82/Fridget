@@ -31,8 +31,8 @@ import useCurrentUser from "./useCurrentUser";
 
 const App = () => {
   
-// out custom user hook.
-  const {user,loading, error} = useCurrentUser();
+// our custom user hook.
+  const {user,loading, hookError, setUser} = useCurrentUser();
 
   const logoutUser = async () => {
     try {

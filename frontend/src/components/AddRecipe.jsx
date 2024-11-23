@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import imageCompression from "browser-image-compression";
 import "bulma/css/bulma.min.css";
 import useCurrentUser from "../useCurrentUser";
@@ -84,6 +84,7 @@ const PhotoUpload = ({ setPhotoUrl, photoURL, setPhotoFile }) => {
 };
 
 const AddRecipe = () => {
+  
   const [name, setRecipeName] = useState("");
   const [cookTime, setCookTime] = useState("");
   const [prepTime, setPrepTime] = useState("");
@@ -100,9 +101,13 @@ const AddRecipe = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [author, setAuthor] = useState();
 
-  const { user, loading, error } = useCurrentUser();
+  const { user, loading, hookError, setUser } = useCurrentUser();
 
-
+  useEffect(() => {
+    console.log(`the user: ${user}`);
+    setAuthor(user);
+    console.log(`the author: ${author}`);
+  })
 
   const addIngredient = () => {
     if (ingredientInput.trim() !== "" && amountInput.trim() !== "" && unitInput !== "") {
@@ -153,9 +158,7 @@ const AddRecipe = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setAuthor(user);
-    console.log(user);
-    console.log(author);
+
     setIsSubmitting(true);
     try {
       const recipeResponse = await fetch("http://localhost:8080/recipes/add", {

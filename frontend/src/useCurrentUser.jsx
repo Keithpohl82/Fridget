@@ -28,7 +28,7 @@ const useCurrentUser = () => {
     fetchUser();
   }, []);
 
-  return { user, loading, hookError };
+  return { user, loading, hookError, setUser };
 };
 
 export default useCurrentUser;

@@ -4,15 +4,12 @@ import styles from "../styles/Navbar.module.css";
 import useCurrentUser from "../useCurrentUser";
 
 
-
-
 const Navbar = () => {
   const navigate = useNavigate();
-  const {user, loading, hookError} = useCurrentUser();
+  const {user, loading, hookError, setUser} = useCurrentUser();
   
 
   const logoutUser = async () => {
-   
     try {
       const response = await fetch("http://localhost:8080/userservice/logout", {
         method: "POST",
@@ -20,7 +17,7 @@ const Navbar = () => {
       });
       if (response.ok) {
         //refreshUser(); // Refresh user state
-        useCurrentUser(null);
+        setUser(null);
         navigate("/login"); // Redirect to login page
       } else {
         console.error("Failed to log out");
