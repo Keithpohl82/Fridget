@@ -1,24 +1,32 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../styles/Navbar.module.css";
+import useCurrentUser from "../useCurrentUser";
 
-const Navbar = ({ user, refreshUser }) => {
+
+
+
+const Navbar = () => {
   const navigate = useNavigate();
+  const {user, loading, hookError} = useCurrentUser();
+  
 
   const logoutUser = async () => {
+   
     try {
       const response = await fetch("http://localhost:8080/userservice/logout", {
         method: "POST",
         credentials: "include", // Ensures session cookies are sent
       });
       if (response.ok) {
-        refreshUser(); // Refresh user state
+        //refreshUser(); // Refresh user state
+        useCurrentUser(null);
         navigate("/login"); // Redirect to login page
       } else {
         console.error("Failed to log out");
       }
-    } catch (error) {
-      console.error("Error logging out:", error);
+    } catch (hookError) {
+      console.error("Error logging out:", hookError);
     }
   };
 

@@ -1,19 +1,20 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import happy from '../Pictures/Happy-Chef.jpg';
+import useCurrentUser from "../useCurrentUser";
 
-const Login = ({ refreshUser }) => {
+const Login = () => {
   const [identifier, setIdentifier] = useState(""); // Username or email
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  
+  //const {user, loading, hookError} = useCurrentUser();
   // Initialize the navigate function
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
+    
     try {
       const response = await fetch(
         `http://localhost:8080/userservice/login?identifier=${identifier}&password=${password}`,
@@ -23,11 +24,13 @@ const Login = ({ refreshUser }) => {
         }
       );
       const result = await response.text();
+      console.log(result);
 
       if (response.ok) {
         alert(result); // Login successful
-        refreshUser(); // Notify Navbar to update
-        
+
+        // refreshUser(); // Notify Navbar to update
+
         // Redirect to the homepage
         navigate("/"); // Navigate to the homepage
       } else {
