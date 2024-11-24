@@ -35,6 +35,7 @@ const App = () => {
 // our custom user hook.
   const {currentUser, setUser} = useCurrentUser();
   console.log(currentUser);
+  
   const logoutUser = async () => {
     try {
       const response = await fetch("http://localhost:8080/userservice/logout", {

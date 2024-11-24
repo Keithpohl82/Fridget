@@ -1,15 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../styles/Navbar.module.css";
-import useCurrentUser from "../useCurrentUser";
-import axios from "axios";
+import { useUser } from "../UserContext";
+
 
 
 const Navbar = () => {
   const navigate = useNavigate();
 
-  const {currentUser, loading, hookError, setUser} = useCurrentUser();
-  
+  const { currentUser, setUser, refreshUser } = useUser();
+
 
   const logoutUser = async () => {
     try {
@@ -18,7 +18,7 @@ const Navbar = () => {
         credentials: "include", // Ensures session cookies are sent
       });
       if (response.ok) {
-        //refreshUser(); // Refresh user state
+         // Refresh user state
         setUser(null);
         navigate("/login"); // Redirect to login page
       } else {

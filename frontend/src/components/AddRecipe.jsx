@@ -152,11 +152,9 @@ const AddRecipe = () => {
   
   useEffect(() => {
     console.log('Component mounted!');
-    console.log(`${currentUser.username} is the currentUser!`)
-    
+    console.log(`${currentUser} is the currentUser!`);
     setAuthor(currentUser);
     console.log(`${author.username} is the author of this recipe`);
-
   }, []);
 
   const handleSubmit = async (e) => {

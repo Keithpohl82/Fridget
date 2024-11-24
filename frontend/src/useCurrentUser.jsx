@@ -28,11 +28,32 @@ const useCurrentUser = () => {
     }
   }, []);
 
+  const refreshUser = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/userservice/current-user", {
+        method: "GET",
+        credentials: "include", // Ensures session cookies are sent
+      });
+
+      if (response.ok) {
+        const userData = await response.json();
+        console.log("Fetched current user:", userData); // Debug log
+        setUser(userData); // Ensure the full UserDTO is set, including id
+      } else {
+        console.error("Failed to fetch current user.");
+        setUser(null); // No user logged in
+      }
+    } catch (error) {
+      console.error("Error refreshing user:", error);
+      setUser(null);
+    }
+  };
+
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
 
-  return { currentUser, loading, hookError, fetchUser, setUser };
+  return { currentUser, loading, hookError, fetchUser, setUser, refreshUser };
 };
 
 export default useCurrentUser;
