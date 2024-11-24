@@ -1,13 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import happy from '../Pictures/Happy-Chef.jpg';
-import useCurrentUser from "../useCurrentUser";
+import { useUser } from "../UserContext";
 
 const Login = () => {
   const [identifier, setIdentifier] = useState(""); // Username or email
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  //const {user, loading, hookError} = useCurrentUser();
+
+  const { refreshUser } = useUser();
+  useEffect(() => {
+    refreshUser();
+  }, []);
+
   // Initialize the navigate function
   const navigate = useNavigate();
 
@@ -29,7 +34,7 @@ const Login = () => {
       if (response.ok) {
         alert(result); // Login successful
 
-        // refreshUser(); // Notify Navbar to update
+        refreshUser(); // Notify Navbar to update
 
         // Redirect to the homepage
         navigate("/"); // Navigate to the homepage

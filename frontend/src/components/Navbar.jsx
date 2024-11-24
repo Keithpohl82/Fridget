@@ -7,9 +7,7 @@ import { useUser } from "../UserContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
-
-  const { currentUser, setUser, refreshUser } = useUser();
-
+  const { currentUser, setUser } = useUser();
 
   const logoutUser = async () => {
     try {

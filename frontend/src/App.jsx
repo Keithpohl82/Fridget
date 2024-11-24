@@ -15,9 +15,8 @@ import "bulma/css/bulma.min.css";
 import RecipeList from "./components/RecipeList";
 import RecipeAPI from "./components/RecipeAPI";
 import RecipeDetail from "./components/RecipeDetail";
-import { UserProvider } from "./UserContext";
-import useCurrentUser from "./useCurrentUser";
-import axios from "axios";
+import { useUser } from "./UserContext";
+
 
 // // Sample user data
 // const user = {
@@ -33,9 +32,11 @@ import axios from "axios";
 const App = () => {
   
 // our custom user hook.
-  const {currentUser, setUser} = useCurrentUser();
-  console.log(currentUser);
+  const { currentUser, setUser } = useUser();
   
+  
+  
+
   const logoutUser = async () => {
     try {
       const response = await fetch("http://localhost:8080/userservice/logout", {
@@ -53,7 +54,7 @@ const App = () => {
   };
 
   return (
-    <UserProvider>
+    
     <Router>
       <div className="container"> 
         <Navbar user={currentUser} logoutUser={logoutUser} />
@@ -73,7 +74,7 @@ const App = () => {
         </Routes>
       </div>
     </Router>
-    </UserProvider>
+    
   );
 };
 

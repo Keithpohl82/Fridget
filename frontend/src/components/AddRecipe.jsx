@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import imageCompression from "browser-image-compression";
 import "bulma/css/bulma.min.css";
-
 import { useUser } from "../UserContext";
 
 
