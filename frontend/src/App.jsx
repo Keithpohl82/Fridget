@@ -17,6 +17,7 @@ import RecipeAPI from "./components/RecipeAPI";
 import RecipeDetail from "./components/RecipeDetail";
 import { UserProvider } from "./UserContext";
 import useCurrentUser from "./useCurrentUser";
+import axios from "axios";
 
 // // Sample user data
 // const user = {
@@ -32,8 +33,8 @@ import useCurrentUser from "./useCurrentUser";
 const App = () => {
   
 // our custom user hook.
-  const {user,loading, hookError, setUser} = useCurrentUser();
-
+  const {currentUser, setUser} = useCurrentUser();
+  console.log(currentUser);
   const logoutUser = async () => {
     try {
       const response = await fetch("http://localhost:8080/userservice/logout", {
@@ -54,7 +55,7 @@ const App = () => {
     <UserProvider>
     <Router>
       <div className="container"> 
-        <Navbar user={user} logoutUser={logoutUser} />
+        <Navbar user={currentUser} logoutUser={logoutUser} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -63,7 +64,7 @@ const App = () => {
           <Route path="/recipe" element={<Recipe />} />
           <Route path="/password-reset" element={<PasswordReset />} />
           <Route path="/grocery-list" element={<GroceryList />} />
-          <Route path="/profile" element={<UserProfile user={user} logoutUser={logoutUser} />} />
+          <Route path="/profile" element={<UserProfile user={currentUser} logoutUser={logoutUser} />} />
           <Route path="/add-recipe" element={<AddRecipe />} />
           <Route path="/recipelist" element={<RecipeList />} />
           <Route path="/recipes" element={<RecipeAPI />} />

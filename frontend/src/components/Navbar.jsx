@@ -2,11 +2,13 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../styles/Navbar.module.css";
 import useCurrentUser from "../useCurrentUser";
+import axios from "axios";
 
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const {user, loading, hookError, setUser} = useCurrentUser();
+
+  const {currentUser, loading, hookError, setUser} = useCurrentUser();
   
 
   const logoutUser = async () => {
@@ -22,15 +24,15 @@ const Navbar = () => {
       } else {
         console.error("Failed to log out");
       }
-    } catch (hookError) {
-      console.error("Error logging out:", hookError);
+    } catch (error) {
+      console.error("Error logging out:", error);
     }
   };
 
   // Construct profile picture URL
   const profilePictureURL =
-    user && user.profilePicture
-      ? `http://localhost:8080/${user.profilePicture}` // Use backend-served image
+  currentUser && currentUser.profilePicture
+      ? `http://localhost:8080/${currentUser.profilePicture}` // Use backend-served image
       : "/default-avatar.png"; // Fallback to default avatar
 
   return (
@@ -79,7 +81,7 @@ const Navbar = () => {
       </ul>
 
       <div className={styles.navbarRight}>
-        {user ? (
+        {currentUser ? (
           <div className={`dropdown is-right is-hoverable ${styles.userInfo}`}>
             <div className={`dropdown-trigger ${styles.dropdownTrigger}`}>
               <button className={`button ${styles.dropdownButton}`}>
@@ -91,7 +93,7 @@ const Navbar = () => {
                   />
                 </span>
                 <Link to="/profile">
-                  <span>{user.username}</span>
+                  <span>{currentUser.username}</span>
                 </Link>
                 <span className="icon is-small">
                   <i className="fas fa-angle-down"></i>

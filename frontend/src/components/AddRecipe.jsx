@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import imageCompression from "browser-image-compression";
 import "bulma/css/bulma.min.css";
-import useCurrentUser from "../useCurrentUser";
+
+import { useUser } from "../UserContext";
+
 
 
 const PhotoUpload = ({ setPhotoUrl, photoURL, setPhotoFile }) => {
@@ -84,7 +86,7 @@ const PhotoUpload = ({ setPhotoUrl, photoURL, setPhotoFile }) => {
 };
 
 const AddRecipe = () => {
-  
+  const { currentUser, setUser } = useUser();
   const [name, setRecipeName] = useState("");
   const [cookTime, setCookTime] = useState("");
   const [prepTime, setPrepTime] = useState("");
@@ -99,15 +101,7 @@ const AddRecipe = () => {
   const [stepInput, setStepInput] = useState("");
   const [cuisine, setCuisine] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [author, setAuthor] = useState();
-
-  const { user, loading, hookError, setUser } = useCurrentUser();
-
-  useEffect(() => {
-    console.log(`the user: ${user}`);
-    setAuthor(user);
-    console.log(`the author: ${author}`);
-  })
+  const [author, setAuthor] = useState({});
 
   const addIngredient = () => {
     if (ingredientInput.trim() !== "" && amountInput.trim() !== "" && unitInput !== "") {
@@ -155,9 +149,19 @@ const AddRecipe = () => {
     setPhotoUrl("https://via.placeholder.com/400");
     setPhotoFile(null);
   };
+  
+  useEffect(() => {
+    console.log('Component mounted!');
+    console.log(`${currentUser.username} is the currentUser!`)
+    
+    setAuthor(currentUser);
+    console.log(`${author.username} is the author of this recipe`);
+
+  }, []);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
+  console.log(`${author} is the author of this recipe`);
 
     setIsSubmitting(true);
     try {
