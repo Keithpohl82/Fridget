@@ -41,8 +41,9 @@ public class User extends AbstractClass implements Serializable {
     @Column(name = "profile_picture_path")
     private String profilePicturePath;
 
-    @ElementCollection
-    @CollectionTable(name = "user_grocery_list", joinColumns = @JoinColumn(name = "user_id"))
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<String> grocerylist;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)

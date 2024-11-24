@@ -6,29 +6,7 @@ export default function GroceryList() {
   const [inputValue, setInputValue] = useState("");
   const [heading, setHeading] = useState("My Grocery List");
   const [isEditingTitle, setIsEditingTitle] = useState(false);
-  const [user, setUser] = useState("");
-
-  //Gets the user so we can assign them as the author.
-  const getUser = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/userservice/current-user", {
-        method: "GET",
-        credentials: "include", // Ensures session cookies are sent
-      });
-
-      if (response.ok) {
-        const userList = await response.json();
-        console.log("Fetched Creator:", userList); // Debug log
-        setUser(userList.id); // Ensure the full UserDTO is set, including id
-      } else {
-        console.error("Failed to fetch current user.");
-        setUser(null); // No user logged in
-      }
-    } catch (error) {
-      console.error("Error refreshing user:", error);
-      setUser(null);
-    }
-  }
+  
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -42,13 +20,14 @@ export default function GroceryList() {
     if (!inputValue.trim()) {
       alert("You must write something!");
       return;
-    }else{
-    const newIngredient = inputValue
-    setItems((preItems)=>[...preItems, newIngredient]);
-    setInputValue("");
-    
     }
-    console.log(items);
+    const newIngredient = inputValue
+    setItems((prevItems) => {
+      const updatedItems = [...prevItems, newIngredient];
+      console.log(updatedItems); // This will now log the updated state
+      return updatedItems;
+    });
+    setInputValue("");
   };
 
   const removeItem = (index) => {
