@@ -6,6 +6,7 @@ export default function GroceryList() {
   const [inputValue, setInputValue] = useState("");
   const [heading, setHeading] = useState("My Grocery List");
   const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [checked, setIsChecked] = useState(false);
   
 
   const handleInputChange = (e) => {
@@ -39,7 +40,9 @@ export default function GroceryList() {
     newItems[index] = {
       text: newItems[index].text || newItems[index],
       checked: !newItems[index].checked,
+      
     };
+    setIsChecked(checked);
     setItems(newItems);
   };
 

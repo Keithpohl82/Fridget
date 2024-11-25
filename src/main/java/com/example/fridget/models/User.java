@@ -41,25 +41,26 @@ public class User extends AbstractClass implements Serializable {
     @Column(name = "profile_picture_path")
     private String profilePicturePath;
 
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<String> grocerylist;
-
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference //inverse
     private List<Recipe> authoredrecipe = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Checklist> grocerylist;
+
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public User(List<Recipe> authoredrecipe, UserProfile userProfile, String username, String firstName, String lastName, String userEmail, String pwHash, boolean isAdmin, List<String> grocerylist) {
+
+
+    public User(List<Recipe> authoredrecipe, UserProfile userProfile, String username, String firstName, String lastName, String userEmail, String pwHash, boolean isAdmin) {
 
         this.username = username;
         this.userEmail = userEmail;
         this.pwHash = encoder.encode(pwHash);
         this.isAdmin = isAdmin;
         this.userProfile = userProfile;
-        this.grocerylist = grocerylist;
+
         this.authoredrecipe = authoredrecipe;
     }
 
@@ -136,14 +137,6 @@ public class User extends AbstractClass implements Serializable {
 
     public void setProfilePicturePath(String profilePicturePath) {
         this.profilePicturePath = profilePicturePath;
-    }
-
-    public List<String> getGrocerylist() {
-        return grocerylist;
-    }
-
-    public void setGrocerylist(List<String> grocerylist) {
-        this.grocerylist = grocerylist;
     }
 
     @Override
