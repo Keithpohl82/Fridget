@@ -32,7 +32,7 @@ const Login = () => {
       console.log(result);
 
       if (response.ok) {
-        alert(result); // Login successful
+        // alert(result); // Login successful
 
         refreshUser(); // Notify Navbar to update
 
