@@ -9,6 +9,7 @@ import com.example.fridget.models.data.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,16 +24,26 @@ public class ChecklistService {
         this.userRepository = userRepository;
     }
 
-    public Checklist createChecklist(ChecklistDTO checklistRequest) {
+    public Checklist createChecklist(Checklist checklistRequest) {
+        if (checklistRequest.getUser() == null || checklistRequest.getUser().getId() == null) {
+            throw new RuntimeException("User ID is missing in the request");
+        }
+
+        System.out.println("User ID: " + checklistRequest.getUser().getId());
+        System.out.println("List Name: " + checklistRequest.getListname());
+        System.out.println("List Items: " + checklistRequest.getListitem());
+
         // Find the user by ID
-        User user = userRepository.findById(checklistRequest.getUserId())
+        User user = userRepository.findById(checklistRequest.getUser().getId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Create a new Checklist entity
+        // Create and populate Checklist entity
         Checklist checklist = new Checklist();
         checklist.setUser(user);
         checklist.setListname(checklistRequest.getListname());
-        checklist.setListitem(checklistRequest.getListitem());
+
+        // Ensure listitem is not null before saving
+        checklist.setListitem(checklistRequest.getListitem() != null ? checklistRequest.getListitem() : new ArrayList<>());
 
         // Save the checklist
         return checklistRepository.save(checklist);

@@ -46,6 +46,7 @@ public class User extends AbstractClass implements Serializable {
     private List<Recipe> authoredrecipe = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Checklist> grocerylist;
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();

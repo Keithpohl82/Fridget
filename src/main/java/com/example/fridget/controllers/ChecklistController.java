@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -36,7 +37,15 @@ public class ChecklistController {
 
     @PostMapping("user/add")
     public ResponseEntity<Checklist> createChecklist(@RequestBody ChecklistDTO checklistRequest) {
-        Checklist newChecklist = checklistService.createChecklist(checklistRequest);
-        return new ResponseEntity<>(newChecklist, HttpStatus.CREATED);
+
+        User user = userRepository.findById(checklistRequest.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Checklist checklist = new Checklist();
+        checklist.setUser(user);
+        checklist.setListname(checklistRequest.getListname());
+        checklist.setListitem(checklistRequest.getListitem() != null ? checklistRequest.getListitem() : new ArrayList<>());
+
+        return new ResponseEntity<>(checklistRepository.save(checklist), HttpStatus.CREATED);
     }
 }

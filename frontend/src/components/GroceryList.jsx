@@ -1,13 +1,54 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "../styles/Grocery.module.css";
+import { useUser } from "../UserContext";
 
 export default function GroceryList() {
-  const [items, setItems] = useState([]);
+  const [listitem, setItems] = useState([]);
   const [inputValue, setInputValue] = useState("");
-  const [heading, setHeading] = useState("My Grocery List");
+  const [listname, setHeading] = useState("My Grocery List");
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [checked, setIsChecked] = useState(false);
+  const { currentUser, setUser } = useUser();
+  const [userId, setUserId] = useState();
   
+  
+
+  useEffect(() => {
+    if(currentUser){
+      var id = currentUser.id;
+    setUserId(id);
+    console.log(id);
+    }
+    
+  }, [currentUser]);
+
+
+  const handleSaveList = async (e) => {
+    e.preventDefault();
+    
+    // Connect to the backend and send the ingredient name
+    const response = await fetch(`http://localhost:8080/checklist/user/add`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      //list item needs to be an object 
+      body: JSON.stringify({
+        userId,
+        listname,
+        listitem: listitem.map(item => ({
+            listitem: item.text || item,
+            iscomplete: item.checked || false
+        }))
+    }),
+    });
+
+    const result = await response.text();
+    alert(result);
+
+  };
+
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -32,29 +73,27 @@ export default function GroceryList() {
   };
 
   const removeItem = (index) => {
-    setItems(items.filter((_, i) => i !== index));
+    setItems(listitem.filter((_, i) => i !== index));
   };
 
   const toggleChecked = (index) => {
-    const newItems = [...items];
-    newItems[index] = {
-      text: newItems[index].text || newItems[index],
-      checked: !newItems[index].checked,
-      
-    };
-    setIsChecked(checked);
-    setItems(newItems);
-  };
+    setItems((prevItems) =>
+        prevItems.map((item, i) =>
+            i === index ? { ...item, checked: !item.checked } : item
+        )
+    );
+};
 
   return (
     <div className={styles.groceryBackground}>
       <div className={styles.body} id={styles.rcorners2}>
         <div id="myDIV" className={styles.header}>
+        
           {/* Editable Heading with Pencil Icon */}
           {isEditingTitle ? (
             <input
               type="text"
-              value={heading}
+              value={listname}
               onChange={handleHeadingChange}
               onBlur={() => setIsEditingTitle(false)}
               className={styles.editableTitle}
@@ -65,7 +104,7 @@ export default function GroceryList() {
               onClick={() => setIsEditingTitle(true)}
               className={styles.title}
             >
-              {heading} <span className={styles.editIcon}>✏️</span>
+              {listname} <span className={styles.editIcon}>✏️</span>
             </h2>
           )}
 
@@ -80,10 +119,13 @@ export default function GroceryList() {
           <span onClick={addNewItem} className={styles.addBtn}>
             Add
           </span>
+          <span onClick={handleSaveList} className={styles.addBtn}>
+            Save list
+          </span>
         </div>
 
         <ul id="myUL" className={styles.ul}>
-          {items.map((item, index) => (
+          {listitem.map((item, index) => (
             <li
               key={index}
               className={item.checked ? styles.checked : ""}

@@ -1,5 +1,7 @@
 package com.example.fridget.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -9,6 +11,7 @@ public class Checklist extends AbstractClass{
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
     private String listname;
@@ -17,14 +20,16 @@ public class Checklist extends AbstractClass{
     @CollectionTable(name = "userchecklist", joinColumns = @JoinColumn(name = "checklist_id"))
     private List<ItemTask> listitem;
 
+    public Checklist() {
+    }
+
     public Checklist(User user, String listname, List<ItemTask> listitem) {
         this.user = user;
         this.listname = listname;
         this.listitem = listitem;
     }
 
-    public Checklist() {
-    }
+
 
     public User getUser() {
         return user;
@@ -48,5 +53,14 @@ public class Checklist extends AbstractClass{
 
     public void setListitem(List<ItemTask> listitem) {
         this.listitem = listitem;
+    }
+
+    @Override
+    public String toString() {
+        return "Checklist{" +
+                "user=" + user +
+                ", listname='" + listname + '\'' +
+                ", listitem=" + listitem +
+                '}';
     }
 }

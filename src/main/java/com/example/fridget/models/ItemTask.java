@@ -9,15 +9,15 @@ public class ItemTask{
 
     private boolean iscomplete;
 
+    public ItemTask() {
+    }
+
     public ItemTask(String listitem, boolean iscomplete) {
         this.listitem = listitem;
         this.iscomplete = iscomplete;
     }
 
-    public ItemTask() {
-    }
-
-    public boolean isIscomplete() {
+    public boolean isComplete() {
         return iscomplete;
     }
 
