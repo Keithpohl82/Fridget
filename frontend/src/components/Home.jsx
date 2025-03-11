@@ -2,68 +2,100 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "bulma/css/bulma.min.css";
 
+// Endpoint for TheMealDB
 const API_URL = "https://www.themealdb.com/api/json/v1/1/";
 
 const HomePage = () => {
   const [recipes, setRecipes] = useState([]);
-    const [ingredientSearch, setIngredientSearch] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-  
-   
-    const fetchRecipesByIngredient = async () => {
-      if (!ingredientSearch) return; 
-      setIsLoading(true);
-      try {
-        const response = await fetch(
-          `${API_URL}filter.php?i=${ingredientSearch}`
-        );
-        const data = await response.json();
-        console.log(data); 
-        setRecipes(data.meals || []); 
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching recipes:", error);
-        setIsLoading(false);
-      }
-    };
-  
-    useEffect(() => {
-      if (ingredientSearch) {
-        fetchRecipesByIngredient();
-      }
-    }, [ingredientSearch]);
-  
-    const handleSearchInput = (e) => {
-      setIngredientSearch(e.target.value);
-    };
+  const [ingredientSearch, setIngredientSearch] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  // 1. Fetch all recipes on mount so they're displayed by default
+  const fetchAllRecipes = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${API_URL}search.php?s=`);
+      const data = await response.json();
+      setRecipes(data.meals || []);
+    } catch (error) {
+      console.error("Error fetching all recipes:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // 2. Fetch recipes by ingredient when the user clicks Search
+  const fetchRecipesByIngredient = async () => {
+    if (!ingredientSearch) return; // If empty, do nothing
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${API_URL}filter.php?i=${ingredientSearch}`);
+      const data = await response.json();
+      setRecipes(data.meals || []);
+    } catch (error) {
+      console.error("Error fetching recipes:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Fetch all recipes on initial mount
+  useEffect(() => {
+    fetchAllRecipes();
+  }, []);
+
+  const handleSearchInput = (e) => {
+    setIngredientSearch(e.target.value);
+  };
 
   return (
-    <div
-    className="container is-fluid"
-        style={{
-          backgroundImage: `url('/Background2.jpg')`,
-          backgroundSize: 'right top',
-        }}
-    >
-
-
-
-      
+    <div style={{ minHeight: "100vh", backgroundImage: `url('/Background2.jpg')` }}>
       {/* Hero Section */}
       <section
-        className="hero"
+        className="hero is-fullheight"
         style={{
           backgroundImage: `url('/Home.jpg')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          position: "relative",
         }}
       >
-        <div className="hero-body">
+        {/* Dark overlay for readability */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            left: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.4)",
+          }}
+        />
 
-            <h1 className="title">What's in Your Kitchen?</h1>
-            <h2 className="subtitle">Let us help you cook with the ingredients you already have!</h2>
+        <div className="hero-body" style={{ position: "relative" }}>
+          <div className="container has-text-centered">
+            <h1
+              className="title"
+              style={{
+                color: "#fff",
+                textShadow: "0 0 6px rgba(0, 0, 0, 0.6)",
+                marginBottom: "1rem",
+              }}
+            >
+              What's in Your Kitchen?
+            </h1>
+            <h2
+              className="subtitle has-text-white"
+              style={{ marginBottom: "2rem" }}
+            >
+              Let us help you cook with the ingredients you already have!
+            </h2>
 
-            <div className="field has-addons">
+            {/* Search Bar */}
+            <div
+              className="field has-addons is-inline-flex"
+              style={{ maxWidth: "500px", margin: "0 auto" }}
+            >
               <div className="control is-expanded">
                 <input
                   className="input"
@@ -71,6 +103,7 @@ const HomePage = () => {
                   placeholder="Search by ingredient"
                   value={ingredientSearch}
                   onChange={handleSearchInput}
+                  style={{ borderRadius: "4px 0 0 4px" }}
                 />
               </div>
               <div className="control">
@@ -78,36 +111,10 @@ const HomePage = () => {
                   className="button is-info"
                   onClick={fetchRecipesByIngredient}
                   disabled={isLoading}
+                  style={{ borderRadius: "0 4px 4px 0" }}
                 >
                   {isLoading ? "Loading..." : "Search"}
                 </button>
-              </div>
-            </div>
-
-        </div>
-      </section>
-
-      {/* How It Works Section */}
-      <section className="section">
-        <div className="container">
-          <h2 className="title has-text-centered">How It Works</h2>
-          <div className="columns is-centered">
-            <div className="column is-one-third">
-              <div className="box">
-                <h3 className="subtitle">1. Add Ingredients</h3>
-                <p>Type in the ingredients you have in your kitchen.</p>
-              </div>
-            </div>
-            <div className="column is-one-third">
-              <div className="box">
-                <h3 className="subtitle">2. Get Recipe Suggestions</h3>
-                <p>We will suggest recipes based on what you have.</p>
-              </div>
-            </div>
-            <div className="column is-one-third">
-              <div className="box">
-                <h3 className="subtitle">3. Cook and Enjoy!</h3>
-                <p>Choose your recipe, cook it, and enjoy your meal!</p>
               </div>
             </div>
           </div>
@@ -115,47 +122,69 @@ const HomePage = () => {
       </section>
 
       {/* Display Recipe Results */}
-            <section className="section">
-              <div className="container">
-                <h2 className="title has-text-centered">Recipe Results</h2>
-                <div className="columns is-multiline">
-                  {recipes.length > 0 ? (
-                    recipes.map((recipe) => (
-                      <div className="column is-one-third" key={recipe.idMeal}>
-                        <div className="card">
-                          <div className="card-image">
-                            <figure className="image is-4by3">
-                              <img
-                                src={recipe.strMealThumb}
-                                alt={recipe.strMeal}
-                              />
-                            </figure>
-                          </div>
-                          <div className="card-content">
-                            <p className="title">{recipe.strMeal}</p>
-                            <p className="subtitle">Ingredients-based Search</p>
-                            <Link to={`/recipe/${recipe.idMeal}`}>
-                              <button className="button is-info">
-                                View Recipe
-                              </button>
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <p>No recipes found for this ingredient.</p>
-                  )}
-                </div>
-              </div>
-            </section>
+      <section className="section" style={{ paddingTop: "3rem" }}>
+        <div className="container">
+          <h2 className="title has-text-centered">Recipes</h2>
 
-      {/* Footer */}
-      <footer className="footer">
-        <div className="content has-text-centered">
-          <p>&copy; 2024 My Recipe App</p>
+          <div className="columns is-multiline" style={{ marginTop: "2rem" }}>
+            {recipes.length > 0 ? (
+              recipes.map((recipe) => (
+                <div
+                  className="column is-one-third"
+                  key={recipe.idMeal}
+                  style={{ display: "flex", justifyContent: "center" }}
+                >
+                  <div
+                    className="card"
+                    style={{
+                      width: "100%",
+                      maxWidth: "350px",
+                      borderRadius: "8px",
+                      overflow: "hidden",
+                      boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+                      transition: "transform 0.2s ease-in-out",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "scale(1.02)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "scale(1)";
+                    }}
+                  >
+                    <div className="card-image">
+                      <figure className="image is-4by3">
+                        <img
+                          src={recipe.strMealThumb}
+                          alt={recipe.strMeal}
+                          style={{ objectFit: "cover" }}
+                        />
+                      </figure>
+                    </div>
+                    <div className="card-content" style={{ padding: "1rem" }}>
+                      <p className="title is-5">{recipe.strMeal}</p>
+                      {/* Some recipes from the "search.php?s=" endpoint also have area/category available */}
+                      <p className="subtitle is-6 has-text-grey">
+                        {recipe.strArea && recipe.strCategory
+                          ? `${recipe.strArea} | ${recipe.strCategory}`
+                          : recipe.strArea
+                          ? recipe.strArea
+                          : recipe.strCategory
+                          ? recipe.strCategory
+                          : ""}
+                      </p>
+                      <Link to={`/recipe/${recipe.idMeal}`}>
+                        <button className="button is-info">View Recipe</button>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>No recipes found.</p>
+            )}
+          </div>
         </div>
-      </footer>
+      </section>
     </div>
   );
 };

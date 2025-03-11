@@ -3,22 +3,29 @@ import "bulma/css/bulma.min.css";
 
 const RecipeCard = ({ recipe }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
 
   const handleToggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
 
+  const handleLikeClick = (e) => {
+    // Prevent the card onClick from also firing (which would toggle expand)
+    e.stopPropagation();
+    setIsLiked(!isLiked);
+  };
+
   // Construct image URL
   const recipeImage = recipe.photoPath
-    ? `http://localhost:8080/${recipe.photoPath}` // Use backend photo path
-    : "https://via.placeholder.com/400"; // Placeholder image
+    ? `http://localhost:8080/${recipe.photoPath}`
+    : "https://via.placeholder.com/400";
 
   return (
     <div
       className={`card ${isExpanded ? "is-expanded" : ""}`}
       onClick={handleToggleExpand}
       style={{
-        transition: "transform 0.3s, box-shadow 0.3s",
+        transition: "transform 0.3s, boxShadow 0.3s",
         cursor: "pointer",
         maxWidth: "100%",
         margin: "10px",
@@ -36,7 +43,7 @@ const RecipeCard = ({ recipe }) => {
       <div className="card-image">
         <figure className="image is-4by3">
           <img
-            src={recipeImage} // Updated to use recipeImage
+            src={recipeImage}
             alt={`${recipe.name}`}
             style={{ borderRadius: "5px 5px 0 0" }}
           />
@@ -51,11 +58,22 @@ const RecipeCard = ({ recipe }) => {
               <strong>Cuisine:</strong> {recipe.cuisine || "N/A"}
             </p>
           </div>
+          {/* Like button – position it in .media-right or inside .media-content */}
+          <div className="media-right">
+            <button
+              className={`button ${isLiked ? "is-danger" : "is-light"}`}
+              onClick={handleLikeClick}
+            >
+              {isLiked ? "Unlike" : "Like"}
+            </button>
+          </div>
         </div>
+
         {isExpanded && (
           <div className="content">
             <p>
-              <strong>Prep Time:</strong> {recipe.prepTime} | <strong>Cook Time:</strong> {recipe.cookTime}
+              <strong>Prep Time:</strong> {recipe.prepTime} |{" "}
+              <strong>Cook Time:</strong> {recipe.cookTime}
             </p>
             <p>{recipe.description}</p>
             <div className="content">

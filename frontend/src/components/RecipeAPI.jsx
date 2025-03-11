@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "bulma/css/bulma.min.css";
 
-
 const API_URL = "https://www.themealdb.com/api/json/v1/1/";
 
 const RecipeAPI = () => {
@@ -10,17 +9,33 @@ const RecipeAPI = () => {
   const [ingredientSearch, setIngredientSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
- 
+  // 1. Fetch by ingredient (partial info).
+  // 2. For each returned meal, fetch full details via "lookup.php?i=".
   const fetchRecipesByIngredient = async () => {
-    if (!ingredientSearch) return; 
+    if (!ingredientSearch) return;
     setIsLoading(true);
     try {
-      const response = await fetch(
-        `${API_URL}filter.php?i=${ingredientSearch}`
-      );
+      const response = await fetch(`${API_URL}filter.php?i=${ingredientSearch}`);
       const data = await response.json();
-      console.log(data); 
-      setRecipes(data.meals || []); 
+
+      if (!data.meals) {
+        // If no meals found, set empty array and return
+        setRecipes([]);
+        setIsLoading(false);
+        return;
+      }
+
+      // For each meal, fetch the full meal details
+      const detailedMeals = await Promise.all(
+        data.meals.map(async (meal) => {
+          const detailRes = await fetch(`${API_URL}lookup.php?i=${meal.idMeal}`);
+          const detailData = await detailRes.json();
+          // detailData.meals[0] should have the full meal info (strArea, etc.)
+          return detailData.meals[0];
+        })
+      );
+
+      setRecipes(detailedMeals);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching recipes:", error);
@@ -28,6 +43,7 @@ const RecipeAPI = () => {
     }
   };
 
+  // When ingredientSearch changes, automatically trigger search
   useEffect(() => {
     if (ingredientSearch) {
       fetchRecipesByIngredient();
@@ -41,12 +57,12 @@ const RecipeAPI = () => {
   return (
     <div className="container">
       {/* Search Bar */}
-      <div className="field has-addons">
+      <div className="field has-addons" style={{ marginTop: "1rem" }}>
         <div className="control is-expanded">
           <input
             className="input"
             type="text"
-            placeholder="Search by ingredient"
+            placeholder="Search by ingredient (e.g. 'Chicken')"
             value={ingredientSearch}
             onChange={handleSearchInput}
           />
@@ -69,7 +85,7 @@ const RecipeAPI = () => {
           <div className="columns is-multiline">
             {recipes.length > 0 ? (
               recipes.map((recipe) => (
-                <div className="column is-one-third" key={recipe.idMeal}>
+                <div className="column is-one-fifth" key={recipe.idMeal}>
                   <div className="card">
                     <div className="card-image">
                       <figure className="image is-4by3">
@@ -81,7 +97,9 @@ const RecipeAPI = () => {
                     </div>
                     <div className="card-content">
                       <p className="title">{recipe.strMeal}</p>
-                      <p className="subtitle">Ingredients-based Search</p>
+                      {/* Display the cuisine/area */}
+                      <p className="subtitle">{recipe.strArea}: {recipe.strCategory}</p>
+
                       <Link to={`/recipe/${recipe.idMeal}`}>
                         <button className="button is-info">
                           View Recipe

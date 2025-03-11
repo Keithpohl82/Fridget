@@ -56,7 +56,7 @@ const App = () => {
   return (
     
     <Router>
-      <div className="container"> 
+      <div className="container is-fluid"> 
         <Navbar user={currentUser} logoutUser={logoutUser} />
         <Routes>
           <Route path="/" element={<Home />} />
