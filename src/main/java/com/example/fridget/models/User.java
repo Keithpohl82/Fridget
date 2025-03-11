@@ -5,15 +5,17 @@ import jakarta.persistence.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User implements Serializable {
+public class User extends AbstractClass implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     @OneToOne(mappedBy = "user")
     private UserProfile userProfile;
@@ -39,18 +41,17 @@ public class User implements Serializable {
     @Column(name = "profile_picture_path")
     private String profilePicturePath;
 
-    @ElementCollection
-    @CollectionTable(name = "user_grocery_list", joinColumns = @JoinColumn(name = "user_id"))
-    private List<String> grocerylist;
-
-    @OneToOne(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference //inverse
-    private Recipe authoredrecipe;
+    private List<Recipe> authoredrecipe = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Checklist> grocerylist;
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public User(Recipe authoredrecipe, Long id, UserProfile userProfile, String username, String firstName, String lastName, String userEmail, String pwHash, boolean isAdmin, List<String> grocerylist) {
-        this.id = id;
+    public User(List<Recipe> authoredrecipe, UserProfile userProfile, String username, String firstName, String lastName, String userEmail, String pwHash, boolean isAdmin, List<Checklist> grocerylist) {
+
         this.username = username;
         this.userEmail = userEmail;
         this.pwHash = encoder.encode(pwHash);
@@ -63,11 +64,11 @@ public class User implements Serializable {
     public User() {
     }
 
-    public Recipe getAuthoredrecipe() {
+    public List<Recipe> getAuthoredrecipe() {
         return authoredrecipe;
     }
 
-    public void setAuthoredrecipe(Recipe authoredrecipe) {
+    public void setAuthoredrecipe(List<Recipe> authoredrecipe) {
         this.authoredrecipe = authoredrecipe;
     }
 
@@ -103,10 +104,6 @@ public class User implements Serializable {
         this.pwHash = pwHash;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public boolean isAdmin() {
         return isAdmin;
     }
@@ -139,11 +136,11 @@ public class User implements Serializable {
         this.profilePicturePath = profilePicturePath;
     }
 
-    public List<String> getGrocerylist() {
+    public List<Checklist> getGrocerylist() {
         return grocerylist;
     }
 
-    public void setGrocerylist(List<String> grocerylist) {
+    public void setGrocerylist(List<Checklist> grocerylist) {
         this.grocerylist = grocerylist;
     }
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "recipe", discriminatorType = DiscriminatorType.STRING)
+//@DiscriminatorColumn(name = "recipe", discriminatorType = DiscriminatorType.STRING)
 public class Recipe extends AbstractClass{
 
     @ElementCollection

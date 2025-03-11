@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../styles/Navbar.module.css";
+import { useUser } from "../UserContext";
 
-const Navbar = ({ user, refreshUser }) => {
+
+
+const Navbar = () => {
   const navigate = useNavigate();
+  const { currentUser, setUser } = useUser();
 
   const logoutUser = async () => {
     try {
@@ -12,7 +16,8 @@ const Navbar = ({ user, refreshUser }) => {
         credentials: "include", // Ensures session cookies are sent
       });
       if (response.ok) {
-        refreshUser(); // Refresh user state
+         // Refresh user state
+        setUser(null);
         navigate("/login"); // Redirect to login page
       } else {
         console.error("Failed to log out");
@@ -24,8 +29,8 @@ const Navbar = ({ user, refreshUser }) => {
 
   // Construct profile picture URL
   const profilePictureURL =
-    user && user.profilePicture
-      ? `http://localhost:8080/${user.profilePicture}` // Use backend-served image
+  currentUser && currentUser.profilePicture
+      ? `http://localhost:8080/${currentUser.profilePicture}` // Use backend-served image
       : "/default-avatar.png"; // Fallback to default avatar
 
   return (
@@ -74,7 +79,7 @@ const Navbar = ({ user, refreshUser }) => {
       </ul>
 
       <div className={styles.navbarRight}>
-        {user ? (
+        {currentUser ? (
           <div className={`dropdown is-right is-hoverable ${styles.userInfo}`}>
             <div className={`dropdown-trigger ${styles.dropdownTrigger}`}>
               <button className={`button ${styles.dropdownButton}`}>
@@ -86,7 +91,7 @@ const Navbar = ({ user, refreshUser }) => {
                   />
                 </span>
                 <Link to="/profile">
-                  <span>{user.username}</span>
+                  <span>{currentUser.username}</span>
                 </Link>
                 <span className="icon is-small">
                   <i className="fas fa-angle-down"></i>

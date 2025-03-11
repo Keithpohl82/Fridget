@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import imageCompression from "browser-image-compression";
 import "bulma/css/bulma.min.css";
+import { useUser } from "../UserContext";
+
+
 
 const PhotoUpload = ({ setPhotoUrl, photoURL, setPhotoFile }) => {
   const handleFileChange = async (e) => {
@@ -82,6 +85,7 @@ const PhotoUpload = ({ setPhotoUrl, photoURL, setPhotoFile }) => {
 };
 
 const AddRecipe = () => {
+  const { currentUser, setUser } = useUser();
   const [name, setRecipeName] = useState("");
   const [cookTime, setCookTime] = useState("");
   const [prepTime, setPrepTime] = useState("");
@@ -96,29 +100,7 @@ const AddRecipe = () => {
   const [stepInput, setStepInput] = useState("");
   const [cuisine, setCuisine] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [author, setAuthor] = useState();
-
-  //Gets the user so we can assign them as the author.
-  const getUser = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/userservice/current-user", {
-        method: "GET",
-        credentials: "include", // Ensures session cookies are sent
-      });
-
-      if (response.ok) {
-        const recipeAuthor = await response.json();
-        console.log("Fetched author:", recipeAuthor.id); // Debug log
-        setAuthor(recipeAuthor.id); // Ensure the full UserDTO is set, including id
-      } else {
-        console.error("Failed to fetch current user.");
-        setUser(null); // No user logged in
-      }
-    } catch (error) {
-      console.error("Error refreshing user:", error);
-      setUser(null);
-    }
-  }
+  const [author, setAuthor] = useState({});
 
   const addIngredient = () => {
     if (ingredientInput.trim() !== "" && amountInput.trim() !== "" && unitInput !== "") {
@@ -166,10 +148,18 @@ const AddRecipe = () => {
     setPhotoUrl("https://via.placeholder.com/400");
     setPhotoFile(null);
   };
+  
+  useEffect(() => {
+    console.log('Component mounted!');
+    console.log(`${currentUser} is the currentUser!`);
+    setAuthor(currentUser);
+    console.log(`${author.username} is the author of this recipe`);
+  }, []);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    getUser();
+  e.preventDefault();
+  console.log(`${author} is the author of this recipe`);
+
     setIsSubmitting(true);
     try {
       const recipeResponse = await fetch("http://localhost:8080/recipes/add", {
