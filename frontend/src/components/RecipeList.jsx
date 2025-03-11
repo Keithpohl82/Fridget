@@ -27,7 +27,7 @@ const RecipeList = () => {
       <div className="columns is-multiline is-mobile">
         {recipes.map((recipe, index) => (
           <div
-            className="column is-one-quarter" // 1/4 of the row for desktop, making 4 columns per row
+            className="column is-one-quarter" 
             key={index}
           >
             <RecipeCard recipe={recipe} />

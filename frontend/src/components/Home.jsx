@@ -1,59 +1,61 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom"; // Import Link component
+import { Link } from "react-router-dom";
 import "bulma/css/bulma.min.css";
 
+const API_URL = "https://www.themealdb.com/api/json/v1/1/";
+
 const HomePage = () => {
-  const [ingredientSearch, setIngredients] = useState("");
-  const [recipeResults, setRecipeResults] = useState([]);
   const [recipes, setRecipes] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // Show loading spinner while fetching recipes
-  const [loadingRecipes, setLoading] = useState(true);
-
-  // Fetch all recipes in the database
-  useEffect(() => {
-    fetch("http://localhost:8080/recipes/")
-      .then((response) => response.json())
-      .then((data) => {
-        setRecipes(data);
-        setLoading(false);
-        setIsLoading(false); // Set loading to false once data is fetched
-      })
-      .catch((error) => {
-        console.error("Error fetching recipes:", error);
-        setLoading(false);
+    const [ingredientSearch, setIngredientSearch] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+  
+   
+    const fetchRecipesByIngredient = async () => {
+      if (!ingredientSearch) return; 
+      setIsLoading(true);
+      try {
+        const response = await fetch(
+          `${API_URL}filter.php?i=${ingredientSearch}`
+        );
+        const data = await response.json();
+        console.log(data); 
+        setRecipes(data.meals || []); 
         setIsLoading(false);
-      });
-  }, []);
-
-  // Get a random recipe for the featured section
-  const getRandomIndex = () => Math.floor(Math.random() * recipes.length);
-  const randomIndex = getRandomIndex();
-  const randomRecipe = recipes[randomIndex];
-
-  const handleInputChange = (e) => {
-    setIngredients(e.target.value);
-  };
-
-  // Filter recipes based on ingredient search
-  const handleFilter = () => {
-    const filterArr = recipes.filter((recipe) =>
-      recipe.ingredients.some(
-        (ingredient) =>
-          ingredient.ingredient.toLowerCase() === ingredientSearch.toLowerCase()
-      )
-    );
-    setRecipeResults(filterArr);
-  };
-
-  // Construct image URL or use placeholder
-  const getImageUrl = (path) => (path ? `http://localhost:8080/${path}` : "https://via.placeholder.com/400");
+      } catch (error) {
+        console.error("Error fetching recipes:", error);
+        setIsLoading(false);
+      }
+    };
+  
+    useEffect(() => {
+      if (ingredientSearch) {
+        fetchRecipesByIngredient();
+      }
+    }, [ingredientSearch]);
+  
+    const handleSearchInput = (e) => {
+      setIngredientSearch(e.target.value);
+    };
 
   return (
-    <div>
+    <div
+    className="container is-fluid"
+        style={{
+          backgroundImage: `url('/Background2.jpg')`,
+          backgroundSize: 'right top',
+        }}
+    >
       {/* Hero Section */}
-      <section className="hero is-primary">
+      <section
+        className="hero"
+        style={{
+          backgroundImage: `url('/Home.jpg')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
         <div className="hero-body">
-          <div className="container">
+
             <h1 className="title">What's in Your Kitchen?</h1>
             <h2 className="subtitle">Let us help you cook with the ingredients you already have!</h2>
 
@@ -62,18 +64,22 @@ const HomePage = () => {
                 <input
                   className="input"
                   type="text"
-                  placeholder="Enter ingredients (e.g., chicken, rice, broccoli)"
+                  placeholder="Search by ingredient"
                   value={ingredientSearch}
-                  onChange={handleInputChange}
+                  onChange={handleSearchInput}
                 />
               </div>
               <div className="control">
-                <button className="button is-info" onClick={handleFilter} disabled={isLoading}>
-                  {isLoading ? "Searching..." : "Find Recipes"}
+                <button
+                  className="button is-info"
+                  onClick={fetchRecipesByIngredient}
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Loading..." : "Search"}
                 </button>
               </div>
             </div>
-          </div>
+
         </div>
       </section>
 
@@ -104,63 +110,41 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Recipe Results Section */}
-      {!isLoading && recipeResults.length === 0 && ingredientSearch && (
-        <p className="has-text-centered">No recipes found for this ingredient.</p>
-      )}
-
-      {recipeResults.length > 0 && (
-        <section className="section">
-          <div className="container">
-            <h2 className="title has-text-centered">Recipe Results</h2>
-            <div className="columns is-multiline">
-              {recipeResults.map((recipe, index) => (
-                <div className="column is-one-third" key={index}>
-                  <div className="card">
-                    <div className="card-image">
-                      <figure className="image is-4by3">
-                        <img src={getImageUrl(recipe.photoPath)} alt={recipe.name} />
-                      </figure>
-                    </div>
-                    <div className="card-content">
-                      <p className="title">{recipe.name}</p>
-                      <p className="subtitle">{recipe.description}</p>
-                      <Link to={`/recipes/${recipe.id}`} className="button is-info">
-                        View Recipe
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Featured Recipes Section */}
-      {!isLoading && recipes.length > 0 && (
-        <section className="section">
-          <div className="container">
-            <h2 className="title has-text-centered">Featured Recipes</h2>
-            <div className="columns is-multiline">
-              <div className="column is-one-third">
-                <div className="card">
-                  <div className="card-image">
-                    <figure className="image is-4by3">
-                      <img src={getImageUrl(randomRecipe.photoPath)} alt={randomRecipe.name} />
-                    </figure>
-                  </div>
-                  <div className="card-content">
-                    <p className="title">{randomRecipe.name}</p>
-                    <p className="subtitle">{randomRecipe.description}</p>
-                  </div>
+      {/* Display Recipe Results */}
+            <section className="section">
+              <div className="container">
+                <h2 className="title has-text-centered">Recipe Results</h2>
+                <div className="columns is-multiline">
+                  {recipes.length > 0 ? (
+                    recipes.map((recipe) => (
+                      <div className="column is-one-third" key={recipe.idMeal}>
+                        <div className="card">
+                          <div className="card-image">
+                            <figure className="image is-4by3">
+                              <img
+                                src={recipe.strMealThumb}
+                                alt={recipe.strMeal}
+                              />
+                            </figure>
+                          </div>
+                          <div className="card-content">
+                            <p className="title">{recipe.strMeal}</p>
+                            <p className="subtitle">Ingredients-based Search</p>
+                            <Link to={`/recipe/${recipe.idMeal}`}>
+                              <button className="button is-info">
+                                View Recipe
+                              </button>
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p>No recipes found for this ingredient.</p>
+                  )}
                 </div>
               </div>
-              {/* Repeat similar blocks for other featured recipes if needed */}
-            </div>
-          </div>
-        </section>
-      )}
+            </section>
 
       {/* Footer */}
       <footer className="footer">

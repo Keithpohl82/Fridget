@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom"; // Import Link component
+import { Link } from "react-router-dom";
 import "bulma/css/bulma.min.css";
 
-// Replace with your actual API key
+
 const API_URL = "https://www.themealdb.com/api/json/v1/1/";
 
 const RecipeAPI = () => {
@@ -10,17 +10,17 @@ const RecipeAPI = () => {
   const [ingredientSearch, setIngredientSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  // Fetch recipes based on a specific ingredient
+ 
   const fetchRecipesByIngredient = async () => {
-    if (!ingredientSearch) return; // Don't call API if search term is empty
+    if (!ingredientSearch) return; 
     setIsLoading(true);
     try {
       const response = await fetch(
         `${API_URL}filter.php?i=${ingredientSearch}`
       );
       const data = await response.json();
-      console.log(data); // Log data to check the response structure
-      setRecipes(data.meals || []); // If no meals are found, it returns an empty array
+      console.log(data); 
+      setRecipes(data.meals || []); 
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching recipes:", error);
@@ -34,7 +34,6 @@ const RecipeAPI = () => {
     }
   }, [ingredientSearch]);
 
-  // Handle ingredient search input
   const handleSearchInput = (e) => {
     setIngredientSearch(e.target.value);
   };
