@@ -45,6 +45,10 @@ const HomePage = () => {
           backgroundSize: 'right top',
         }}
     >
+
+
+
+      
       {/* Hero Section */}
       <section
         className="hero"
